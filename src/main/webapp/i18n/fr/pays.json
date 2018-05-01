@@ -1,0 +1,25 @@
+
+{
+    "pronosticsApp": {
+        "pays" : {
+            "home": {
+                "title": "Pays",
+                "createLabel": "Créer un nouveau Pays",
+                "createOrEditLabel": "Créer ou éditer un Pays",
+                "search": "Recherche pour Pays"
+            },
+            "created": "Un nouveau Pays a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Pays avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Pays avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Pays {{ id }} ?"
+            },
+            "detail": {
+                "title": "Pays"
+            },
+            "nom": "Nom",
+            "codeIso": "Code Iso",
+            "drapeau": "Drapeau"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+entity Competition {
+	nom String required,
+    description String,
+    dateDebut Instant required,
+    dateFin Instant required
+}
+
+entity Pays {
+	nom String required,
+    codeIso String required,
+    drapeau ImageBlob required
+}
+
+entity Stade {
+	nom String required,
+	ville String required
+}
+
+entity Equipe {
+	codeEquipe String,
+    rangFifa Integer,
+    ecusson ImageBlob required
+}
+
+
+entity Match {
+	scoreEquipeDomicile Integer,
+    scoreEquipeVisiteur Integer,
+    date Instant required,
+    statut StatutMatch required,
+	phaseCompetition PhaseCompetition required
+    groupe String
+}
+
+
+entity Pronostic {
+	scoreEquipeDomicile Integer required,
+    scoreEquipeVisiteur Integer required,
+    points Integer,
+}
+
+
+enum StatutMatch {
+    PAS_DEMARRE, EN_COURS, TERMINE
+}
+
+enum PhaseCompetition {
+    GROUPE, HUITIEME, QUART, DEMI, FINAL
+}
+
+relationship OneToOne {
+	Competition{pays(nom)} to Pays,
+    Equipe{pays(nom)} to Pays,
+    Stade{pays(nom)} to Pays,
+    Match{stade(nom)} to Stade,
+    Match{equipeDomicile(codeEquipe)} to Equipe,
+    Match{equipeVisiteur(codeEquipe)} to Equipe,
+    Match{stade(nom)} to Stade,
+    Pronostic{match} to Match,
+    Pronostic{utilisateur(login)} to User
+}
+
+relationship ManyToOne {
+	Match{competition(nom)} to Competition
+}
+
+relationship ManyToMany {
+	Competition{equipe(codeEquipe)} to Equipe{competition}
+}
+
+// Set pagination options
+paginate Match, Stade, Pronostic, Equipe with infinite-scroll
+

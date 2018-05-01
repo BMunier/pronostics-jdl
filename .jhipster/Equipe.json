@@ -1,0 +1,44 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "pays",
+            "otherEntityName": "pays",
+            "otherEntityField": "nom",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "equipe"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "competition",
+            "otherEntityName": "competition",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "equipe"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "codeEquipe",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rangFifa",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "ecusson",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180501094358",
+    "entityTableName": "equipe",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

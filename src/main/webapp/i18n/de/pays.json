@@ -1,0 +1,25 @@
+
+{
+    "pronosticsApp": {
+        "pays" : {
+            "home": {
+                "title": "Pays",
+                "createLabel": "Pays erstellen",
+                "createOrEditLabel": "Pays erstellen oder bearbeiten",
+                "search": "Suche nach Pays"
+            },
+            "created": "Pays erstellt mit ID {{ param }}",
+            "updated": "Pays aktualisiert mit ID {{ param }}",
+            "deleted": "Pays gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Pays {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Pays"
+            },
+            "nom": "Nom",
+            "codeIso": "Code Iso",
+            "drapeau": "Drapeau"
+        }
+    }
+}

@@ -1,0 +1,28 @@
+
+{
+    "pronosticsApp": {
+        "competition" : {
+            "home": {
+                "title": "Competitions",
+                "createLabel": "Competition erstellen",
+                "createOrEditLabel": "Competition erstellen oder bearbeiten",
+                "search": "Suche nach Competition"
+            },
+            "created": "Competition erstellt mit ID {{ param }}",
+            "updated": "Competition aktualisiert mit ID {{ param }}",
+            "deleted": "Competition gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Competition {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Competition"
+            },
+            "nom": "Nom",
+            "description": "Description",
+            "dateDebut": "Date Debut",
+            "dateFin": "Date Fin",
+            "pays": "Pays",
+            "equipe": "Equipe"
+        }
+    }
+}

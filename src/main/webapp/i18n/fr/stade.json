@@ -1,0 +1,25 @@
+
+{
+    "pronosticsApp": {
+        "stade" : {
+            "home": {
+                "title": "Stades",
+                "createLabel": "Créer un nouveau Stade",
+                "createOrEditLabel": "Créer ou éditer un Stade",
+                "search": "Recherche pour Stade"
+            },
+            "created": "Un nouveau Stade a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Stade avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Stade avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Stade {{ id }} ?"
+            },
+            "detail": {
+                "title": "Stade"
+            },
+            "nom": "Nom",
+            "ville": "Ville",
+            "pays": "Pays"
+        }
+    }
+}

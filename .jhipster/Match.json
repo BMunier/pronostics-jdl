@@ -1,0 +1,78 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "stade",
+            "otherEntityName": "stade",
+            "otherEntityField": "nom",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "match"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "equipeDomicile",
+            "otherEntityName": "equipe",
+            "otherEntityField": "codeEquipe",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "match"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "equipeVisiteur",
+            "otherEntityName": "equipe",
+            "otherEntityField": "codeEquipe",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "match"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "competition",
+            "otherEntityName": "competition",
+            "otherEntityField": "nom"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "scoreEquipeDomicile",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "scoreEquipeVisiteur",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "statut",
+            "fieldType": "StatutMatch",
+            "fieldValues": "PAS_DEMARRE,EN_COURS,TERMINE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "phaseCompetition",
+            "fieldType": "PhaseCompetition",
+            "fieldValues": "GROUPE,HUITIEME,QUART,DEMI,FINAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "groupe",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180501094359",
+    "entityTableName": "match",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

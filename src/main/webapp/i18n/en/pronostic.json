@@ -1,0 +1,27 @@
+
+{
+    "pronosticsApp": {
+        "pronostic" : {
+            "home": {
+                "title": "Pronostics",
+                "createLabel": "Create a new Pronostic",
+                "createOrEditLabel": "Create or edit a Pronostic",
+                "search": "Search for Pronostic"
+            },
+            "created": "A new Pronostic is created with identifier {{ param }}",
+            "updated": "A Pronostic is updated with identifier {{ param }}",
+            "deleted": "A Pronostic is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Pronostic {{ id }}?"
+            },
+            "detail": {
+                "title": "Pronostic"
+            },
+            "scoreEquipeDomicile": "Score Equipe Domicile",
+            "scoreEquipeVisiteur": "Score Equipe Visiteur",
+            "points": "Points",
+            "match": "Match",
+            "utilisateur": "Utilisateur"
+        }
+    }
+}

@@ -1,0 +1,88 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCompetitionLabel" jhiTranslate="pronosticsApp.competition.home.createOrEditLabel">Create or edit a Competition</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!competition.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="competition.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.nom" for="field_nom">Nom</label>
+            <input type="text" class="form-control" name="nom" id="field_nom"
+                [(ngModel)]="competition.nom" required/>
+            <div [hidden]="!(editForm.controls.nom?.dirty && editForm.controls.nom?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nom?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="competition.description" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.dateDebut" for="field_dateDebut">Date Debut</label>
+            <div class="d-flex">
+                <input id="field_dateDebut" type="datetime-local" class="form-control" name="dateDebut" [(ngModel)]="competition.dateDebut"
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.dateDebut?.dirty && editForm.controls.dateDebut?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dateDebut?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dateDebut?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.dateFin" for="field_dateFin">Date Fin</label>
+            <div class="d-flex">
+                <input id="field_dateFin" type="datetime-local" class="form-control" name="dateFin" [(ngModel)]="competition.dateFin"
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.dateFin?.dirty && editForm.controls.dateFin?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dateFin?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dateFin?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.pays" for="field_pays">Pays</label>
+            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="competition.pays">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="paysOption.id === competition.pays?.id ? competition.pays : paysOption" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="pronosticsApp.competition.equipe" for="field_equipe">Equipe</label>
+            <select class="form-control" id="field_equipe" multiple name="equipe" [(ngModel)]="competition.equipes">
+                <option [ngValue]="getSelected(competition.equipes, equipeOption)" *ngFor="let equipeOption of equipes; trackBy: trackEquipeById">{{equipeOption.codeEquipe}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
