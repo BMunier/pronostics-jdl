@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!isAuthenticated()">
     <div class="col-md-3">
         <span class="hipster img-fluid rounded"></span> 
     </div>
@@ -6,20 +6,32 @@
         <h1 class="display-4" jhiTranslate="home.title">Welcome on Globnostics!</h1>
         <p class="lead" jhiTranslate="home.subtitle">The picks application of Globaz</p>
 
-        <div [ngSwitch]="isAuthenticated()">
+        <!-- <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span *ngIf="account" jhiTranslate="home.logged.message"
                     translateValues="{username: '{{account.login}}'}"> You are logged in as user "{{account.login}}". </span>
-            </div>
+            </div> -->
 
-            <div class="alert alert-warning" *ngSwitchCase="false">
+            <div class="alert alert-warning">
                 <span jhiTranslate="global.messages.info.authenticated.prefix">You already have an account ?</span>
                 <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix"></span>
             </div>
-            <div class="alert alert-warning" *ngSwitchCase="false">
+            <div class="alert alert-warning">
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
                 <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
             </div>
-        </div>
+        <!-- </div> -->
+    </div>
+</div>
+
+<!-- Affichage des matchs et prono si user loggé -->
+<div class="row" *ngIf="isAuthenticated()">
+    <!-- Matchs et pronos -->
+    <div class="col-md-8">
+        Matchs et pronos
+    </div>
+    <!-- Side bar droite pour classement-->
+    <div class="col-md-4">
+        Classement
     </div>
 </div>
