@@ -9,7 +9,7 @@
     <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
-    <changeSet id="1" author="bmu" runAlways="true">
+    <changeSet id="1" author="bmu">
         <comment>Ajout du rôle gestionnaire</comment>
         <loadData encoding="UTF-8"
                   file="config/liquibase/authority_gestionnaire.csv"
