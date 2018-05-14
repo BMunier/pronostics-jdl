@@ -5,6 +5,7 @@ import com.bmu.pronostics.PronosticsApp;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
+import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -49,6 +50,8 @@ public class PronosticResourceIntTest {
     private static final Integer UPDATED_POINTS = 2;
 
     @Autowired
+    private UserService userService;
+    @Autowired
     private PronosticRepository pronosticRepository;
 
     @Autowired
@@ -73,7 +76,7 @@ public class PronosticResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PronosticResource pronosticResource = new PronosticResource(pronosticRepository, pronosticSearchRepository);
+        final PronosticResource pronosticResource = new PronosticResource(pronosticRepository, pronosticSearchRepository,userService);
         this.restPronosticMockMvc = MockMvcBuilders.standaloneSetup(pronosticResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

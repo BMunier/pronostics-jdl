@@ -4,6 +4,8 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
 
+import{PronosticComponent} from '../entities/pronostic/pronostic.component';
+
 @Component({
     selector: 'jhi-home',
     templateUrl: './home.component.html',

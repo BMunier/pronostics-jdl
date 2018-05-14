@@ -2,16 +2,21 @@ package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.bmu.pronostics.domain.Pronostic;
-
+import com.bmu.pronostics.domain.User;
 import com.bmu.pronostics.repository.PronosticRepository;
+import com.bmu.pronostics.repository.UserRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
+import com.bmu.pronostics.security.UserNotActivatedException;
+import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
+import com.bmu.pronostics.web.rest.errors.NoUserLoggedException;
 import com.bmu.pronostics.web.rest.util.HeaderUtil;
 import com.bmu.pronostics.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,9 +49,12 @@ public class PronosticResource {
 
     private final PronosticSearchRepository pronosticSearchRepository;
 
-    public PronosticResource(PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
+    private final UserService userService;
+
+    public PronosticResource(PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository,UserService userService) {
         this.pronosticRepository = pronosticRepository;
         this.pronosticSearchRepository = pronosticSearchRepository;
+        this.userService = userService;
     }
 
     /**
@@ -105,6 +113,30 @@ public class PronosticResource {
         log.debug("REST request to get a page of Pronostics");
         Page<Pronostic> page = pronosticRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronostics");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+       /**
+     * GET  /pronostics : get all the pronostics.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in body
+     */
+    @GetMapping("/pronosticsSaisi")
+    @Timed
+    public ResponseEntity<List<Pronostic>> getAllPronosticsSaisie(Pageable pageable, Long idUtilisateur) {
+        log.debug("REST request to get a page of PronosticsSaisi");
+        Optional<User> user = userService.getUserWithAuthorities();
+        if(!user.isPresent()){
+            throw new NoUserLoggedException();
+        }
+        
+        Page<Pronostic> page = pronosticRepository.findAllByUtilisateur(pageable, user.get());
+        //int start = pageable.getOffset();
+        //int end = ( start + pageable.getPageSize()) > pronostics.size() ? pronostics.size() : (start + pageable.getPageSize());
+        
+        //Page<Pronostic> page = new PageImpl<Pronostic>(pronostics.subList(start, end), pageable, pronostics.size());
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

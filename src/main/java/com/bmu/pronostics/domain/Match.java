@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
 
@@ -207,6 +208,7 @@ public class Match implements Serializable {
     public void setCompetition(Competition competition) {
         this.competition = competition;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
