@@ -10,11 +10,11 @@ import { Account, LoginModalService, Principal } from '../shared';
     styleUrls: [
         'home.css'
     ]
-
 })
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    increment = 1;
 
     constructor(
         private principal: Principal,
@@ -47,6 +47,6 @@ export class HomeComponent implements OnInit {
     }
 
     refresh() {
-
+        this.increment += 1;
     }
 }
