@@ -1,8 +1,10 @@
 package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.domain.User;
+import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.UserRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,22 +53,30 @@ public class PronosticResource {
 
     private final UserService userService;
 
-    public PronosticResource(PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository,UserService userService) {
+    private final MatchRepository matchRepository;
+
+    public PronosticResource(PronosticRepository pronosticRepository,
+            PronosticSearchRepository pronosticSearchRepository, UserService userService,
+            MatchRepository matchRepository) {
         this.pronosticRepository = pronosticRepository;
         this.pronosticSearchRepository = pronosticSearchRepository;
         this.userService = userService;
+        this.matchRepository = matchRepository;
     }
 
     /**
-     * POST  /pronostics : Create a new pronostic.
+     * POST /pronostics : Create a new pronostic.
      *
      * @param pronostic the pronostic to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new pronostic, or with status 400 (Bad Request) if the pronostic has already an ID
+     * @return the ResponseEntity with status 201 (Created) and with body the new
+     *         pronostic, or with status 400 (Bad Request) if the pronostic has
+     *         already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/pronostics")
     @Timed
-    public ResponseEntity<Pronostic> createPronostic(@Valid @RequestBody Pronostic pronostic) throws URISyntaxException {
+    public ResponseEntity<Pronostic> createPronostic(@Valid @RequestBody Pronostic pronostic)
+            throws URISyntaxException {
         log.debug("REST request to save Pronostic : {}", pronostic);
         if (pronostic.getId() != null) {
             throw new BadRequestAlertException("A new pronostic cannot already have an ID", ENTITY_NAME, "idexists");
@@ -74,22 +84,23 @@ public class PronosticResource {
         Pronostic result = pronosticRepository.save(pronostic);
         pronosticSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/pronostics/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
 
     /**
-     * PUT  /pronostics : Updates an existing pronostic.
+     * PUT /pronostics : Updates an existing pronostic.
      *
      * @param pronostic the pronostic to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated pronostic,
-     * or with status 400 (Bad Request) if the pronostic is not valid,
-     * or with status 500 (Internal Server Error) if the pronostic couldn't be updated
+     * @return the ResponseEntity with status 200 (OK) and with body the updated
+     *         pronostic, or with status 400 (Bad Request) if the pronostic is not
+     *         valid, or with status 500 (Internal Server Error) if the pronostic
+     *         couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/pronostics")
     @Timed
-    public ResponseEntity<Pronostic> updatePronostic(@Valid @RequestBody Pronostic pronostic) throws URISyntaxException {
+    public ResponseEntity<Pronostic> updatePronostic(@Valid @RequestBody Pronostic pronostic)
+            throws URISyntaxException {
         log.debug("REST request to update Pronostic : {}", pronostic);
         if (pronostic.getId() == null) {
             return createPronostic(pronostic);
@@ -97,15 +108,39 @@ public class PronosticResource {
         Pronostic result = pronosticRepository.save(pronostic);
         pronosticSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString())).body(result);
     }
 
     /**
-     * GET  /pronostics : get all the pronostics.
+     * PUT /pronostics : Updates an existing pronostic.
+     *
+     * @param pronostic the pronostic to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated
+     *         pronostic, or with status 400 (Bad Request) if the pronostic is not
+     *         valid, or with status 500 (Internal Server Error) if the pronostic
+     *         couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/pronosticsSaisi")
+    @Timed
+    public ResponseEntity<Pronostic> updatePronosticSaisie(@Valid @RequestBody Pronostic pronostic)
+            throws URISyntaxException {
+        log.debug("REST request to update PronosticSaisie : {}", pronostic);
+        if (pronostic.getId() == null) {
+            return createPronostic(pronostic);
+        }
+        Pronostic result = pronosticRepository.save(pronostic);
+        pronosticSearchRepository.save(result);
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString())).body(result);
+    }
+
+    /**
+     * GET /pronostics : get all the pronostics.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in body
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
+     *         body
      */
     @GetMapping("/pronostics")
     @Timed
@@ -116,35 +151,55 @@ public class PronosticResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-       /**
-     * GET  /pronostics : get all the pronostics.
+    /**
+     * GET /pronostics : get all the pronostics.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in body
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
+     *         body
      */
     @GetMapping("/pronosticsSaisi")
     @Timed
     public ResponseEntity<List<Pronostic>> getAllPronosticsSaisie(Pageable pageable, Long idUtilisateur) {
         log.debug("REST request to get a page of PronosticsSaisi");
         Optional<User> user = userService.getUserWithAuthorities();
-        if(!user.isPresent()){
+        if (!user.isPresent()) {
             throw new NoUserLoggedException();
         }
-        
-        Page<Pronostic> page = pronosticRepository.findAllByUtilisateur(pageable, user.get());
-        //int start = pageable.getOffset();
-        //int end = ( start + pageable.getPageSize()) > pronostics.size() ? pronostics.size() : (start + pageable.getPageSize());
-        
-        //Page<Pronostic> page = new PageImpl<Pronostic>(pronostics.subList(start, end), pageable, pronostics.size());
+        // On recherche les match pour pouvoir ajouter les pronos non-encore saisis
+        List<Match> matchesExistents = matchRepository.findAll();
+        List<Match> matchesDejaPronostiques = new ArrayList<Match>();
+        List<Pronostic> pronostics = pronosticRepository.findAllByUtilisateur(pageable, user.get());
+        // On regarde si le prono existe existe déjà pour le match
+        pronostics.forEach(pronostic -> {
+            matchesDejaPronostiques.add(pronostic.getMatch());
+        });
+
+        matchesExistents.removeAll(matchesDejaPronostiques);
+        matchesExistents.forEach(match ->{
+            pronostics.add(creerNouveauPronostic(match,user.get()));
+        }
+        );  
+        int start = pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > pronostics.size() ? pronostics.size()
+                : (start + pageable.getPageSize());
+
+        Page<Pronostic> page = new PageImpl<Pronostic>(pronostics.subList(start, end), pageable, pronostics.size());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    private Pronostic creerNouveauPronostic(Match match, User user){
+        return new Pronostic().match(match).utilisateur(user);
+        
+    }
+
     /**
-     * GET  /pronostics/:id : get the "id" pronostic.
+     * GET /pronostics/:id : get the "id" pronostic.
      *
      * @param id the id of the pronostic to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the pronostic, or with status 404 (Not Found)
+     * @return the ResponseEntity with status 200 (OK) and with body the pronostic,
+     *         or with status 404 (Not Found)
      */
     @GetMapping("/pronostics/{id}")
     @Timed
@@ -155,7 +210,7 @@ public class PronosticResource {
     }
 
     /**
-     * DELETE  /pronostics/:id : delete the "id" pronostic.
+     * DELETE /pronostics/:id : delete the "id" pronostic.
      *
      * @param id the id of the pronostic to delete
      * @return the ResponseEntity with status 200 (OK)
@@ -170,10 +225,10 @@ public class PronosticResource {
     }
 
     /**
-     * SEARCH  /_search/pronostics?query=:query : search for the pronostic corresponding
-     * to the query.
+     * SEARCH /_search/pronostics?query=:query : search for the pronostic
+     * corresponding to the query.
      *
-     * @param query the query of the pronostic search
+     * @param query    the query of the pronostic search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -182,7 +237,8 @@ public class PronosticResource {
     public ResponseEntity<List<Pronostic>> searchPronostics(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Pronostics for query {}", query);
         Page<Pronostic> page = pronosticSearchRepository.search(queryStringQuery(query), pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/pronostics");
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page,
+                "/api/_search/pronostics");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

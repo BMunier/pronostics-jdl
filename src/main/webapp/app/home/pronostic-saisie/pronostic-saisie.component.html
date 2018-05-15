@@ -23,41 +23,41 @@
         <table class="table table-striped">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                    <th jhiSortBy="id">
-                        <span jhiTranslate="global.field.id">ID</span>
+                    <th jhiSortBy="match.date">
+                        <span>Date</span>
                         <span class="fa fa-sort"></span>
                     </th>
                     <th>
                         <span>Equipe Domicile</span>
-                        <span class="fa fa-sort"></span>
+                        
                     </th>
                     <th>
                         <span>Equipe Visiteur</span>
-                        <span class="fa fa-sort"></span>
+                        
                     </th>
-                    <th jhiSortBy="scoreEquipeDomicile">
-                        <span jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile">Score Equipe Domicile</span>
-                        <span class="fa fa-sort"></span>
-                    </th>
-                    <th jhiSortBy="scoreEquipeVisiteur">
+                    <th>
                         <span>Score Equipe Domicile</span>
-                        <span class="fa fa-sort"></span>
+                        
                     </th>
-                    <th jhiSortBy="scoreEquipeVisiteur">
+                    <th>
                         <span>Score Equipe Visiteur</span>
-                        <span class="fa fa-sort"></span>
+
                     </th>
-                    <th jhiSortBy="scoreEquipeDomicile">
+                    <th>
                         <span>Prono Score Equipe Domicile</span>
-                        <span class="fa fa-sort"></span>
+
                     </th>
-                    <th jhiSortBy="scoreEquipeVisiteur">
+                    <th>
                         <span>Prono Score Equipe Visiteur</span>
-                        <span class="fa fa-sort"></span>
+
                     </th>
-                    <th jhiSortBy="utilisateur.login">
+                    <th>
                         <span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span>
-                        <span class="fa fa-sort"></span>
+
+                    </th>
+                    <th>
+                        <span>Valider</span>
+
                     </th>
                     <th jhiSortBy="points">
                         <span jhiTranslate="pronosticsApp.pronostic.points">Points</span>
@@ -69,22 +69,28 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                 <tr *ngFor="let pronostic of pronostics ;trackBy: trackId">
                     <td>
-                        <a [routerLink]="['../pronostic', pronostic.id ]">{{pronostic.id}}</a>
+                        {{pronostic.match?.date | date:'dd/MM/yy HH:mm'}}
                     </td>
                     <td>{{pronostic.match?.equipeDomicile.pays.nom}}</td>
                     <td>{{pronostic.match?.equipeVisiteur.pays.nom}}</td>
                     <td>{{pronostic.match?.scoreEquipeDomicile}}</td>
                     <td>{{pronostic.match?.scoreEquipeVisiteur}}</td>
                     <td>
-                        <input type="text" class="form-control" id="scoreEquipeDomicile" name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile"/>
+                        <input *ngIf="pronostic.match?.estApresDebutMatch" disabled readonly type="text" class="form-control" id="scoreEquipeDomicile" name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile"
+                        />
+                        <input *ngIf="!pronostic.match?.estApresDebutMatch" type="text" class="form-control" id="scoreEquipeDomicile" name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile"
+                        />
                     </td>
                     <td>
-                        <input type="text" class="form-control" id="scoreEquipeVisiteur" name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur"/>
+                        <input type="text" class="form-control" id="scoreEquipeVisiteur" name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur"
+                        />
                     </td>
 
-                    scoreEquipeVisiteur
                     <td>
                         {{pronostic.utilisateur?.login}}
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="valideProno(pronostic)">Valider</button>
                     </td>
                     <td>{{pronostic.points}}</td>
                 </tr>

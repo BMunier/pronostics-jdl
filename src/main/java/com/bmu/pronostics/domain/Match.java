@@ -70,7 +70,8 @@ public class Match implements Serializable {
     @ManyToOne
     private Competition competition;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+   /// jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -209,7 +210,8 @@ public class Match implements Serializable {
         this.competition = competition;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -233,14 +235,9 @@ public class Match implements Serializable {
 
     @Override
     public String toString() {
-        return "Match{" +
-            "id=" + getId() +
-            ", scoreEquipeDomicile=" + getScoreEquipeDomicile() +
-            ", scoreEquipeVisiteur=" + getScoreEquipeVisiteur() +
-            ", date='" + getDate() + "'" +
-            ", statut='" + getStatut() + "'" +
-            ", phaseCompetition='" + getPhaseCompetition() + "'" +
-            ", groupe='" + getGroupe() + "'" +
-            "}";
+        return "Match{" + "id=" + getId() + ", scoreEquipeDomicile=" + getScoreEquipeDomicile()
+                + ", scoreEquipeVisiteur=" + getScoreEquipeVisiteur() + ", date='" + getDate() + "'" + ", statut='"
+                + getStatut() + "'" + ", phaseCompetition='" + getPhaseCompetition() + "'" + ", groupe='" + getGroupe()
+                + "'" + "}";
     }
 }

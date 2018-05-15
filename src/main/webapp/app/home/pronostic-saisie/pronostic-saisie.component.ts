@@ -25,6 +25,9 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
   currentSearch: string;
+  error: any;
+  success: any;
+  routeData: any;
 
   constructor(
       private pronosticSaisieService: PronosticSaisieService,
@@ -33,6 +36,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
       private principal: Principal
+
   ) {
       this.pronostics = [];
       this.itemsPerPage = ITEMS_PER_PAGE;
@@ -68,6 +72,19 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
           (res: HttpErrorResponse) => this.onError(res.message)
       );
   }
+  valideProno(pronostic) {
+       this.pronosticSaisieService.update(pronostic).subscribe(
+        (response) => {
+            if (response.status === 200) {
+                this.error = null;
+                this.success = 'OK';
+                this.reset();
+            } else {
+                this.success = null;
+                this.error = 'ERROR';
+            }
+        });
+}
 
   reset() {
       this.page = 0;
@@ -126,6 +143,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   }
 
   sort() {
+      console.log
       const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
       if (this.predicate !== 'id') {
           result.push('id');
@@ -136,6 +154,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   private onSuccess(data, headers) {
       this.links = this.parseLinks.parse(headers.get('link'));
       this.totalItems = headers.get('X-Total-Count');
+      console.log("saisie "+ data.length)
       for (let i = 0; i < data.length; i++) {
           this.pronostics.push(data[i]);
       }

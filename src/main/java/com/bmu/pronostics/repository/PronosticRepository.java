@@ -17,5 +17,5 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface PronosticRepository extends JpaRepository<Pronostic, Long> {
-    Page<Pronostic> findAllByUtilisateur(Pageable pageable, User user);
+    List<Pronostic> findAllByUtilisateur(Pageable pageable, User user);
 }
