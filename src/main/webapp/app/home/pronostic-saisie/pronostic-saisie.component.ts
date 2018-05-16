@@ -75,6 +75,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   valideProno(pronostic) {
        this.pronosticSaisieService.update(pronostic).subscribe(
         (response) => {
+            pronostic.id=response.body.id;
             if (response.status === 200) {
                 this.error = null;
                 this.success = 'OK';
@@ -143,7 +144,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   }
 
   sort() {
-      console.log
+     
       const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
       if (this.predicate !== 'id') {
           result.push('id');
@@ -154,14 +155,20 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   private onSuccess(data, headers) {
       this.links = this.parseLinks.parse(headers.get('link'));
       this.totalItems = headers.get('X-Total-Count');
-      console.log("saisie "+ data.length)
       for (let i = 0; i < data.length; i++) {
-          this.pronostics.push(data[i]);
+         this.pronostics.push(data[i]);
       }
   }
 
   private onError(error) {
       this.jhiAlertService.error(error.message, null, null);
+  }
+
+  private dateIsApres(date){
+      
+      var dateNow = new Date(Date.now());
+      var dateD = new Date(date);
+      return dateNow>dateD;
   }
 
 }

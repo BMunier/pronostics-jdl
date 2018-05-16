@@ -1,9 +1,11 @@
 package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Collections2;
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.domain.User;
+import com.bmu.pronostics.domain.enumeration.StatutMatch;
 import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.UserRepository;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -179,12 +182,13 @@ public class PronosticResource {
         matchesExistents.forEach(match ->{
             pronostics.add(creerNouveauPronostic(match,user.get()));
         }
-        );  
+        );
+        List<Pronostic> retourProno = sortPronostics(pronostics);
         int start = pageable.getOffset();
-        int end = (start + pageable.getPageSize()) > pronostics.size() ? pronostics.size()
+        int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
                 : (start + pageable.getPageSize());
 
-        Page<Pronostic> page = new PageImpl<Pronostic>(pronostics.subList(start, end), pageable, pronostics.size());
+        Page<Pronostic> page = new PageImpl<Pronostic>(retourProno.subList(start, end), pageable, retourProno.size());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -192,6 +196,32 @@ public class PronosticResource {
     private Pronostic creerNouveauPronostic(Match match, User user){
         return new Pronostic().match(match).utilisateur(user);
         
+    }
+
+      /**
+     * Méthode qui trie les pronos selon l'ordre désiré
+     *
+     * @param pronostics Liste de pronosti
+     * @return les pronostics triés par Statut puis par date
+     */
+    private List<Pronostic> sortPronostics(List<Pronostic> pronostics){
+        pronostics.sort(new Comparator<Pronostic>() {
+          	@Override
+			public int compare(Pronostic o1, Pronostic o2) {
+                if(o1.getMatch().getStatut()== o2.getMatch().getStatut()){
+                    return o1.getMatch().getDate().compareTo(o2.getMatch().getDate());
+                }
+                if(o1.getMatch().getStatut()==StatutMatch.TERMINE){
+                    return 1;
+                }else if (o1.getMatch().getStatut()==StatutMatch.EN_COURS){
+                        if(o2.getMatch().getStatut()==StatutMatch.TERMINE){
+                            return -1;
+                        }
+                }
+                return 1;
+			}
+        });
+        return pronostics;
     }
 
     /**
