@@ -208,17 +208,17 @@ public class PronosticResource {
         pronostics.sort(new Comparator<Pronostic>() {
           	@Override
 			public int compare(Pronostic o1, Pronostic o2) {
-                if(o1.getMatch().getStatut()== o2.getMatch().getStatut()){
+                if(o1.getMatch().getStatut().name()==o2.getMatch().getStatut().name()){
                     return o1.getMatch().getDate().compareTo(o2.getMatch().getDate());
                 }
-                if(o1.getMatch().getStatut()==StatutMatch.TERMINE){
+                if(o1.getMatch().getStatut().name()==StatutMatch.TERMINE.name()){
                     return 1;
-                }else if (o1.getMatch().getStatut()==StatutMatch.EN_COURS){
-                        if(o2.getMatch().getStatut()==StatutMatch.TERMINE){
+                }else if (o1.getMatch().getStatut().name()==StatutMatch.EN_COURS.name()){
+                        if(o2.getMatch().getStatut().name()==StatutMatch.TERMINE.name()){
                             return -1;
                         }
                 }
-                return 1;
+                return -1;
 			}
         });
         return pronostics;

@@ -56,6 +56,10 @@
 
                     </th>
                     <th>
+                        <span>Statut match</span>
+
+                    </th>
+                    <th>
                         <span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span>
 
                     </th>
@@ -87,6 +91,9 @@
                     <td>
                         <input [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeVisiteur" name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur"
                         />
+                    </td>
+                    <td>
+                        {{pronostic.match?.statut}}
                     </td>
 
                     <td>
