@@ -1,9 +1,12 @@
 {
     "global": {
-        "title": "Globnostics",
-        "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
+        "title": "Pronostics",
+        "browsehappy": "Tu utilises un <strong>ancien</strong> navigateur. Mets <a href=\"http://browsehappy.com/?locale=fr\"> à jour ton navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
+            "about": "A propos",
+            "about-about": "A propos",
+            "about-rules": "Règles du jeu",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
@@ -41,24 +44,25 @@
         },
         "form": {
             "username": "Nom d'utilisateur",
-            "username.placeholder": "Votre nom d'utilisateur",
+            "username.placeholder": "Ton nom d'utilisateur",
             "newpassword": "Nouveau mot de passe",
             "newpassword.placeholder": "Nouveau mot de passe",
             "confirmpassword": "Confirmation du nouveau mot de passe",
             "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
             "email": "Email",
-            "email.placeholder": "Votre email"
+            "email.placeholder": "Ton email"
         },
         "messages": {
             "info": {
                 "authenticated": {
-                    "prefix": "Si vous voulez vous ",
-                    "link": "connecter",
-                    "suffix": ", vous pouvez utiliser les comptes par défaut : <br/> - Administrateur (nom d'utilisateur=\"admin\" et mot de passe =\"admin\") <br/> - Utilisateur (nom d'utilisateur=\"user\" et mot de passe =\"user\")."
+                    "prefix": "Si tu veux pronostiquer avec nous, ",
+                    "link": "connecte",
+                    "suffix": " toi avec ton compte utilisateur."
                 },
                 "register": {
-                    "noaccount": "Vous n'avez pas encore de compte ?",
-                    "link": "Créer un compte"
+                    "noaccount": "Tu n'a pas encore de compte ? Alors",
+                    "link": "crée ton compte",
+                    "suffix": " utilisateur et rejoins nous !"
                 }
             },
             "error": {
@@ -66,21 +70,21 @@
             },
             "validate": {
                 "newpassword": {
-                    "required": "Votre mot de passe est requis.",
-                    "minlength": "Votre mot de passe doit comporter au moins 5 caractères.",
-                    "maxlength": "Votre mot de passe ne doit pas comporter plus de 50 caractères.",
+                    "required": "Ton mot de passe est requis.",
+                    "minlength": "Ton mot de passe doit comporter au moins 5 caractères.",
+                    "maxlength": "Ton mot de passe ne doit pas comporter plus de 50 caractères.",
                     "strength": "Robustesse du mot de passe :"
                 },
                 "confirmpassword": {
-                    "required": "Votre confirmation du mot de passe est requise.",
-                    "minlength": "Votre confirmation du mot de passe doit comporter au moins 5 caractères.",
-                    "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
+                    "required": "Ta confirmation du mot de passe est requise.",
+                    "minlength": "Ta confirmation du mot de passe doit comporter au moins 5 caractères.",
+                    "maxlength": "Ta confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
                 },
                 "email": {
-                    "required": "Votre email est requis.",
-                    "minlength": "Votre email doit comporter au moins 5 caractères.",
-                    "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
-                    "invalid": "Votre email n'est pas valide."
+                    "required": "Ton email est requis.",
+                    "minlength": "Ton email doit comporter au moins 5 caractères.",
+                    "maxlength": "Ton email ne doit pas comporter plus de 50 caractères.",
+                    "invalid": "Ton email n'est pas valide."
                 }
             }
         },
@@ -134,5 +138,5 @@
         "emailexists": "Email déjà utilisé !",
         "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'ID !"
     },
-    "footer": "Ceci est votre pied de page"
+    "footer": "Rendez-vous sur le site officiel de la FIFA !"
 }

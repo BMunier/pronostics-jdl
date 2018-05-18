@@ -18,6 +18,29 @@
                     </span>
                 </a>
             </li>
+            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
+                    <a class="nav-link dropdown-toggle" routerLinkActive="active" ngbDropdownToggle href="javascript:void(0);" id="about-menu">
+                        <span>
+                            <i class="fa fa-equalizer" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.about">About</span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li>
+                            <a class="dropdown-item" routerLink="about-about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                <i class="fa fa-equalizer" aria-hidden="true"></i>&nbsp;
+                                <span jhiTranslate="global.menu.about-about">About About</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLink="about-rules" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                <i class="fa fa-book" aria-hidden="true"></i>&nbsp;
+                                <span jhiTranslate="global.menu.about-rules">About Rules</span>
+                           </a>
+                        </li>
+                        <!-- jhipster-needle-add-element-to-about - JHipster will add elements to the about here -->
+                    </ul>
+                </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">

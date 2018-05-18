@@ -41,5 +41,11 @@
     ],
     "herokuDeployType": "git",
     "herokuAppName": "whispering-waters-81552"
+  },
+  "generator-jhipster-pages": {
+    "promptValues": {
+      "pageSet": "About",
+      "pageType": "clientOnly"
+    }
   }
 }
