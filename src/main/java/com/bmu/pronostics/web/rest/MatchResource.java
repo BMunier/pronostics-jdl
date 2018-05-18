@@ -2,9 +2,11 @@ package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.bmu.pronostics.domain.Match;
-
+import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.repository.MatchRepository;
+import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.MatchSearchRepository;
+import com.bmu.pronostics.repository.search.PronosticSearchRepository;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
 import com.bmu.pronostics.web.rest.util.HeaderUtil;
 import com.bmu.pronostics.web.rest.util.PaginationUtil;
@@ -18,14 +20,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import afu.org.checkerframework.checker.units.qual.Time;
+
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -44,9 +46,15 @@ public class MatchResource {
 
     private final MatchSearchRepository matchSearchRepository;
 
-    public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository) {
+    private final PronosticRepository pronosticRepository;
+
+    private final PronosticSearchRepository pronosticSearchRepository;
+
+    public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository, PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
         this.matchRepository = matchRepository;
         this.matchSearchRepository = matchSearchRepository;
+        this.pronosticRepository = pronosticRepository;
+        this.pronosticSearchRepository = pronosticSearchRepository;
     }
 
     /**
@@ -152,6 +160,17 @@ public class MatchResource {
         Page<Match> page = matchSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/matches");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("matches/refresh")
+    @Time
+    public ResponseEntity<Void> refreshMatches(Pageable pageable) {
+        log.debug("REST request to refresh Matches and Pronostics");
+        List<Pronostic> pronostics = pronosticRepository.findAll();
+        Integer nbPronosticsMatch = pronostics.size();
+        //Page<Match> page = matchRepository.findAll(pageable);
+        //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, nbPronosticsMatch.toString())).build();
     }
 
 }

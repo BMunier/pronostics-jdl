@@ -144,4 +144,9 @@ export class MatchComponent implements OnInit, OnDestroy {
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
+
+    refresh() {
+        this.matchService.refresh();
+        alert('Je suis passé dans Refresh');
+    }
 }

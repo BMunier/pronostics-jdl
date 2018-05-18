@@ -26,15 +26,6 @@
 
 <!-- Affichage des matchs et prono si user loggé -->
 <div class="row" *ngIf="isAuthenticated()">
-    {{increment}}
-    <div class="col-md-12">
-        <button class="btn btn-primary float-right" (click)="refresh()">
-            <span class="fa fa-refresh"></span>
-            <span class="hidden-sm-down"  jhiTranslate="home.button.refresh">
-            Refresh
-            </span>
-        </button>
-    </div>
     <!-- Matchs et pronos -->
     <div class="col-md-8">
         Matchs et pronos

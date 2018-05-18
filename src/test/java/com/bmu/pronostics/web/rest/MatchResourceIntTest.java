@@ -4,7 +4,9 @@ import com.bmu.pronostics.PronosticsApp;
 
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.repository.MatchRepository;
+import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.MatchSearchRepository;
+import com.bmu.pronostics.repository.search.PronosticSearchRepository;
 import com.bmu.pronostics.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -83,10 +85,16 @@ public class MatchResourceIntTest {
 
     private Match match;
 
+    @Autowired
+    private PronosticRepository pronosticRepository;
+
+    @Autowired
+    private PronosticSearchRepository pronosticSearchRepository;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MatchResource matchResource = new MatchResource(matchRepository, matchSearchRepository);
+		final MatchResource matchResource = new MatchResource(matchRepository, matchSearchRepository, pronosticRepository, pronosticSearchRepository);
         this.restMatchMockMvc = MockMvcBuilders.standaloneSetup(matchResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

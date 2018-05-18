@@ -15,6 +15,7 @@ export class MatchService {
 
     private resourceUrl =  SERVER_API_URL + 'api/matches';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/matches';
+    private resourceRefreshUrl = SERVER_API_URL + 'api/matches/refresh';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -39,6 +40,12 @@ export class MatchService {
         const options = createRequestOption(req);
         return this.http.get<Match[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<Match[]>) => this.convertArrayResponse(res));
+    }
+
+    refresh(): Observable<EntityResponseType> {
+        return this.http.get(this.resourceRefreshUrl, {observe: 'response'});
+        // get<EntityResponseType>(this.resourceRefreshUrl, { observe: 'response' })
+        // .map((res: EntityResponseType) => res);
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
