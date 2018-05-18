@@ -82,11 +82,7 @@ Logo styles
 
 .logo-img {
     height: 100%;
-<<<<<<< Updated upstream
-    background: url("../../../content/images/FIFA_World_Cup_2018_Logo_small.png") no-repeat center center;
-=======
     background: url("../../../content/images/logo-navbar.jpg") no-repeat center center;
->>>>>>> Stashed changes
     background-size: contain;
     width: 100%;
 }
