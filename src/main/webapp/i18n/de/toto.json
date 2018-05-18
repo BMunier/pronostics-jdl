@@ -1,0 +1,25 @@
+
+{
+    "pronosticsApp": {
+        "toto" : {
+            "home": {
+                "title": "Totos",
+                "createLabel": "Toto erstellen",
+                "createOrEditLabel": "Toto erstellen oder bearbeiten",
+                "search": "Suche nach Toto"
+            },
+            "created": "Toto erstellt mit ID {{ param }}",
+            "updated": "Toto aktualisiert mit ID {{ param }}",
+            "deleted": "Toto gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Toto {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Toto"
+            },
+            "nom": "Nom",
+            "prenom": "Prenom",
+            "age": "Age"
+        }
+    }
+}

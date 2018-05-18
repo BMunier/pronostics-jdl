@@ -1,0 +1,25 @@
+
+{
+    "pronosticsApp": {
+        "toto" : {
+            "home": {
+                "title": "Totos",
+                "createLabel": "Créer un nouveau Toto",
+                "createOrEditLabel": "Créer ou éditer un Toto",
+                "search": "Recherche pour Toto"
+            },
+            "created": "Un nouveau Toto a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Toto avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Toto avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Toto {{ id }} ?"
+            },
+            "detail": {
+                "title": "Toto"
+            },
+            "nom": "Nom",
+            "prenom": "Prenom",
+            "age": "Age"
+        }
+    }
+}

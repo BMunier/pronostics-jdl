@@ -6,6 +6,8 @@ import { PronosticsStadeModule } from './stade/stade.module';
 import { PronosticsEquipeModule } from './equipe/equipe.module';
 import { PronosticsMatchModule } from './match/match.module';
 import { PronosticsPronosticModule } from './pronostic/pronostic.module';
+import { PronosticsTotoModule } from './toto/toto.module';
+import { PronosticsTutuModule } from './tutu/tutu.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -16,6 +18,8 @@ import { PronosticsPronosticModule } from './pronostic/pronostic.module';
         PronosticsEquipeModule,
         PronosticsMatchModule,
         PronosticsPronosticModule,
+        PronosticsTotoModule,
+        PronosticsTutuModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

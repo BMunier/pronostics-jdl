@@ -1,0 +1,24 @@
+
+{
+    "pronosticsApp": {
+        "tutu" : {
+            "home": {
+                "title": "Tutus",
+                "createLabel": "Créer un nouveau Tutu",
+                "createOrEditLabel": "Créer ou éditer un Tutu",
+                "search": "Recherche pour Tutu"
+            },
+            "created": "Un nouveau Tutu a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Tutu avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Tutu avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Tutu {{ id }} ?"
+            },
+            "detail": {
+                "title": "Tutu"
+            },
+            "date": "Date",
+            "toto": "Toto"
+        }
+    }
+}

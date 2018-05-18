@@ -1,0 +1,13 @@
+entity Toto {
+	nom String required,
+    prenom String required,
+    age String required
+}
+
+entity Tutu  {
+	date Instant
+}
+
+relationship OneToOne {
+	Tutu{toto(nom)} to Toto
+}

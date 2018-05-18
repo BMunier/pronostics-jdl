@@ -13,6 +13,8 @@
                 "equipe": "Equipe",
                 "match": "Match",
                 "pronostic": "Pronostic",
+                "toto": "Toto",
+                "tutu": "Tutu",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

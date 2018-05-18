@@ -11,6 +11,8 @@
     <include file="config/liquibase/changelog/20180501094358_added_entity_Equipe.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501164359_added_entity_Match.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094400_added_entity_Pronostic.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180509103519_added_entity_Toto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180509103520_added_entity_Tutu.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     
     
@@ -19,6 +21,7 @@
     <include file="config/liquibase/changelog/20180501094358_added_entity_constraints_Equipe.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501164359_added_entity_constraints_Match.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094400_added_entity_constraints_Pronostic.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180509103520_added_entity_constraints_Tutu.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201804032150_added_role_gestionnaire.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
