@@ -28,7 +28,7 @@ entity Match {
     scoreEquipeVisiteur Integer,
     date Instant required,
     statut StatutMatch required,
-	phaseCompetition PhaseCompetition required
+	phaseCompetition PhaseCompetition required,
     groupe String
 }
 
