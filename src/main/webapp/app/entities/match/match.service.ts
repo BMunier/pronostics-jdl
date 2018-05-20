@@ -42,8 +42,8 @@ export class MatchService {
             .map((res: HttpResponse<Match[]>) => this.convertArrayResponse(res));
     }
 
-    refresh(): Observable<EntityResponseType> {
-        return this.http.get(this.resourceRefreshUrl, {observe: 'response'});
+    refresh(): Observable<HttpResponse<any>> {
+        return this.http.get<any>(this.resourceRefreshUrl, {observe: 'response'});
         // get<EntityResponseType>(this.resourceRefreshUrl, { observe: 'response' })
         // .map((res: EntityResponseType) => res);
     }

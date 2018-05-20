@@ -146,7 +146,11 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
 
     refresh() {
-        this.matchService.refresh();
-        alert('Je suis passé dans Refresh');
+        this.matchService.refresh().subscribe((response) => {
+            this.eventManager.broadcast({
+                name: 'competitionListModification',
+                content: 'Deleted an competition'
+            });
+        });
     }
 }

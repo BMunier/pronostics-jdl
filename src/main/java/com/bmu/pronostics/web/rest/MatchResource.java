@@ -1,6 +1,7 @@
 package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.sun.mail.iap.Response;
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.repository.MatchRepository;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import afu.org.checkerframework.checker.units.qual.Time;
@@ -164,13 +166,14 @@ public class MatchResource {
 
     @GetMapping("matches/refresh")
     @Time
-    public ResponseEntity<Void> refreshMatches(Pageable pageable) {
+    public BodyBuilder refreshMatches(Pageable pageable) {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
         Integer nbPronosticsMatch = pronostics.size();
         //Page<Match> page = matchRepository.findAll(pageable);
         //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, nbPronosticsMatch.toString())).build();
+        return ResponseEntity.ok();
+        // return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, nbPronosticsMatch.toString())).build();
     }
 
 }
