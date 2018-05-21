@@ -8,22 +8,23 @@
     -->
     <changeSet id="20180501094355-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="equipe_id"
+                                 baseTableName="competition"
+                                 constraintName="fk_competition_equipe_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="equipe"/>
+
         <addForeignKeyConstraint baseColumnNames="pays_id"
                                  baseTableName="competition"
                                  constraintName="fk_competition_pays_id"
                                  referencedColumnNames="id"
                                  referencedTableName="pays"/>
 
-        <addForeignKeyConstraint baseColumnNames="competitions_id"
-                                 baseTableName="competition_equipe"
-                                 constraintName="fk_competition_equipe_competitions_id"
+        <addForeignKeyConstraint baseColumnNames="stade_id"
+                                 baseTableName="competition"
+                                 constraintName="fk_competition_stade_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="competition"/>
-        <addForeignKeyConstraint baseColumnNames="equipes_id"
-                                 baseTableName="competition_equipe"
-                                 constraintName="fk_competition_equipe_equipes_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="equipe"/>
-        
+                                 referencedTableName="stade"/>
+
     </changeSet>
 </databaseChangeLog>

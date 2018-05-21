@@ -37,6 +37,8 @@ describe('Equipe e2e test', () => {
         equipeComponentsPage.clickOnCreateButton();
         equipeDialogPage.setCodeEquipeInput('codeEquipe');
         expect(equipeDialogPage.getCodeEquipeInput()).toMatch('codeEquipe');
+        equipeDialogPage.setNomEquipeInput('nomEquipe');
+        expect(equipeDialogPage.getNomEquipeInput()).toMatch('nomEquipe');
         equipeDialogPage.setRangFifaInput('5');
         expect(equipeDialogPage.getRangFifaInput()).toMatch('5');
         equipeDialogPage.setEcussonInput(absolutePath);
@@ -68,6 +70,7 @@ export class EquipeDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     codeEquipeInput = element(by.css('input#field_codeEquipe'));
+    nomEquipeInput = element(by.css('input#field_nomEquipe'));
     rangFifaInput = element(by.css('input#field_rangFifa'));
     ecussonInput = element(by.css('input#file_ecusson'));
     paysSelect = element(by.css('select#field_pays'));
@@ -82,6 +85,14 @@ export class EquipeDialogPage {
 
     getCodeEquipeInput = function() {
         return this.codeEquipeInput.getAttribute('value');
+    };
+
+    setNomEquipeInput = function(nomEquipe) {
+        this.nomEquipeInput.sendKeys(nomEquipe);
+    };
+
+    getNomEquipeInput = function() {
+        return this.nomEquipeInput.getAttribute('value');
     };
 
     setRangFifaInput = function(rangFifa) {

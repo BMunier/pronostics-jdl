@@ -29,31 +29,28 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="date_debut" type="timestamp">
+            <column name="date_debut" type="date">
                 <constraints nullable="false" />
             </column>
 
-            <column name="date_fin" type="timestamp">
+            <column name="date_fin" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="pays_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+
+            <column name="equipe_id" type="bigint">
+                <constraints nullable="true" />
             </column>
+
+            <column name="pays_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="stade_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="competition" columnName="date_debut" columnDataType="datetime"/>
-        <dropDefaultValue tableName="competition" columnName="date_fin" columnDataType="datetime"/>
-        
-        <createTable tableName="competition_equipe">
-            <column name="equipes_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="competitions_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="competitions_id, equipes_id" tableName="competition_equipe"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

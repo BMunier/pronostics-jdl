@@ -43,17 +43,17 @@ import com.bmu.pronostics.domain.enumeration.PhaseCompetition;
 @SpringBootTest(classes = PronosticsApp.class)
 public class MatchResourceIntTest {
 
-    private static final Integer DEFAULT_SCORE_EQUIPE_DOMICILE = 1;
-    private static final Integer UPDATED_SCORE_EQUIPE_DOMICILE = 2;
-
-    private static final Integer DEFAULT_SCORE_EQUIPE_VISITEUR = 1;
-    private static final Integer UPDATED_SCORE_EQUIPE_VISITEUR = 2;
-
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final StatutMatch DEFAULT_STATUT = StatutMatch.PAS_DEMARRE;
     private static final StatutMatch UPDATED_STATUT = StatutMatch.EN_COURS;
+
+    private static final Integer DEFAULT_SCORE_EQUIPE_DOMICILE = 1;
+    private static final Integer UPDATED_SCORE_EQUIPE_DOMICILE = 2;
+
+    private static final Integer DEFAULT_SCORE_EQUIPE_VISITEUR = 1;
+    private static final Integer UPDATED_SCORE_EQUIPE_VISITEUR = 2;
 
     private static final PhaseCompetition DEFAULT_PHASE_COMPETITION = PhaseCompetition.GROUPE;
     private static final PhaseCompetition UPDATED_PHASE_COMPETITION = PhaseCompetition.HUITIEME;
@@ -102,10 +102,10 @@ public class MatchResourceIntTest {
      */
     public static Match createEntity(EntityManager em) {
         Match match = new Match()
-            .scoreEquipeDomicile(DEFAULT_SCORE_EQUIPE_DOMICILE)
-            .scoreEquipeVisiteur(DEFAULT_SCORE_EQUIPE_VISITEUR)
             .date(DEFAULT_DATE)
             .statut(DEFAULT_STATUT)
+            .scoreEquipeDomicile(DEFAULT_SCORE_EQUIPE_DOMICILE)
+            .scoreEquipeVisiteur(DEFAULT_SCORE_EQUIPE_VISITEUR)
             .phaseCompetition(DEFAULT_PHASE_COMPETITION)
             .groupe(DEFAULT_GROUPE);
         return match;
@@ -132,10 +132,10 @@ public class MatchResourceIntTest {
         List<Match> matchList = matchRepository.findAll();
         assertThat(matchList).hasSize(databaseSizeBeforeCreate + 1);
         Match testMatch = matchList.get(matchList.size() - 1);
-        assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(DEFAULT_SCORE_EQUIPE_DOMICILE);
-        assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(DEFAULT_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testMatch.getStatut()).isEqualTo(DEFAULT_STATUT);
+        assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(DEFAULT_SCORE_EQUIPE_DOMICILE);
+        assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(DEFAULT_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getPhaseCompetition()).isEqualTo(DEFAULT_PHASE_COMPETITION);
         assertThat(testMatch.getGroupe()).isEqualTo(DEFAULT_GROUPE);
 
@@ -201,24 +201,6 @@ public class MatchResourceIntTest {
 
     @Test
     @Transactional
-    public void checkPhaseCompetitionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = matchRepository.findAll().size();
-        // set the field null
-        match.setPhaseCompetition(null);
-
-        // Create the Match, which fails.
-
-        restMatchMockMvc.perform(post("/api/matches")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(match)))
-            .andExpect(status().isBadRequest());
-
-        List<Match> matchList = matchRepository.findAll();
-        assertThat(matchList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllMatches() throws Exception {
         // Initialize the database
         matchRepository.saveAndFlush(match);
@@ -228,10 +210,10 @@ public class MatchResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(match.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
-            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].statut").value(hasItem(DEFAULT_STATUT.toString())))
+            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
+            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].phaseCompetition").value(hasItem(DEFAULT_PHASE_COMPETITION.toString())))
             .andExpect(jsonPath("$.[*].groupe").value(hasItem(DEFAULT_GROUPE.toString())));
     }
@@ -247,10 +229,10 @@ public class MatchResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(match.getId().intValue()))
-            .andExpect(jsonPath("$.scoreEquipeDomicile").value(DEFAULT_SCORE_EQUIPE_DOMICILE))
-            .andExpect(jsonPath("$.scoreEquipeVisiteur").value(DEFAULT_SCORE_EQUIPE_VISITEUR))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.statut").value(DEFAULT_STATUT.toString()))
+            .andExpect(jsonPath("$.scoreEquipeDomicile").value(DEFAULT_SCORE_EQUIPE_DOMICILE))
+            .andExpect(jsonPath("$.scoreEquipeVisiteur").value(DEFAULT_SCORE_EQUIPE_VISITEUR))
             .andExpect(jsonPath("$.phaseCompetition").value(DEFAULT_PHASE_COMPETITION.toString()))
             .andExpect(jsonPath("$.groupe").value(DEFAULT_GROUPE.toString()));
     }
@@ -276,10 +258,10 @@ public class MatchResourceIntTest {
         // Disconnect from session so that the updates on updatedMatch are not directly saved in db
         em.detach(updatedMatch);
         updatedMatch
-            .scoreEquipeDomicile(UPDATED_SCORE_EQUIPE_DOMICILE)
-            .scoreEquipeVisiteur(UPDATED_SCORE_EQUIPE_VISITEUR)
             .date(UPDATED_DATE)
             .statut(UPDATED_STATUT)
+            .scoreEquipeDomicile(UPDATED_SCORE_EQUIPE_DOMICILE)
+            .scoreEquipeVisiteur(UPDATED_SCORE_EQUIPE_VISITEUR)
             .phaseCompetition(UPDATED_PHASE_COMPETITION)
             .groupe(UPDATED_GROUPE);
 
@@ -292,10 +274,10 @@ public class MatchResourceIntTest {
         List<Match> matchList = matchRepository.findAll();
         assertThat(matchList).hasSize(databaseSizeBeforeUpdate);
         Match testMatch = matchList.get(matchList.size() - 1);
-        assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(UPDATED_SCORE_EQUIPE_DOMICILE);
-        assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(UPDATED_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testMatch.getStatut()).isEqualTo(UPDATED_STATUT);
+        assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(UPDATED_SCORE_EQUIPE_DOMICILE);
+        assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(UPDATED_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getPhaseCompetition()).isEqualTo(UPDATED_PHASE_COMPETITION);
         assertThat(testMatch.getGroupe()).isEqualTo(UPDATED_GROUPE);
 
@@ -356,10 +338,10 @@ public class MatchResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(match.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
-            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].statut").value(hasItem(DEFAULT_STATUT.toString())))
+            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
+            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].phaseCompetition").value(hasItem(DEFAULT_PHASE_COMPETITION.toString())))
             .andExpect(jsonPath("$.[*].groupe").value(hasItem(DEFAULT_GROUPE.toString())));
     }

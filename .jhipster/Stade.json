@@ -2,12 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "pays",
             "otherEntityName": "pays",
-            "otherEntityField": "nom",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "stade"
+            "otherEntityField": "nom"
         }
     ],
     "fields": [

@@ -97,7 +97,7 @@ public class CompetitionResource {
     @Timed
     public List<Competition> getAllCompetitions() {
         log.debug("REST request to get all Competitions");
-        return competitionRepository.findAllWithEagerRelationships();
+        return competitionRepository.findAll();
         }
 
     /**
@@ -110,7 +110,7 @@ public class CompetitionResource {
     @Timed
     public ResponseEntity<Competition> getCompetition(@PathVariable Long id) {
         log.debug("REST request to get Competition : {}", id);
-        Competition competition = competitionRepository.findOneWithEagerRelationships(id);
+        Competition competition = competitionRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(competition));
     }
 

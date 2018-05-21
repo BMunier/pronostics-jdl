@@ -1,6 +1,5 @@
 package com.bmu.pronostics.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,8 +8,6 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -32,6 +29,9 @@ public class Equipe implements Serializable {
     @Column(name = "code_equipe")
     private String codeEquipe;
 
+    @Column(name = "nom_equipe")
+    private String nomEquipe;
+
     @Column(name = "rang_fifa")
     private Integer rangFifa;
 
@@ -43,14 +43,8 @@ public class Equipe implements Serializable {
     @Column(name = "ecusson_content_type", nullable = false)
     private String ecussonContentType;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Pays pays;
-
-    @ManyToMany(mappedBy = "equipes")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Competition> competitions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -72,6 +66,19 @@ public class Equipe implements Serializable {
 
     public void setCodeEquipe(String codeEquipe) {
         this.codeEquipe = codeEquipe;
+    }
+
+    public String getNomEquipe() {
+        return nomEquipe;
+    }
+
+    public Equipe nomEquipe(String nomEquipe) {
+        this.nomEquipe = nomEquipe;
+        return this;
+    }
+
+    public void setNomEquipe(String nomEquipe) {
+        this.nomEquipe = nomEquipe;
     }
 
     public Integer getRangFifa() {
@@ -125,31 +132,6 @@ public class Equipe implements Serializable {
     public void setPays(Pays pays) {
         this.pays = pays;
     }
-
-    public Set<Competition> getCompetitions() {
-        return competitions;
-    }
-
-    public Equipe competitions(Set<Competition> competitions) {
-        this.competitions = competitions;
-        return this;
-    }
-
-    public Equipe addCompetition(Competition competition) {
-        this.competitions.add(competition);
-        competition.getEquipes().add(this);
-        return this;
-    }
-
-    public Equipe removeCompetition(Competition competition) {
-        this.competitions.remove(competition);
-        competition.getEquipes().remove(this);
-        return this;
-    }
-
-    public void setCompetitions(Set<Competition> competitions) {
-        this.competitions = competitions;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -177,6 +159,7 @@ public class Equipe implements Serializable {
         return "Equipe{" +
             "id=" + getId() +
             ", codeEquipe='" + getCodeEquipe() + "'" +
+            ", nomEquipe='" + getNomEquipe() + "'" +
             ", rangFifa=" + getRangFifa() +
             ", ecusson='" + getEcusson() + "'" +
             ", ecussonContentType='" + getEcussonContentType() + "'" +

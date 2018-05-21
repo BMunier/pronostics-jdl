@@ -9,8 +9,9 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Competition } from './competition.model';
 import { CompetitionPopupService } from './competition-popup.service';
 import { CompetitionService } from './competition.service';
-import { Pays, PaysService } from '../pays';
 import { Equipe, EquipeService } from '../equipe';
+import { Pays, PaysService } from '../pays';
+import { Stade, StadeService } from '../stade';
 
 @Component({
     selector: 'jhi-competition-dialog',
@@ -21,37 +22,33 @@ export class CompetitionDialogComponent implements OnInit {
     competition: Competition;
     isSaving: boolean;
 
+    equipes: Equipe[];
+
     pays: Pays[];
 
-    equipes: Equipe[];
+    stades: Stade[];
+    dateDebutDp: any;
+    dateFinDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private competitionService: CompetitionService,
-        private paysService: PaysService,
         private equipeService: EquipeService,
+        private paysService: PaysService,
+        private stadeService: StadeService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.paysService
-            .query({filter: 'competition-is-null'})
-            .subscribe((res: HttpResponse<Pays[]>) => {
-                if (!this.competition.pays || !this.competition.pays.id) {
-                    this.pays = res.body;
-                } else {
-                    this.paysService
-                        .find(this.competition.pays.id)
-                        .subscribe((subRes: HttpResponse<Pays>) => {
-                            this.pays = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.equipeService.query()
             .subscribe((res: HttpResponse<Equipe[]>) => { this.equipes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.paysService.query()
+            .subscribe((res: HttpResponse<Pays[]>) => { this.pays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.stadeService.query()
+            .subscribe((res: HttpResponse<Stade[]>) => { this.stades = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -88,23 +85,16 @@ export class CompetitionDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackPaysById(index: number, item: Pays) {
-        return item.id;
-    }
-
     trackEquipeById(index: number, item: Equipe) {
         return item.id;
     }
 
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
+    trackPaysById(index: number, item: Pays) {
+        return item.id;
+    }
+
+    trackStadeById(index: number, item: Stade) {
+        return item.id;
     }
 }
 

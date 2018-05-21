@@ -5,20 +5,20 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180501154355_added_entity_Competition.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094356_added_entity_Pays.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094357_added_entity_Stade.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094358_added_entity_Equipe.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180501164359_added_entity_Match.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094400_added_entity_Pronostic.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180501094355_added_entity_Competition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180501094359_added_entity_Match.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     
     
-    <include file="config/liquibase/changelog/20180501154355_added_entity_constraints_Competition.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094357_added_entity_constraints_Stade.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094358_added_entity_constraints_Equipe.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180501164359_added_entity_constraints_Match.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180501094400_added_entity_constraints_Pronostic.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201804032150_added_role_gestionnaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180501094355_added_entity_constraints_Competition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180501094359_added_entity_constraints_Match.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

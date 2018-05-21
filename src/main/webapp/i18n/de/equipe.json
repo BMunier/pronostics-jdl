@@ -18,10 +18,10 @@
                 "title": "Equipe"
             },
             "codeEquipe": "Code Equipe",
+            "nomEquipe": "Nom Equipe",
             "rangFifa": "Rang Fifa",
             "ecusson": "Ecusson",
-            "pays": "Pays",
-            "competition": "Competition"
+            "pays": "Pays"
         }
     }
 }

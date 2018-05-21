@@ -34,8 +34,7 @@ public class Stade implements Serializable {
     @Column(name = "ville", nullable = false)
     private String ville;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Pays pays;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

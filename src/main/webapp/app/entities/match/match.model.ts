@@ -17,16 +17,16 @@ export const enum PhaseCompetition {
 export class Match implements BaseEntity {
     constructor(
         public id?: number,
-        public scoreEquipeDomicile?: number,
-        public scoreEquipeVisiteur?: number,
         public date?: any,
         public statut?: StatutMatch,
+        public scoreEquipeDomicile?: number,
+        public scoreEquipeVisiteur?: number,
         public phaseCompetition?: PhaseCompetition,
         public groupe?: string,
+        public competition?: BaseEntity,
         public stade?: BaseEntity,
         public equipeDomicile?: BaseEntity,
         public equipeVisiteur?: BaseEntity,
-        public competition?: BaseEntity,
     ) {
     }
 }

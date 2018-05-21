@@ -33,19 +33,8 @@ export class StadeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.paysService
-            .query({filter: 'stade-is-null'})
-            .subscribe((res: HttpResponse<Pays[]>) => {
-                if (!this.stade.pays || !this.stade.pays.id) {
-                    this.pays = res.body;
-                } else {
-                    this.paysService
-                        .find(this.stade.pays.id)
-                        .subscribe((subRes: HttpResponse<Pays>) => {
-                            this.pays = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.paysService.query()
+            .subscribe((res: HttpResponse<Pays[]>) => { this.pays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {

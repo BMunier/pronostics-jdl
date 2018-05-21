@@ -2,24 +2,19 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "pays",
             "otherEntityName": "pays",
-            "otherEntityField": "nom",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "equipe"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "competition",
-            "otherEntityName": "competition",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "equipe"
+            "otherEntityField": "nom"
         }
     ],
     "fields": [
         {
             "fieldName": "codeEquipe",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nomEquipe",
             "fieldType": "String"
         },
         {

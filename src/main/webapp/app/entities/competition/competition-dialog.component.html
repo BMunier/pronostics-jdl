@@ -30,50 +30,56 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.competition.dateDebut" for="field_dateDebut">Date Debut</label>
-            <div class="d-flex">
-                <input id="field_dateDebut" type="datetime-local" class="form-control" name="dateDebut" [(ngModel)]="competition.dateDebut"
+            <div class="input-group">
+                <input id="field_dateDebut" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" [(ngModel)]="competition.dateDebut"
                 required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
             </div>
             <div [hidden]="!(editForm.controls.dateDebut?.dirty && editForm.controls.dateDebut?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.dateDebut?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.dateDebut?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </small>
             </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.competition.dateFin" for="field_dateFin">Date Fin</label>
-            <div class="d-flex">
-                <input id="field_dateFin" type="datetime-local" class="form-control" name="dateFin" [(ngModel)]="competition.dateFin"
+            <div class="input-group">
+                <input id="field_dateFin" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" [(ngModel)]="competition.dateFin"
                 required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
             </div>
             <div [hidden]="!(editForm.controls.dateFin?.dirty && editForm.controls.dateFin?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.dateFin?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.dateFin?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </small>
             </div>
         </div>
 
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.equipe" for="field_equipe">Equipe</label>
+            <select class="form-control" id="field_equipe" name="equipe" [(ngModel)]="competition.equipe" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="equipeOption.id === competition.equipe?.id ? competition.equipe : equipeOption" *ngFor="let equipeOption of equipes; trackBy: trackEquipeById">{{equipeOption.codeEquipe}}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.competition.pays" for="field_pays">Pays</label>
-            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="competition.pays">
+            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="competition.pays" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="paysOption.id === competition.pays?.id ? competition.pays : paysOption" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="pronosticsApp.competition.equipe" for="field_equipe">Equipe</label>
-            <select class="form-control" id="field_equipe" multiple name="equipe" [(ngModel)]="competition.equipes">
-                <option [ngValue]="getSelected(competition.equipes, equipeOption)" *ngFor="let equipeOption of equipes; trackBy: trackEquipeById">{{equipeOption.codeEquipe}}</option>
+            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.stade" for="field_stade">Stade</label>
+            <select class="form-control" id="field_stade" name="stade" [(ngModel)]="competition.stade" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="stadeOption.id === competition.stade?.id ? competition.stade : stadeOption" *ngFor="let stadeOption of stades; trackBy: trackStadeById">{{stadeOption.nom}}</option>
             </select>
         </div>
     </div>

@@ -7,8 +7,9 @@ export class Competition implements BaseEntity {
         public description?: string,
         public dateDebut?: any,
         public dateFin?: any,
+        public equipe?: BaseEntity,
         public pays?: BaseEntity,
-        public equipes?: BaseEntity[],
+        public stade?: BaseEntity,
     ) {
     }
 }

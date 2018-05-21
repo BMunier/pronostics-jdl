@@ -2,20 +2,22 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "pays",
-            "otherEntityName": "pays",
-            "otherEntityField": "nom",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "competition"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "competition",
+            "relationshipType": "many-to-one",
             "relationshipName": "equipe",
             "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe",
-            "ownerSide": true
+            "otherEntityField": "codeEquipe"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pays",
+            "otherEntityName": "pays",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "stade",
+            "otherEntityName": "stade",
+            "otherEntityField": "nom"
         }
     ],
     "fields": [
@@ -32,14 +34,14 @@
         },
         {
             "fieldName": "dateDebut",
-            "fieldType": "Instant",
+            "fieldType": "LocalDate",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
             "fieldName": "dateFin",
-            "fieldType": "Instant",
+            "fieldType": "LocalDate",
             "fieldValidateRules": [
                 "required"
             ]

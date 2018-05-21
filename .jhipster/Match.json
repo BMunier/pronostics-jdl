@@ -2,45 +2,31 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "stade",
-            "otherEntityName": "stade",
-            "otherEntityField": "nom",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "equipeDomicile",
-            "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "equipeVisiteur",
-            "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "competition",
             "otherEntityName": "competition",
             "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "stade",
+            "otherEntityName": "stade",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "equipeDomicile",
+            "otherEntityName": "equipe",
+            "otherEntityField": "codeEquipe"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "equipeVisiteur",
+            "otherEntityName": "equipe",
+            "otherEntityField": "codeEquipe"
         }
     ],
     "fields": [
-        {
-            "fieldName": "scoreEquipeDomicile",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "scoreEquipeVisiteur",
-            "fieldType": "Integer"
-        },
         {
             "fieldName": "date",
             "fieldType": "Instant",
@@ -57,12 +43,17 @@
             ]
         },
         {
+            "fieldName": "scoreEquipeDomicile",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "scoreEquipeVisiteur",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "phaseCompetition",
             "fieldType": "PhaseCompetition",
-            "fieldValues": "GROUPE,HUITIEME,QUART,DEMI,FINAL",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValues": "GROUPE,HUITIEME,QUART,DEMI,FINAL"
         },
         {
             "fieldName": "groupe",
