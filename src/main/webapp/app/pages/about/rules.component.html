@@ -1,0 +1,114 @@
+<div>
+    <h2><span data-translate="pronosticsApp.about.rules.title">Rules</span></h2>
+    <hr>
+	<h3>Enjeu</h3>
+		<p style="margin-left: 20px">
+			La moitié des perdants paye le repas de la moitié des gagnants.<br/>
+			<span style="margin-left: 25px">
+				En cas de nombre de joueurs impair, celui du milieu se paye son repas.
+			</span>
+		</p>
+	<h3>Mode de pronostic</h3>
+			<table style="margin-left: 20px">
+				<thead>
+
+				</thead>
+				<tbody>
+					<tr>
+						<td>Standard</td>
+						<td>&nbsp;</td>
+						<td>Le joueur défini les résultats des deux équipes</td>
+					</tr>
+					<tr>
+						<td>Moyenne (à venir)</td>
+						<td>&nbsp;</td>
+						<td>La moyenne des pronostics déjà existants est pronostiquée</td>
+					</tr>
+					<tr>
+						<td>Suivi (à venir)</td>
+						<td>&nbsp;</td>
+						<td>Suivi du pronostic de l'un des pronostiqueurs</td>
+					</tr>
+					<tr>
+						<td>Hasard (à venir)</td>
+						<td>&nbsp;</td>
+						<td>Pronostic avec des résultats au hasard</td>
+					</tr>
+					<tr>
+						<td>Logique (à venir)</td>
+						<td>&nbsp;</td>
+						<td>Pronostic en fonction du rang des équipes opposées (résultat au hasard)</td>
+					</tr>
+				</tbody>
+			</table>
+			<p></p>
+	<h3>Ajout/Modification des pronostics</h3>
+		<p style="margin-left: 20px">
+			Un joueur ne peut déposer qu'un seul pronostic par match.<br/>
+			Un joueur ne peut ajouter ou modifier un pronostic qu'avant le début du match.
+		</p>
+	<h3>Evaluation des résultats</h3>
+		<p style="margin-left: 20px">
+			Les résultats pris en compte sont ceux du temps règlementaire<br/>
+			<span style="margin-left: 25px">
+				Ne sont pas comptés les prolonguations !<br>
+			</span>
+			<span style="margin-left: 25px">
+				Ne sont pas comptés les tirs au but !
+			</span>
+		</p>
+		<table style="margin-left: 20px">
+			<thead>
+				<tr>
+					<th width="300">PRONOSTIC</th>
+					<th width="10">&nbsp;</th>
+					<th width="100"><b>Point(s)</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Pronostic juste et résultat juste</td>
+					<td>&nbsp;</td>
+					<td><b>3 points</b></td>
+				</tr>
+				<tr>
+					<td>Pronostic juste et résultat faux</td>
+					<td>&nbsp;</td>
+					<td><b>1 points</b></td>
+				</tr>
+				<tr>
+					<td>Pronostic faux et résultat faux</td>
+					<td>&nbsp;</td>
+					<td><b>0 points</b></td>
+				</tr>
+			</tbody>
+		</table>
+		<p></p>
+	<h3>Classement</h3>
+		<p style="margin-left: 20px">
+			Le classement est établi selon les criètres suivants :
+		</p>
+		<p style="margin-left: 20px">
+			1. Maximum de points<br/>
+			2. Si égalité : Maximum de pronostics à 3 points<br/>
+			3. Si égalité : Maximum de pronostics à 1 point<br/>
+			4. Si égalité : Maximum de pronostics à 0 point<br/>
+			5. Maximum de pronostics<br/>
+			6. Ordre alphabétique du nom et prénom du pronostiqueur
+		</p>
+
+	<jhi-alert-error></jhi-alert-error>
+
+	<div class="table-responsive" *ngIf="rules">
+		<table class="table table-striped">
+			<thead>
+				<tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let rules of rules ;trackBy: trackId">
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+{
+    "pages": [
+        {
+            "pageName": "About",
+            "pageType": "clientOnly",
+            "pageGlyphIcon": "equalizer",
+            "fields": []
+        },
+        {
+            "pageName": "Rules",
+            "pageType": "clientOnly",
+            "pageGlyphIcon": "book",
+            "fields": []
+        }
+    ],
+    "pageSetGlyphIcon": "equalizer",
+    "changelogDate": "20180518065453"
+}

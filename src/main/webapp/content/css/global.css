@@ -11,12 +11,12 @@ body {
 }
 
 a {
-    color: #533f03;
+    color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */ 
     font-weight: bold;
 }
 
 a:hover {
-    color: #533f03;
+    color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */ 
     font-weight: bold;
 }
 
