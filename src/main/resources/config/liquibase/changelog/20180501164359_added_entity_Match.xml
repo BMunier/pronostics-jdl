@@ -13,9 +13,7 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet author="liquibase-docs" id="dropTable-example">
-        <dropTable cascadeConstraints="true" tableName="match"/>
-    </changeSet>
+
     <!--
         Added the entity Match.
     -->
@@ -48,11 +46,11 @@
                 <constraints nullable="true" />
             </column>
             <column name="stade_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints  nullable="true" />
             </column>            <column name="equipe_domicile_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints  nullable="true" />
             </column>            <column name="equipe_visiteur_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints  nullable="true" />
             </column>
             <column name="competition_id" type="bigint">
                 <constraints nullable="true" />
