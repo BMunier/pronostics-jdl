@@ -166,13 +166,13 @@ public class MatchResource {
 
     @GetMapping("/matches/refresh")
     @Time
-    public BodyBuilder refreshMatches(Pageable pageable) {
+    public int refreshMatches(Pageable pageable) {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
         Integer nbPronosticsMatch = pronostics.size();
         //Page<Match> page = matchRepository.findAll(pageable);
         //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
-        return ResponseEntity.ok();
+        return Response.OK;
         // return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, nbPronosticsMatch.toString())).build();
     }
 

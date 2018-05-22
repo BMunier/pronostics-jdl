@@ -146,6 +146,7 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
 
     refresh() {
+        this.jhiAlertService.success('Success', null, null);
         this.matchService.refresh().subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'competitionListModification',
