@@ -13,9 +13,6 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet author="liquibase-docs" id="dropTable-example">
-        <dropTable cascadeConstraints="true" tableName="match"/>
-    </changeSet>
     <!--
         Added the entity Match.
     -->
