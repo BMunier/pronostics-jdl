@@ -162,8 +162,8 @@ public class MatchResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("matches/refresh")
-    @Time
+    @GetMapping("/matches/refresh")
+    @Timed
     public ResponseEntity<Void> refreshMatches(Pageable pageable) {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
