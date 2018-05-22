@@ -44,8 +44,6 @@ export class MatchService {
 
     refresh(): Observable<HttpResponse<any>> {
         return this.http.get<any>(this.resourceRefreshUrl, {observe: 'response'});
-        // get<EntityResponseType>(this.resourceRefreshUrl, { observe: 'response' })
-        // .map((res: EntityResponseType) => res);
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
