@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.sun.mail.iap.Response;
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
+import com.bmu.pronostics.domain.enumeration.StatutMatch;
 import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.MatchSearchRepository;
@@ -51,6 +52,12 @@ public class MatchResource {
     private final PronosticRepository pronosticRepository;
 
     private final PronosticSearchRepository pronosticSearchRepository;
+
+    private final int WIN = 1;
+
+    private final int EQUALS = 0;
+
+    private final int LOSE = -1;
 
     public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository, PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
         this.matchRepository = matchRepository;
@@ -170,6 +177,42 @@ public class MatchResource {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
         Integer nbPronosticsMatch = pronostics.size();
+        Match matchTermine;
+        Integer scoreDom,scoreVisit,scorePronoDom,scorePronoVisit,scoreDiffMatch;
+        for (int i =0;i<nbPronosticsMatch;i++){
+             matchTermine = matchRepository.findOne(pronostics.get(i).getMatch().getId());
+             if(matchTermine.getStatut().equals(StatutMatch.TERMINE)){
+                  scoreDom = matchTermine.getScoreEquipeDomicile();
+                  scoreVisit = matchTermine.getScoreEquipeVisiteur();
+                  scorePronoDom = pronostics.get(i).getScoreEquipeDomicile();
+                  scorePronoVisit = pronostics.get(i).getScoreEquipeVisiteur();
+                  scoreDiffMatch = scoreDom-scoreVisit;
+                  switch( scoreDiffMatch.compareTo(scorePronoDom-scorePronoVisit)){
+                        case WIN:
+                        pronostics.get(i).setPoints(1);
+                        break;
+                        case EQUALS:
+                        if(scoreDom==scorePronoDom && scoreVisit == scorePronoVisit){
+                            pronostics.get(i).setPoints(3);
+                        }else{
+                            pronostics.get(i).setPoints(1);
+                        }
+                        break;
+                        case LOSE:
+                        pronostics.get(i).setPoints(0);
+                        break;
+
+                  }
+
+                  
+
+             }
+
+
+        }
+
+
+
         //Page<Match> page = matchRepository.findAll(pageable);
         //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
         return Response.OK;
