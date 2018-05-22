@@ -37,20 +37,41 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="equipe_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="pays_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="stade_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        
+        <createTable tableName="competition_equipe">
+            <column name="equipes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competitions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="competitions_id, equipes_id" tableName="competition_equipe"/>
+        
+        <createTable tableName="competition_pays">
+            <column name="pays_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competitions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="competitions_id, pays_id" tableName="competition_pays"/>
+        
+        <createTable tableName="competition_stade">
+            <column name="stades_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competitions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="competitions_id, stades_id" tableName="competition_stade"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

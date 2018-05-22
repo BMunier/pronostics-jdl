@@ -9,6 +9,7 @@ export class Equipe implements BaseEntity {
         public ecussonContentType?: string,
         public ecusson?: any,
         public pays?: BaseEntity,
+        public competitions?: BaseEntity[],
     ) {
     }
 }

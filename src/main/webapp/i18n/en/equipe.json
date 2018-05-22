@@ -21,7 +21,8 @@
             "nomEquipe": "Nom Equipe",
             "rangFifa": "Rang Fifa",
             "ecusson": "Ecusson",
-            "pays": "Pays"
+            "pays": "Pays",
+            "competition": "Competition"
         }
     }
 }

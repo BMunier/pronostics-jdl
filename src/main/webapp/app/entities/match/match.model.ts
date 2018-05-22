@@ -19,6 +19,7 @@ export class Match implements BaseEntity {
         public id?: number,
         public date?: any,
         public statut?: StatutMatch,
+        public code?: string,
         public scoreEquipeDomicile?: number,
         public scoreEquipeVisiteur?: number,
         public phaseCompetition?: PhaseCompetition,

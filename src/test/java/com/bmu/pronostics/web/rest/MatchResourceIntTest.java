@@ -49,6 +49,9 @@ public class MatchResourceIntTest {
     private static final StatutMatch DEFAULT_STATUT = StatutMatch.PAS_DEMARRE;
     private static final StatutMatch UPDATED_STATUT = StatutMatch.EN_COURS;
 
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
+
     private static final Integer DEFAULT_SCORE_EQUIPE_DOMICILE = 1;
     private static final Integer UPDATED_SCORE_EQUIPE_DOMICILE = 2;
 
@@ -104,6 +107,7 @@ public class MatchResourceIntTest {
         Match match = new Match()
             .date(DEFAULT_DATE)
             .statut(DEFAULT_STATUT)
+            .code(DEFAULT_CODE)
             .scoreEquipeDomicile(DEFAULT_SCORE_EQUIPE_DOMICILE)
             .scoreEquipeVisiteur(DEFAULT_SCORE_EQUIPE_VISITEUR)
             .phaseCompetition(DEFAULT_PHASE_COMPETITION)
@@ -134,6 +138,7 @@ public class MatchResourceIntTest {
         Match testMatch = matchList.get(matchList.size() - 1);
         assertThat(testMatch.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testMatch.getStatut()).isEqualTo(DEFAULT_STATUT);
+        assertThat(testMatch.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(DEFAULT_SCORE_EQUIPE_DOMICILE);
         assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(DEFAULT_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getPhaseCompetition()).isEqualTo(DEFAULT_PHASE_COMPETITION);
@@ -212,6 +217,7 @@ public class MatchResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(match.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].statut").value(hasItem(DEFAULT_STATUT.toString())))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
             .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].phaseCompetition").value(hasItem(DEFAULT_PHASE_COMPETITION.toString())))
@@ -231,6 +237,7 @@ public class MatchResourceIntTest {
             .andExpect(jsonPath("$.id").value(match.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.statut").value(DEFAULT_STATUT.toString()))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.scoreEquipeDomicile").value(DEFAULT_SCORE_EQUIPE_DOMICILE))
             .andExpect(jsonPath("$.scoreEquipeVisiteur").value(DEFAULT_SCORE_EQUIPE_VISITEUR))
             .andExpect(jsonPath("$.phaseCompetition").value(DEFAULT_PHASE_COMPETITION.toString()))
@@ -260,6 +267,7 @@ public class MatchResourceIntTest {
         updatedMatch
             .date(UPDATED_DATE)
             .statut(UPDATED_STATUT)
+            .code(UPDATED_CODE)
             .scoreEquipeDomicile(UPDATED_SCORE_EQUIPE_DOMICILE)
             .scoreEquipeVisiteur(UPDATED_SCORE_EQUIPE_VISITEUR)
             .phaseCompetition(UPDATED_PHASE_COMPETITION)
@@ -276,6 +284,7 @@ public class MatchResourceIntTest {
         Match testMatch = matchList.get(matchList.size() - 1);
         assertThat(testMatch.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testMatch.getStatut()).isEqualTo(UPDATED_STATUT);
+        assertThat(testMatch.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testMatch.getScoreEquipeDomicile()).isEqualTo(UPDATED_SCORE_EQUIPE_DOMICILE);
         assertThat(testMatch.getScoreEquipeVisiteur()).isEqualTo(UPDATED_SCORE_EQUIPE_VISITEUR);
         assertThat(testMatch.getPhaseCompetition()).isEqualTo(UPDATED_PHASE_COMPETITION);
@@ -340,6 +349,7 @@ public class MatchResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(match.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].statut").value(hasItem(DEFAULT_STATUT.toString())))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
             .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
             .andExpect(jsonPath("$.[*].phaseCompetition").value(hasItem(DEFAULT_PHASE_COMPETITION.toString())))

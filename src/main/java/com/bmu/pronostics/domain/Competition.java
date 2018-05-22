@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -42,14 +44,26 @@ public class Competition implements Serializable {
     @Column(name = "date_fin", nullable = false)
     private LocalDate dateFin;
 
-    @ManyToOne
-    private Equipe equipe;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "competition_equipe",
+               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="equipes_id", referencedColumnName="id"))
+    private Set<Equipe> equipes = new HashSet<>();
 
-    @ManyToOne
-    private Pays pays;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "competition_pays",
+               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="pays_id", referencedColumnName="id"))
+    private Set<Pays> pays = new HashSet<>();
 
-    @ManyToOne
-    private Stade stade;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "competition_stade",
+               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="stades_id", referencedColumnName="id"))
+    private Set<Stade> stades = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -112,43 +126,79 @@ public class Competition implements Serializable {
         this.dateFin = dateFin;
     }
 
-    public Equipe getEquipe() {
-        return equipe;
+    public Set<Equipe> getEquipes() {
+        return equipes;
     }
 
-    public Competition equipe(Equipe equipe) {
-        this.equipe = equipe;
+    public Competition equipes(Set<Equipe> equipes) {
+        this.equipes = equipes;
         return this;
     }
 
-    public void setEquipe(Equipe equipe) {
-        this.equipe = equipe;
+    public Competition addEquipe(Equipe equipe) {
+        this.equipes.add(equipe);
+        equipe.getCompetitions().add(this);
+        return this;
     }
 
-    public Pays getPays() {
+    public Competition removeEquipe(Equipe equipe) {
+        this.equipes.remove(equipe);
+        equipe.getCompetitions().remove(this);
+        return this;
+    }
+
+    public void setEquipes(Set<Equipe> equipes) {
+        this.equipes = equipes;
+    }
+
+    public Set<Pays> getPays() {
         return pays;
     }
 
-    public Competition pays(Pays pays) {
+    public Competition pays(Set<Pays> pays) {
         this.pays = pays;
         return this;
     }
 
-    public void setPays(Pays pays) {
-        this.pays = pays;
-    }
-
-    public Stade getStade() {
-        return stade;
-    }
-
-    public Competition stade(Stade stade) {
-        this.stade = stade;
+    public Competition addPays(Pays pays) {
+        this.pays.add(pays);
+        pays.getCompetitions().add(this);
         return this;
     }
 
-    public void setStade(Stade stade) {
-        this.stade = stade;
+    public Competition removePays(Pays pays) {
+        this.pays.remove(pays);
+        pays.getCompetitions().remove(this);
+        return this;
+    }
+
+    public void setPays(Set<Pays> pays) {
+        this.pays = pays;
+    }
+
+    public Set<Stade> getStades() {
+        return stades;
+    }
+
+    public Competition stades(Set<Stade> stades) {
+        this.stades = stades;
+        return this;
+    }
+
+    public Competition addStade(Stade stade) {
+        this.stades.add(stade);
+        stade.getCompetitions().add(this);
+        return this;
+    }
+
+    public Competition removeStade(Stade stade) {
+        this.stades.remove(stade);
+        stade.getCompetitions().remove(this);
+        return this;
+    }
+
+    public void setStades(Set<Stade> stades) {
+        this.stades = stades;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

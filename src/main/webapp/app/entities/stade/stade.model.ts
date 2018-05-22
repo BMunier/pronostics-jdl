@@ -6,6 +6,7 @@ export class Stade implements BaseEntity {
         public nom?: string,
         public ville?: string,
         public pays?: BaseEntity,
+        public competitions?: BaseEntity[],
     ) {
     }
 }

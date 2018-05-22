@@ -10,6 +10,7 @@ import { StadeDialogComponent } from '../../../../../../main/webapp/app/entities
 import { StadeService } from '../../../../../../main/webapp/app/entities/stade/stade.service';
 import { Stade } from '../../../../../../main/webapp/app/entities/stade/stade.model';
 import { PaysService } from '../../../../../../main/webapp/app/entities/pays';
+import { CompetitionService } from '../../../../../../main/webapp/app/entities/competition';
 
 describe('Component Tests', () => {
 
@@ -26,6 +27,7 @@ describe('Component Tests', () => {
                 declarations: [StadeDialogComponent],
                 providers: [
                     PaysService,
+                    CompetitionService,
                     StadeService
                 ]
             })

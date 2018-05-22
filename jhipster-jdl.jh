@@ -27,6 +27,7 @@ entity Equipe {
 entity Match {
 	date Instant required,
   	statut StatutMatch required,
+    code String,
 	scoreEquipeDomicile Integer,
     scoreEquipeVisiteur Integer,
 	phaseCompetition PhaseCompetition,
@@ -57,10 +58,13 @@ relationship ManyToOne {
     Pronostic{match} to Match,
     Pronostic{utilisateur(login)} to User,
     Match{equipeDomicile(codeEquipe)} to Equipe,
-    Match{equipeVisiteur(codeEquipe)} to Equipe,
-    Competition{equipe(codeEquipe)} to Equipe,
-    Competition{pays(nom)} to Pays,
-    Competition{stade(nom)} to Stade
+    Match{equipeVisiteur(codeEquipe)} to Equipe
+}
+
+relationship ManyToMany {
+	Competition{equipe(codeEquipe)} to Equipe{competition},
+	Competition{pays(nom)} to Pays{competition},
+    Competition{stade(nom)} to Stade{competition}
 }
 
 // Set pagination options

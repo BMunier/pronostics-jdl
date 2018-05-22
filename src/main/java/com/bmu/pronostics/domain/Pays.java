@@ -1,5 +1,6 @@
 package com.bmu.pronostics.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -41,6 +44,11 @@ public class Pays implements Serializable {
 
     @Column(name = "drapeau_content_type", nullable = false)
     private String drapeauContentType;
+
+    @ManyToMany(mappedBy = "pays")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Competition> competitions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -101,6 +109,31 @@ public class Pays implements Serializable {
 
     public void setDrapeauContentType(String drapeauContentType) {
         this.drapeauContentType = drapeauContentType;
+    }
+
+    public Set<Competition> getCompetitions() {
+        return competitions;
+    }
+
+    public Pays competitions(Set<Competition> competitions) {
+        this.competitions = competitions;
+        return this;
+    }
+
+    public Pays addCompetition(Competition competition) {
+        this.competitions.add(competition);
+        competition.getPays().add(this);
+        return this;
+    }
+
+    public Pays removeCompetition(Competition competition) {
+        this.competitions.remove(competition);
+        competition.getPays().remove(this);
+        return this;
+    }
+
+    public void setCompetitions(Set<Competition> competitions) {
+        this.competitions = competitions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

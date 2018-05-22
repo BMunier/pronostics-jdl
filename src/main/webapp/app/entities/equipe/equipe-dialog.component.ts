@@ -10,6 +10,7 @@ import { Equipe } from './equipe.model';
 import { EquipePopupService } from './equipe-popup.service';
 import { EquipeService } from './equipe.service';
 import { Pays, PaysService } from '../pays';
+import { Competition, CompetitionService } from '../competition';
 
 @Component({
     selector: 'jhi-equipe-dialog',
@@ -22,12 +23,15 @@ export class EquipeDialogComponent implements OnInit {
 
     pays: Pays[];
 
+    competitions: Competition[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private equipeService: EquipeService,
         private paysService: PaysService,
+        private competitionService: CompetitionService,
         private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
@@ -37,6 +41,8 @@ export class EquipeDialogComponent implements OnInit {
         this.isSaving = false;
         this.paysService.query()
             .subscribe((res: HttpResponse<Pays[]>) => { this.pays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.competitionService.query()
+            .subscribe((res: HttpResponse<Competition[]>) => { this.competitions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -91,6 +97,21 @@ export class EquipeDialogComponent implements OnInit {
 
     trackPaysById(index: number, item: Pays) {
         return item.id;
+    }
+
+    trackCompetitionById(index: number, item: Competition) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

@@ -41,9 +41,9 @@ describe('Competition e2e test', () => {
         expect(competitionDialogPage.getDateDebutInput()).toMatch('2000-12-31');
         competitionDialogPage.setDateFinInput('2000-12-31');
         expect(competitionDialogPage.getDateFinInput()).toMatch('2000-12-31');
-        competitionDialogPage.equipeSelectLastOption();
-        competitionDialogPage.paysSelectLastOption();
-        competitionDialogPage.stadeSelectLastOption();
+        // competitionDialogPage.equipeSelectLastOption();
+        // competitionDialogPage.paysSelectLastOption();
+        // competitionDialogPage.stadeSelectLastOption();
         competitionDialogPage.save();
         expect(competitionDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });

@@ -10,6 +10,7 @@ import { EquipeDialogComponent } from '../../../../../../main/webapp/app/entitie
 import { EquipeService } from '../../../../../../main/webapp/app/entities/equipe/equipe.service';
 import { Equipe } from '../../../../../../main/webapp/app/entities/equipe/equipe.model';
 import { PaysService } from '../../../../../../main/webapp/app/entities/pays';
+import { CompetitionService } from '../../../../../../main/webapp/app/entities/competition';
 
 describe('Component Tests', () => {
 
@@ -26,6 +27,7 @@ describe('Component Tests', () => {
                 declarations: [EquipeDialogComponent],
                 providers: [
                     PaysService,
+                    CompetitionService,
                     EquipeService
                 ]
             })

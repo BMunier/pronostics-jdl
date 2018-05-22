@@ -55,6 +55,8 @@ public class CacheConfiguration {
             cm.createCache(com.bmu.pronostics.domain.Equipe.class.getName() + ".competitions", jcacheConfiguration);
             cm.createCache(com.bmu.pronostics.domain.Competition.class.getName() + ".pays", jcacheConfiguration);
             cm.createCache(com.bmu.pronostics.domain.Pays.class.getName() + ".competitions", jcacheConfiguration);
+            cm.createCache(com.bmu.pronostics.domain.Competition.class.getName() + ".stades", jcacheConfiguration);
+            cm.createCache(com.bmu.pronostics.domain.Stade.class.getName() + ".competitions", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

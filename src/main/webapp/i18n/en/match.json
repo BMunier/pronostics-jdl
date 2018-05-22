@@ -19,6 +19,7 @@
             },
             "date": "Date",
             "statut": "Statut",
+            "code": "Code",
             "scoreEquipeDomicile": "Score Equipe Domicile",
             "scoreEquipeVisiteur": "Score Equipe Visiteur",
             "phaseCompetition": "Phase Competition",

@@ -2,22 +2,28 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "competition",
             "relationshipName": "equipe",
             "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe"
+            "otherEntityField": "codeEquipe",
+            "ownerSide": true
         },
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "competition",
             "relationshipName": "pays",
             "otherEntityName": "pays",
-            "otherEntityField": "nom"
+            "otherEntityField": "nom",
+            "ownerSide": true
         },
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "competition",
             "relationshipName": "stade",
             "otherEntityName": "stade",
-            "otherEntityField": "nom"
+            "otherEntityField": "nom",
+            "ownerSide": true
         }
     ],
     "fields": [

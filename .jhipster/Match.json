@@ -43,6 +43,10 @@
             ]
         },
         {
+            "fieldName": "code",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "scoreEquipeDomicile",
             "fieldType": "Integer"
         },

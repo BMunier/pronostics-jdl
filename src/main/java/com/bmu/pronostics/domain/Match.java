@@ -40,6 +40,9 @@ public class Match implements Serializable {
     @Column(name = "statut", nullable = false)
     private StatutMatch statut;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "score_equipe_domicile")
     private Integer scoreEquipeDomicile;
 
@@ -98,6 +101,19 @@ public class Match implements Serializable {
 
     public void setStatut(StatutMatch statut) {
         this.statut = statut;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public Match code(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getScoreEquipeDomicile() {
@@ -231,6 +247,7 @@ public class Match implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", statut='" + getStatut() + "'" +
+            ", code='" + getCode() + "'" +
             ", scoreEquipeDomicile=" + getScoreEquipeDomicile() +
             ", scoreEquipeVisiteur=" + getScoreEquipeVisiteur() +
             ", phaseCompetition='" + getPhaseCompetition() + "'" +

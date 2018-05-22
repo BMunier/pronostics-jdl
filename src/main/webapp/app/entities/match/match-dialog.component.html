@@ -44,6 +44,11 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.match.code" for="field_code">Code</label>
+            <input type="text" class="form-control" name="code" id="field_code"
+                [(ngModel)]="match.code" />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.match.scoreEquipeDomicile" for="field_scoreEquipeDomicile">Score Equipe Domicile</label>
             <input type="number" class="form-control" name="scoreEquipeDomicile" id="field_scoreEquipeDomicile"
                 [(ngModel)]="match.scoreEquipeDomicile" />

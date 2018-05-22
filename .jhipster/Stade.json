@@ -6,6 +6,13 @@
             "relationshipName": "pays",
             "otherEntityName": "pays",
             "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "competition",
+            "otherEntityName": "competition",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "stade"
         }
     ],
     "fields": [

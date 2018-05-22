@@ -36,6 +36,8 @@ describe('Match e2e test', () => {
         matchDialogPage.setDateInput(12310020012301);
         expect(matchDialogPage.getDateInput()).toMatch('2001-12-31T02:30');
         matchDialogPage.statutSelectLastOption();
+        matchDialogPage.setCodeInput('code');
+        expect(matchDialogPage.getCodeInput()).toMatch('code');
         matchDialogPage.setScoreEquipeDomicileInput('5');
         expect(matchDialogPage.getScoreEquipeDomicileInput()).toMatch('5');
         matchDialogPage.setScoreEquipeVisiteurInput('5');
@@ -75,6 +77,7 @@ export class MatchDialogPage {
     closeButton = element(by.css('button.close'));
     dateInput = element(by.css('input#field_date'));
     statutSelect = element(by.css('select#field_statut'));
+    codeInput = element(by.css('input#field_code'));
     scoreEquipeDomicileInput = element(by.css('input#field_scoreEquipeDomicile'));
     scoreEquipeVisiteurInput = element(by.css('input#field_scoreEquipeVisiteur'));
     phaseCompetitionSelect = element(by.css('select#field_phaseCompetition'));
@@ -107,6 +110,14 @@ export class MatchDialogPage {
     statutSelectLastOption = function() {
         this.statutSelect.all(by.tagName('option')).last().click();
     };
+    setCodeInput = function(code) {
+        this.codeInput.sendKeys(code);
+    };
+
+    getCodeInput = function() {
+        return this.codeInput.getAttribute('value');
+    };
+
     setScoreEquipeDomicileInput = function(scoreEquipeDomicile) {
         this.scoreEquipeDomicileInput.sendKeys(scoreEquipeDomicile);
     };

@@ -48,19 +48,19 @@
                 <td>{{competition.dateDebut | date:'mediumDate'}}</td>
                 <td>{{competition.dateFin | date:'mediumDate'}}</td>
                 <td>
-                    <div *ngIf="competition.equipe">
-                        <a [routerLink]="['../equipe', competition.equipe?.id ]" >{{competition.equipe?.codeEquipe}}</a>
-                    </div>
+                    <span *ngFor="let equipe of competition.equipes; let last = last">
+                            <a class="form-control-static" [routerLink]="['../equipe', equipe?.id ]">{{equipe.codeEquipe}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td>
-                    <div *ngIf="competition.pays">
-                        <a [routerLink]="['../pays', competition.pays?.id ]" >{{competition.pays?.nom}}</a>
-                    </div>
+                    <span *ngFor="let pays of competition.pays; let last = last">
+                            <a class="form-control-static" [routerLink]="['../pays', pays?.id ]">{{pays.nom}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td>
-                    <div *ngIf="competition.stade">
-                        <a [routerLink]="['../stade', competition.stade?.id ]" >{{competition.stade?.nom}}</a>
-                    </div>
+                    <span *ngFor="let stade of competition.stades; let last = last">
+                            <a class="form-control-static" [routerLink]="['../stade', stade?.id ]">{{stade.nom}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

@@ -62,24 +62,21 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.equipe" for="field_equipe">Equipe</label>
-            <select class="form-control" id="field_equipe" name="equipe" [(ngModel)]="competition.equipe" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="equipeOption.id === competition.equipe?.id ? competition.equipe : equipeOption" *ngFor="let equipeOption of equipes; trackBy: trackEquipeById">{{equipeOption.codeEquipe}}</option>
+            <label jhiTranslate="pronosticsApp.competition.equipe" for="field_equipe">Equipe</label>
+            <select class="form-control" id="field_equipe" multiple name="equipe" [(ngModel)]="competition.equipes">
+                <option [ngValue]="getSelected(competition.equipes, equipeOption)" *ngFor="let equipeOption of equipes; trackBy: trackEquipeById">{{equipeOption.codeEquipe}}</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.pays" for="field_pays">Pays</label>
-            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="competition.pays" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="paysOption.id === competition.pays?.id ? competition.pays : paysOption" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
+            <label jhiTranslate="pronosticsApp.competition.pays" for="field_pays">Pays</label>
+            <select class="form-control" id="field_pays" multiple name="pays" [(ngModel)]="competition.pays">
+                <option [ngValue]="getSelected(competition.pays, paysOption)" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pronosticsApp.competition.stade" for="field_stade">Stade</label>
-            <select class="form-control" id="field_stade" name="stade" [(ngModel)]="competition.stade" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="stadeOption.id === competition.stade?.id ? competition.stade : stadeOption" *ngFor="let stadeOption of stades; trackBy: trackStadeById">{{stadeOption.nom}}</option>
+            <label jhiTranslate="pronosticsApp.competition.stade" for="field_stade">Stade</label>
+            <select class="form-control" id="field_stade" multiple name="stade" [(ngModel)]="competition.stades">
+                <option [ngValue]="getSelected(competition.stades, stadeOption)" *ngFor="let stadeOption of stades; trackBy: trackStadeById">{{stadeOption.nom}}</option>
             </select>
         </div>
     </div>

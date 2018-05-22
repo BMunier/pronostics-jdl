@@ -32,6 +32,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="date"><span jhiTranslate="pronosticsApp.match.date">Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="statut"><span jhiTranslate="pronosticsApp.match.statut">Statut</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="code"><span jhiTranslate="pronosticsApp.match.code">Code</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="scoreEquipeDomicile"><span jhiTranslate="pronosticsApp.match.scoreEquipeDomicile">Score Equipe Domicile</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="scoreEquipeVisiteur"><span jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur">Score Equipe Visiteur</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="phaseCompetition"><span jhiTranslate="pronosticsApp.match.phaseCompetition">Phase Competition</span> <span class="fa fa-sort"></span></th>
@@ -48,6 +49,7 @@
                 <td><a [routerLink]="['../match', match.id ]">{{match.id}}</a></td>
                 <td>{{match.date | date:'medium'}}</td>
                 <td jhiTranslate="{{'pronosticsApp.StatutMatch.' + match.statut}}">{{match.statut}}</td>
+                <td>{{match.code}}</td>
                 <td>{{match.scoreEquipeDomicile}}</td>
                 <td>{{match.scoreEquipeVisiteur}}</td>
                 <td jhiTranslate="{{'pronosticsApp.PhaseCompetition.' + match.phaseCompetition}}">{{match.phaseCompetition}}</td>
