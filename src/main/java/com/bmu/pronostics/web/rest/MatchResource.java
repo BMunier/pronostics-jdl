@@ -201,18 +201,9 @@ public class MatchResource {
                         case LOSE:
                         pronostics.get(i).setPoints(0);
                         break;
-
                   }
-
-                  
-
              }
-
-
         }
-
-
-
         //Page<Match> page = matchRepository.findAll(pageable);
         //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
         return Response.OK;
