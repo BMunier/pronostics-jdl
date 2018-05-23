@@ -53,11 +53,11 @@ public class MatchResource {
 
     private final PronosticSearchRepository pronosticSearchRepository;
 
-    private final int WIN = 1;
+    private final int WIN = -1;
 
-    private final int EQUALS = 0;
+    private final int DOUBLE_WIN = 0;
 
-    private final int LOSE = -1;
+    private final int LOSE = 1;
 
     public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository, PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
         this.matchRepository = matchRepository;
@@ -189,9 +189,9 @@ public class MatchResource {
                   scoreDiffMatch = scoreDom-scoreVisit;
                   switch( scoreDiffMatch.compareTo(scorePronoDom-scorePronoVisit)){
                         case WIN:
-                        pronostics.get(i).setPoints(1);
+                            pronostics.get(i).setPoints(1);
                         break;
-                        case EQUALS:
+                        case DOUBLE_WIN:
                         if(scoreDom==scorePronoDom && scoreVisit == scorePronoVisit){
                             pronostics.get(i).setPoints(3);
                         }else{
@@ -203,6 +203,7 @@ public class MatchResource {
                         break;
 
                   }
+                  pronosticRepository.save(pronostics.get(i));
 
                   
 
