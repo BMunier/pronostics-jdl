@@ -147,8 +147,7 @@ export class MatchComponent implements OnInit, OnDestroy {
 
     refresh() {
         this.matchService.refresh().subscribe((response) => {
-            alert(response.body);
-            this.jhiAlertService.success('Success', null, null);
+            this.onSuccess(response, response.headers);
         });
     }
 }

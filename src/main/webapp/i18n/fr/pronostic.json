@@ -19,6 +19,7 @@
             },
             "scoreEquipeDomicile": "Score Equipe Domicile",
             "scoreEquipeVisiteur": "Score Equipe Visiteur",
+            "scoreUpdated": "Les scores des pronostics ont été mis à jour",
             "points": "Points",
             "match": "Match",
             "utilisateur": "Utilisateur"

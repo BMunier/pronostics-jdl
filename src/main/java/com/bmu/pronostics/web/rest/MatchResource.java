@@ -1,7 +1,14 @@
 package com.bmu.pronostics.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.sun.mail.iap.Response;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
@@ -12,7 +19,8 @@ import com.bmu.pronostics.repository.search.PronosticSearchRepository;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
 import com.bmu.pronostics.web.rest.util.HeaderUtil;
 import com.bmu.pronostics.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import com.codahale.metrics.annotation.Timed;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,19 +28,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import afu.org.checkerframework.checker.units.qual.Time;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Match.
@@ -59,7 +66,8 @@ public class MatchResource {
 
     private final int LOSE = 1;
 
-    public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository, PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
+    public MatchResource(MatchRepository matchRepository, MatchSearchRepository matchSearchRepository,
+            PronosticRepository pronosticRepository, PronosticSearchRepository pronosticSearchRepository) {
         this.matchRepository = matchRepository;
         this.matchSearchRepository = matchSearchRepository;
         this.pronosticRepository = pronosticRepository;
@@ -67,10 +75,12 @@ public class MatchResource {
     }
 
     /**
-     * POST  /matches : Create a new match.
+     * POST /matches : Create a new match.
      *
      * @param match the match to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new match, or with status 400 (Bad Request) if the match has already an ID
+     * @return the ResponseEntity with status 201 (Created) and with body the new
+     *         match, or with status 400 (Bad Request) if the match has already an
+     *         ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/matches")
@@ -83,17 +93,17 @@ public class MatchResource {
         Match result = matchRepository.save(match);
         matchSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/matches/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
 
     /**
-     * PUT  /matches : Updates an existing match.
+     * PUT /matches : Updates an existing match.
      *
      * @param match the match to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated match,
-     * or with status 400 (Bad Request) if the match is not valid,
-     * or with status 500 (Internal Server Error) if the match couldn't be updated
+     * @return the ResponseEntity with status 200 (OK) and with body the updated
+     *         match, or with status 400 (Bad Request) if the match is not valid, or
+     *         with status 500 (Internal Server Error) if the match couldn't be
+     *         updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/matches")
@@ -105,16 +115,16 @@ public class MatchResource {
         }
         Match result = matchRepository.save(match);
         matchSearchRepository.save(result);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, match.getId().toString()))
-            .body(result);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, match.getId().toString()))
+                .body(result);
     }
 
     /**
-     * GET  /matches : get all the matches.
+     * GET /matches : get all the matches.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of matches in body
+     * @return the ResponseEntity with status 200 (OK) and the list of matches in
+     *         body
      */
     @GetMapping("/matches")
     @Timed
@@ -126,10 +136,11 @@ public class MatchResource {
     }
 
     /**
-     * GET  /matches/:id : get the "id" match.
+     * GET /matches/:id : get the "id" match.
      *
      * @param id the id of the match to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the match, or with status 404 (Not Found)
+     * @return the ResponseEntity with status 200 (OK) and with body the match, or
+     *         with status 404 (Not Found)
      */
     @GetMapping("/matches/{id}")
     @Timed
@@ -140,7 +151,7 @@ public class MatchResource {
     }
 
     /**
-     * DELETE  /matches/:id : delete the "id" match.
+     * DELETE /matches/:id : delete the "id" match.
      *
      * @param id the id of the match to delete
      * @return the ResponseEntity with status 200 (OK)
@@ -155,10 +166,10 @@ public class MatchResource {
     }
 
     /**
-     * SEARCH  /_search/matches?query=:query : search for the match corresponding
-     * to the query.
+     * SEARCH /_search/matches?query=:query : search for the match corresponding to
+     * the query.
      *
-     * @param query the query of the match search
+     * @param query    the query of the match search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -173,42 +184,43 @@ public class MatchResource {
 
     @GetMapping("/matches/refresh")
     @Time
-    public int refreshMatches(Pageable pageable) {
+    public ResponseEntity<Void> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
         Integer nbPronosticsMatch = pronostics.size();
         Match matchTermine;
-        Integer scoreDom,scoreVisit,scorePronoDom,scorePronoVisit,scoreDiffMatch;
-        for (int i =0;i<nbPronosticsMatch;i++){
-             matchTermine = matchRepository.findOne(pronostics.get(i).getMatch().getId());
-             if(matchTermine.getStatut().equals(StatutMatch.TERMINE)){
-                  scoreDom = matchTermine.getScoreEquipeDomicile();
-                  scoreVisit = matchTermine.getScoreEquipeVisiteur();
-                  scorePronoDom = pronostics.get(i).getScoreEquipeDomicile();
-                  scorePronoVisit = pronostics.get(i).getScoreEquipeVisiteur();
-                  scoreDiffMatch = scoreDom-scoreVisit;
-                  switch( scoreDiffMatch.compareTo(scorePronoDom-scorePronoVisit)){
-                        case WIN:
-                            pronostics.get(i).setPoints(1);
-                        break;
-                        case DOUBLE_WIN:
-                        if(scoreDom==scorePronoDom && scoreVisit == scorePronoVisit){
-                            pronostics.get(i).setPoints(3);
-                        }else{
-                            pronostics.get(i).setPoints(1);
-                        }
-                        break;
-                        case LOSE:
-                        pronostics.get(i).setPoints(0);
-                        break;
-                  }
-                  pronosticRepository.save(pronostics.get(i));
-             }
+        Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
+
+        for (int i = 0; i < nbPronosticsMatch; i++) {
+            matchTermine = matchRepository.findOne(pronostics.get(i).getMatch().getId());
+            if (matchTermine.getStatut().equals(StatutMatch.TERMINE)) {
+                scoreDom = matchTermine.getScoreEquipeDomicile();
+                scoreVisit = matchTermine.getScoreEquipeVisiteur();
+                scorePronoDom = pronostics.get(i).getScoreEquipeDomicile();
+                scorePronoVisit = pronostics.get(i).getScoreEquipeVisiteur();
+                scoreDiffMatch = scoreDom - scoreVisit;
+                switch (scoreDiffMatch.compareTo(scorePronoDom - scorePronoVisit)) {
+                case WIN:
+                    pronostics.get(i).setPoints(1);
+                    break;
+                case DOUBLE_WIN:
+                    if (scoreDom == scorePronoDom && scoreVisit == scorePronoVisit) {
+                        pronostics.get(i).setPoints(3);
+                    } else {
+                        pronostics.get(i).setPoints(1);
+                    }
+                    break;
+                case LOSE:
+                    pronostics.get(i).setPoints(0);
+                    break;
+                }
+                pronosticRepository.save(pronostics.get(i));
+            }
         }
-        //Page<Match> page = matchRepository.findAll(pageable);
-        //HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
-        return Response.OK;
-        // return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, nbPronosticsMatch.toString())).build();
+        // Page<Match> page = matchRepository.findAll(pageable);
+        // HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "Success"))
+                .build();
     }
 
 }
