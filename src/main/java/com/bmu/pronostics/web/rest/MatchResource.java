@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.ResponseErrorHandler;
 
 import afu.org.checkerframework.checker.units.qual.Time;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -187,40 +188,38 @@ public class MatchResource {
     public ResponseEntity<Void> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
         List<Pronostic> pronostics = pronosticRepository.findAll();
-        Integer nbPronosticsMatch = pronostics.size();
         Match matchTermine;
         Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
 
-        for (int i = 0; i < nbPronosticsMatch; i++) {
-            matchTermine = matchRepository.findOne(pronostics.get(i).getMatch().getId());
+        for (Pronostic pronostic : pronosticRepository.findAll()) {
+            matchTermine = matchRepository.findOne(pronostic.getMatch().getId());
             if (matchTermine.getStatut().equals(StatutMatch.TERMINE)) {
                 scoreDom = matchTermine.getScoreEquipeDomicile();
                 scoreVisit = matchTermine.getScoreEquipeVisiteur();
-                scorePronoDom = pronostics.get(i).getScoreEquipeDomicile();
-                scorePronoVisit = pronostics.get(i).getScoreEquipeVisiteur();
+                scorePronoDom = pronostic.getScoreEquipeDomicile();
+                scorePronoVisit = pronostic.getScoreEquipeVisiteur();
                 scoreDiffMatch = scoreDom - scoreVisit;
                 switch (scoreDiffMatch.compareTo(scorePronoDom - scorePronoVisit)) {
                 case WIN:
-                    pronostics.get(i).setPoints(1);
+                    pronostic.setPoints(1);
                     break;
                 case DOUBLE_WIN:
                     if (scoreDom == scorePronoDom && scoreVisit == scorePronoVisit) {
-                        pronostics.get(i).setPoints(3);
+                        pronostic.setPoints(3);
                     } else {
-                        pronostics.get(i).setPoints(1);
+                        pronostic.setPoints(1);
                     }
                     break;
                 case LOSE:
-                    pronostics.get(i).setPoints(0);
+                    pronostic.setPoints(0);
                     break;
                 }
-                pronosticRepository.save(pronostics.get(i));
+                pronosticRepository.save(pronostic);
             }
         }
-        // Page<Match> page = matchRepository.findAll(pageable);
-        // HttpHeaders headers = PaginationUtil.(nbPronosticsMatch, "/api/matches");
+        
         return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "Success"))
                 .build();
-    }
+}
 
 }
