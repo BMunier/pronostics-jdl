@@ -7,6 +7,7 @@ export class Pays implements BaseEntity {
         public codeIso?: string,
         public drapeauContentType?: string,
         public drapeau?: any,
+        public competitions?: BaseEntity[],
     ) {
     }
 }

@@ -2,7 +2,6 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
 import { Competition } from './competition.model';
 import { CompetitionService } from './competition.service';
 
@@ -11,7 +10,6 @@ export class CompetitionPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
-        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private competitionService: CompetitionService
@@ -31,10 +29,20 @@ export class CompetitionPopupService {
                 this.competitionService.find(id)
                     .subscribe((competitionResponse: HttpResponse<Competition>) => {
                         const competition: Competition = competitionResponse.body;
-                        competition.dateDebut = this.datePipe
-                            .transform(competition.dateDebut, 'yyyy-MM-ddTHH:mm:ss');
-                        competition.dateFin = this.datePipe
-                            .transform(competition.dateFin, 'yyyy-MM-ddTHH:mm:ss');
+                        if (competition.dateDebut) {
+                            competition.dateDebut = {
+                                year: competition.dateDebut.getFullYear(),
+                                month: competition.dateDebut.getMonth() + 1,
+                                day: competition.dateDebut.getDate()
+                            };
+                        }
+                        if (competition.dateFin) {
+                            competition.dateFin = {
+                                year: competition.dateFin.getFullYear(),
+                                month: competition.dateFin.getMonth() + 1,
+                                day: competition.dateFin.getDate()
+                            };
+                        }
                         this.ngbModalRef = this.competitionModalRef(component, competition);
                         resolve(this.ngbModalRef);
                     });

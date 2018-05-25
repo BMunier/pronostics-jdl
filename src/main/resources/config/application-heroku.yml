@@ -12,7 +12,7 @@
 
 eureka:
     instance:
-        hostname: whispering-waters-81552.herokuapp.com
+        hostname: pronostics-jdl.herokuapp.com
         non-secure-port: 80
         prefer-ip-address: false
     client:

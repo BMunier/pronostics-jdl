@@ -4,14 +4,6 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pronosticsApp.match.scoreEquipeDomicile">Score Equipe Domicile</span></dt>
-        <dd>
-            <span>{{match.scoreEquipeDomicile}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur">Score Equipe Visiteur</span></dt>
-        <dd>
-            <span>{{match.scoreEquipeVisiteur}}</span>
-        </dd>
         <dt><span jhiTranslate="pronosticsApp.match.date">Date</span></dt>
         <dd>
             <span>{{match.date | date:'medium'}}</span>
@@ -20,6 +12,18 @@
         <dd>
             <span jhiTranslate="{{'pronosticsApp.StatutMatch.' + match.statut}}">{{match.statut}}</span>
         </dd>
+        <dt><span jhiTranslate="pronosticsApp.match.code">Code</span></dt>
+        <dd>
+            <span>{{match.code}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.match.scoreEquipeDomicile">Score Equipe Domicile</span></dt>
+        <dd>
+            <span>{{match.scoreEquipeDomicile}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur">Score Equipe Visiteur</span></dt>
+        <dd>
+            <span>{{match.scoreEquipeVisiteur}}</span>
+        </dd>
         <dt><span jhiTranslate="pronosticsApp.match.phaseCompetition">Phase Competition</span></dt>
         <dd>
             <span jhiTranslate="{{'pronosticsApp.PhaseCompetition.' + match.phaseCompetition}}">{{match.phaseCompetition}}</span>
@@ -27,6 +31,12 @@
         <dt><span jhiTranslate="pronosticsApp.match.groupe">Groupe</span></dt>
         <dd>
             <span>{{match.groupe}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.match.competition">Competition</span></dt>
+        <dd>
+            <div *ngIf="match.competition">
+                <a [routerLink]="['/competition', match.competition?.id]">{{match.competition?.nom}}</a>
+            </div>
         </dd>
         <dt><span jhiTranslate="pronosticsApp.match.stade">Stade</span></dt>
         <dd>
@@ -44,12 +54,6 @@
         <dd>
             <div *ngIf="match.equipeVisiteur">
                 <a [routerLink]="['/equipe', match.equipeVisiteur?.id]">{{match.equipeVisiteur?.codeEquipe}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.match.competition">Competition</span></dt>
-        <dd>
-            <div *ngIf="match.competition">
-                <a [routerLink]="['/competition', match.competition?.id]">{{match.competition?.nom}}</a>
             </div>
         </dd>
     </dl>

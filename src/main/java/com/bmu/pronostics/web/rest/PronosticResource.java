@@ -1,16 +1,13 @@
 package com.bmu.pronostics.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.collect.Collections2;
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.domain.User;
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
 import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
-import com.bmu.pronostics.repository.UserRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
-import com.bmu.pronostics.security.UserNotActivatedException;
 import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
 import com.bmu.pronostics.web.rest.errors.NoUserLoggedException;
@@ -61,8 +58,10 @@ public class PronosticResource {
     public PronosticResource(PronosticRepository pronosticRepository,
             PronosticSearchRepository pronosticSearchRepository, UserService userService,
             MatchRepository matchRepository) {
+   
         this.pronosticRepository = pronosticRepository;
         this.pronosticSearchRepository = pronosticSearchRepository;
+
         this.userService = userService;
         this.matchRepository = matchRepository;
     }
@@ -115,30 +114,6 @@ public class PronosticResource {
     }
 
     /**
-     * PUT /pronostics : Updates an existing pronostic.
-     *
-     * @param pronostic the pronostic to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated
-     *         pronostic, or with status 400 (Bad Request) if the pronostic is not
-     *         valid, or with status 500 (Internal Server Error) if the pronostic
-     *         couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/pronosticsSaisi")
-    @Timed
-    public ResponseEntity<Pronostic> updatePronosticSaisie(@Valid @RequestBody Pronostic pronostic)
-            throws URISyntaxException {
-        log.debug("REST request to update PronosticSaisie : {}", pronostic);
-        if (pronostic.getId() == null) {
-            return createPronostic(pronostic);
-        }
-        Pronostic result = pronosticRepository.save(pronostic);
-        pronosticSearchRepository.save(result);
-        return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString())).body(result);
-    }
-
-    /**
      * GET /pronostics : get all the pronostics.
      *
      * @param pageable the pagination information
@@ -152,76 +127,6 @@ public class PronosticResource {
         Page<Pronostic> page = pronosticRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronostics");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET /pronostics : get all the pronostics.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
-     *         body
-     */
-    @GetMapping("/pronosticsSaisi")
-    @Timed
-    public ResponseEntity<List<Pronostic>> getAllPronosticsSaisie(Pageable pageable, Long idUtilisateur) {
-        log.debug("REST request to get a page of PronosticsSaisi");
-        Optional<User> user = userService.getUserWithAuthorities();
-        if (!user.isPresent()) {
-            throw new NoUserLoggedException();
-        }
-        // On recherche les match pour pouvoir ajouter les pronos non-encore saisis
-        List<Match> matchesExistents = matchRepository.findAll();
-        List<Match> matchesDejaPronostiques = new ArrayList<Match>();
-        List<Pronostic> pronostics = pronosticRepository.findAllByUtilisateur(pageable, user.get());
-        // On regarde si le prono existe existe déjà pour le match
-        pronostics.forEach(pronostic -> {
-            matchesDejaPronostiques.add(pronostic.getMatch());
-        });
-
-        matchesExistents.removeAll(matchesDejaPronostiques);
-        matchesExistents.forEach(match ->{
-            pronostics.add(creerNouveauPronostic(match,user.get()));
-        }
-        );
-        List<Pronostic> retourProno = sortPronostics(pronostics);
-        int start = pageable.getOffset();
-        int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
-                : (start + pageable.getPageSize());
-
-        Page<Pronostic> page = new PageImpl<Pronostic>(retourProno.subList(start, end), pageable, retourProno.size());
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    private Pronostic creerNouveauPronostic(Match match, User user){
-        return new Pronostic().match(match).utilisateur(user);
-        
-    }
-
-      /**
-     * Méthode qui trie les pronos selon l'ordre désiré
-     *
-     * @param pronostics Liste de pronosti
-     * @return les pronostics triés par Statut puis par date
-     */
-    private List<Pronostic> sortPronostics(List<Pronostic> pronostics){
-        pronostics.sort(new Comparator<Pronostic>() {
-          	@Override
-			public int compare(Pronostic o1, Pronostic o2) {
-                if(o1.getMatch().getStatut().name()==o2.getMatch().getStatut().name()){
-                    return o1.getMatch().getDate().compareTo(o2.getMatch().getDate());
-                }
-                if(o1.getMatch().getStatut().name()==StatutMatch.TERMINE.name()){
-                    return 1;
-                }else if (o1.getMatch().getStatut().name()==StatutMatch.EN_COURS.name()){
-                        if(o2.getMatch().getStatut().name()==StatutMatch.TERMINE.name()){
-                            return -1;
-                        }
-                }
-                return -1;
-			}
-        });
-        return pronostics;
     }
 
     /**
@@ -270,6 +175,100 @@ public class PronosticResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page,
                 "/api/_search/pronostics");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * * PUT /pronostics : Updates an existing pronostic. * * @param pronostic the
+     * pronostic to update * @return the ResponseEntity with status 200 (OK) and
+     * with body the updated * pronostic, or with status 400 (Bad Request) if the
+     * pronostic is not * valid, or with status 500 (Internal Server Error) if the
+     * pronostic * couldn't be updated * @throws URISyntaxException if the Location
+     * URI syntax is incorrect
+     */
+    @PutMapping("/pronosticsSaisi")
+    @Timed
+    public ResponseEntity<Pronostic> updatePronosticSaisie(@Valid @RequestBody Pronostic pronostic)
+            throws URISyntaxException {
+        log.debug("REST request to update PronosticSaisie : {}", pronostic);
+        if (pronostic.getId() == null) {
+            return createPronostic(pronostic);
+        }
+        Pronostic result = pronosticRepository.save(pronostic);
+        pronosticSearchRepository.save(result);
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString())).body(result);
+    }
+
+    /**
+     /**
+     * GET /pronostics : get all the pronostics.
+    * GET  /pronostics/:id : get the "id" pronostic.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
+     *         body
+     */
+    @GetMapping("/pronosticsSaisi")
+    @Timed
+    public ResponseEntity<List<Pronostic>> getAllPronosticsSaisie(Pageable pageable, Long idUtilisateur) {
+        log.debug("REST request to get a page of PronosticsSaisi");
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (!user.isPresent()) {
+            throw new NoUserLoggedException();
+        }
+        // On recherche les match pour pouvoir ajouter les pronos nonencore saisis
+        List<Match> matchesExistents = matchRepository.findAll();
+        List<Match> matchesDejaPronostiques = new ArrayList<Match>();
+        List<Pronostic> pronostics = pronosticRepository.findByUtilisateurIsCurrentUser();
+        // On regarde si le prono existe existe déjà pour le match
+        pronostics.forEach(pronostic->{
+            matchesDejaPronostiques.add(pronostic.getMatch());
+        });
+
+        matchesExistents.removeAll(matchesDejaPronostiques);
+        matchesExistents.forEach(match->{
+            pronostics.add(creerNouveauPronostic(match,user.get()));
+        }
+        );
+        List<Pronostic> retourProno = sortPronostics(pronostics);
+        int start = pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
+                : (start + pageable.getPageSize());
+
+        Page<Pronostic> page = new PageImpl<Pronostic>(retourProno.subList(start, end), pageable, retourProno.size());
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    private Pronostic creerNouveauPronostic(Match match, User user) {
+        return new Pronostic().match(match).utilisateur(user);
+
+    }
+
+    /**
+     * Méthode qui trie les pronos selon l'ordre désiré
+     *
+     * @param pronostics Liste de pronosti
+     * @return les pronostics triés par Statut puis par date
+     */
+    private List<Pronostic> sortPronostics(List<Pronostic> pronostics) {
+        pronostics.sort(new Comparator<Pronostic>() {
+            @Override
+            public int compare(Pronostic o1, Pronostic o2) {
+                if (o1.getMatch().getStatut().name() == o2.getMatch().getStatut().name()) {
+                    return o1.getMatch().getDate().compareTo(o2.getMatch().getDate());
+                }
+                if (o1.getMatch().getStatut().name() == StatutMatch.TERMINE.name()) {
+                    return 1;
+                } else if (o1.getMatch().getStatut().name() == StatutMatch.EN_COURS.name()) {
+                    if (o2.getMatch().getStatut().name() == StatutMatch.TERMINE.name()) {
+                        return 1;
+                    }
+                }
+                return 1;
+            }
+        });
+        return pronostics;
     }
 
 }

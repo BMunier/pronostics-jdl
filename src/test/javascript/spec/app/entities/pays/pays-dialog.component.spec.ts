@@ -9,6 +9,7 @@ import { PronosticsTestModule } from '../../../test.module';
 import { PaysDialogComponent } from '../../../../../../main/webapp/app/entities/pays/pays-dialog.component';
 import { PaysService } from '../../../../../../main/webapp/app/entities/pays/pays.service';
 import { Pays } from '../../../../../../main/webapp/app/entities/pays/pays.model';
+import { CompetitionService } from '../../../../../../main/webapp/app/entities/competition';
 
 describe('Component Tests', () => {
 
@@ -24,6 +25,7 @@ describe('Component Tests', () => {
                 imports: [PronosticsTestModule],
                 declarations: [PaysDialogComponent],
                 providers: [
+                    CompetitionService,
                     PaysService
                 ]
             })

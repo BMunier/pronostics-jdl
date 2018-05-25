@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.stade.pays" for="field_pays">Pays</label>
-            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="stade.pays">
+            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="stade.pays" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="paysOption.id === stade.pays?.id ? stade.pays : paysOption" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
             </select>

@@ -9,9 +9,9 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Match } from './match.model';
 import { MatchPopupService } from './match-popup.service';
 import { MatchService } from './match.service';
+import { Competition, CompetitionService } from '../competition';
 import { Stade, StadeService } from '../stade';
 import { Equipe, EquipeService } from '../equipe';
-import { Competition, CompetitionService } from '../competition';
 
 @Component({
     selector: 'jhi-match-dialog',
@@ -22,68 +22,31 @@ export class MatchDialogComponent implements OnInit {
     match: Match;
     isSaving: boolean;
 
+    competitions: Competition[];
+
     stades: Stade[];
 
-    equipedomiciles: Equipe[];
-
-    equipevisiteurs: Equipe[];
-
-    competitions: Competition[];
+    equipes: Equipe[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private matchService: MatchService,
+        private competitionService: CompetitionService,
         private stadeService: StadeService,
         private equipeService: EquipeService,
-        private competitionService: CompetitionService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.stadeService
-            .query({filter: 'match-is-null'})
-            .subscribe((res: HttpResponse<Stade[]>) => {
-                if (!this.match.stade || !this.match.stade.id) {
-                    this.stades = res.body;
-                } else {
-                    this.stadeService
-                        .find(this.match.stade.id)
-                        .subscribe((subRes: HttpResponse<Stade>) => {
-                            this.stades = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.equipeService
-            .query({filter: 'match-is-null'})
-            .subscribe((res: HttpResponse<Equipe[]>) => {
-                if (!this.match.equipeDomicile || !this.match.equipeDomicile.id) {
-                    this.equipedomiciles = res.body;
-                } else {
-                    this.equipeService
-                        .find(this.match.equipeDomicile.id)
-                        .subscribe((subRes: HttpResponse<Equipe>) => {
-                            this.equipedomiciles = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.equipeService
-            .query({filter: 'match-is-null'})
-            .subscribe((res: HttpResponse<Equipe[]>) => {
-                if (!this.match.equipeVisiteur || !this.match.equipeVisiteur.id) {
-                    this.equipevisiteurs = res.body;
-                } else {
-                    this.equipeService
-                        .find(this.match.equipeVisiteur.id)
-                        .subscribe((subRes: HttpResponse<Equipe>) => {
-                            this.equipevisiteurs = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.competitionService.query()
             .subscribe((res: HttpResponse<Competition[]>) => { this.competitions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.stadeService.query()
+            .subscribe((res: HttpResponse<Stade[]>) => { this.stades = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.equipeService.query()
+            .subscribe((res: HttpResponse<Equipe[]>) => { this.equipes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -120,15 +83,15 @@ export class MatchDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
+    trackCompetitionById(index: number, item: Competition) {
+        return item.id;
+    }
+
     trackStadeById(index: number, item: Stade) {
         return item.id;
     }
 
     trackEquipeById(index: number, item: Equipe) {
-        return item.id;
-    }
-
-    trackCompetitionById(index: number, item: Competition) {
         return item.id;
     }
 }

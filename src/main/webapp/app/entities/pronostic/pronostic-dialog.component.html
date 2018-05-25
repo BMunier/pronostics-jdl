@@ -50,7 +50,7 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.match" for="field_match">Match</label>
-            <select class="form-control" id="field_match" name="match" [(ngModel)]="pronostic.match">
+            <select class="form-control" id="field_match" name="match" [(ngModel)]="pronostic.match" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="matchOption.id === pronostic.match?.id ? pronostic.match : matchOption" *ngFor="let matchOption of matches; trackBy: trackMatchById">{{matchOption.id}}</option>
             </select>

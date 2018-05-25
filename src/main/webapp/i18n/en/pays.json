@@ -19,7 +19,8 @@
             },
             "nom": "Nom",
             "codeIso": "Code Iso",
-            "drapeau": "Drapeau"
+            "drapeau": "Drapeau",
+            "competition": "Competition"
         }
     }
 }

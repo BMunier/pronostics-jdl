@@ -21,8 +21,9 @@
             "description": "Description",
             "dateDebut": "Date Debut",
             "dateFin": "Date Fin",
+            "equipe": "Equipe",
             "pays": "Pays",
-            "equipe": "Equipe"
+            "stade": "Stade"
         }
     }
 }

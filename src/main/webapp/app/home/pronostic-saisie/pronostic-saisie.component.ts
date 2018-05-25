@@ -39,7 +39,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
 
   ) {
       this.pronostics = [];
-      this.itemsPerPage = ITEMS_PER_PAGE;
+      this.itemsPerPage = 100;
       this.page = 0;
       this.links = {
           last: 0

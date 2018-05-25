@@ -32,12 +32,15 @@
             <column name="points" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="match_id" type="bigint">
-                <constraints unique="false" nullable="true" />
-            </column>            
-            <column name="utilisateur_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints nullable="true" />
             </column>
+
+            <column name="utilisateur_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
