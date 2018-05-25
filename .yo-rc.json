@@ -40,7 +40,7 @@
       "de"
     ],
     "herokuDeployType": "git",
-    "herokuAppName": null
+    "herokuAppName": "pronostics-jdl"
   },
   "generator-jhipster-pages": {
     "promptValues": {
