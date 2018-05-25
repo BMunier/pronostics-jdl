@@ -1,11 +1,11 @@
 <div>
-    <h2><span data-translate="pronosticsApp.about.about.title">About</span></h2>
+    <h2><span jhitranslate="pronosticsApp.about.about.title">About</span></h2>
     <hr>
-    Ce programme a été développé par GLOBAZ pour permettre à ces employés de perpétuer le jeux des pronostics 
-    existants depuis la création de GLOBAZ en 2001.
+    Ce programme a été développé par GLOBAZ pour permettre à ses employés de perpétuer le jeux des pronostics 
+    existants depuis la création de l'entreprise en 2001.
     </br>
     </br>
-    Les participants à ce développement sont :
+    Les contributeurs à ce développement sont :
     </br>
     </br>
     <table>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>
+                <td valign="top">
                     <ul>
                         <li>Bastien Munier</li>
                         <li>Anthony Helg</li>
@@ -24,8 +24,8 @@
                         <li>Fabrice Gogniat</li>
                         <li>Jean-Marc Colard</li>
                     </ul>
-                <td>
                 </td>
+                <td valign="top">
                     <ul>
                         <li>Jérémy Wermeille</li>
                         <li>Magali Butillon</li>
@@ -37,24 +37,29 @@
                     </ul>    
                 </td>
             </tr>
-        </tbody>
-    </table>
-    </div>
-    <p>
-    <h4>Merci à toute c't'équipe pour leur engagement dans la joie et la bonne humeur !</h4>
-    </p>
-    <jhi-alert-error></jhi-alert-error>
-
-<div class="table-responsive" *ngIf="abouts">
-    <table class="table table-striped">
-        <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let about of abouts ;trackBy: trackId">
-        </tr>
+            <tr>
+                <td colspan="3" align="center">
+                    <h4>Merci à toute c't'équipe pour leur engagement dans la joie et la bonne humeur !</h4>
+                    <br/>
+                    <img src="../../../content/images/mascotte.jpg" align="center" alt="Mascotte"  width="200">
+                </td>                    
+            </tr>
         </tbody>
     </table>
 </div>
+
+<div>
+    <jhi-alert-error></jhi-alert-error>
+    <div class="table-responsive" *ngIf="abouts">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let about of abouts ;trackBy: trackId">
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
