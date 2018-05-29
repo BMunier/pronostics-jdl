@@ -3,7 +3,7 @@
         {
             "pageName": "About",
             "pageType": "clientOnly",
-            "pageGlyphIcon": "equalizer",
+            "pageGlyphIcon": "bullhorn",
             "fields": []
         },
         {
@@ -13,6 +13,6 @@
             "fields": []
         }
     ],
-    "pageSetGlyphIcon": "equalizer",
+    "pageSetGlyphIcon": "bullhorn",
     "changelogDate": "20180518065453"
 }
