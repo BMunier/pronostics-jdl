@@ -4,6 +4,7 @@ import com.bmu.pronostics.PronosticsApp;
 
 import com.bmu.pronostics.domain.Competition;
 import com.bmu.pronostics.repository.CompetitionRepository;
+import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.CompetitionSearchRepository;
 import com.bmu.pronostics.web.rest.errors.ExceptionTranslator;
 
@@ -58,6 +59,9 @@ public class CompetitionResourceIntTest {
 
     @Autowired
     private CompetitionSearchRepository competitionSearchRepository;
+    
+    @Autowired
+    private PronosticRepository pronosticRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -78,7 +82,7 @@ public class CompetitionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CompetitionResource competitionResource = new CompetitionResource(competitionRepository, competitionSearchRepository);
+        final CompetitionResource competitionResource = new CompetitionResource(competitionRepository, competitionSearchRepository,pronosticRepository);
         this.restCompetitionMockMvc = MockMvcBuilders.standaloneSetup(competitionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
