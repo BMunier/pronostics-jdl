@@ -43,7 +43,7 @@ export class MatchService {
     }
 
     refresh(): Observable<EntityResponseType> {
-        return this.http.get<any>(this.resourceRefreshUrl, { observe: 'response' });
+        return this.http.put<any>(this.resourceRefreshUrl, { observe: 'response' });
     }
 
     delete(id: number): Observable<HttpResponse<any>> {

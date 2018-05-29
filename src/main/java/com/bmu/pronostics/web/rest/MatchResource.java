@@ -37,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.ResponseErrorHandler;
-
 import afu.org.checkerframework.checker.units.qual.Time;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -183,11 +181,10 @@ public class MatchResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/matches/refresh")
+    @PutMapping("/matches/refresh")
     @Time
     public ResponseEntity<Void> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
-        List<Pronostic> pronostics = pronosticRepository.findAll();
         Match matchTermine;
         Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
 
@@ -217,9 +214,9 @@ public class MatchResource {
                 pronosticRepository.save(pronostic);
             }
         }
-        
+        // return ResponseUtil.wrapOrNotFound(savedProno, HeaderUtil.createAlert("userManagement.updated", ""));
         return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "Success"))
                 .build();
-}
+    }
 
 }
