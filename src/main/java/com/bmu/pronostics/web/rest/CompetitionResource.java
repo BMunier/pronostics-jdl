@@ -48,7 +48,11 @@ import io.github.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class CompetitionResource {
 
-    private final Logger log = LoggerFactory.getLogger(CompetitionResource.class);
+    private static final int POINT_PRONO_PARTIEL = 1;
+
+	private static final int POINT_PRONO_JUSTE = 3;
+
+	private final Logger log = LoggerFactory.getLogger(CompetitionResource.class);
 
     private static final String ENTITY_NAME = "competition";
 
@@ -168,28 +172,32 @@ public class CompetitionResource {
     @GetMapping("/competitions/classement")
     @Timed
     public List<LigneClassementDTO> calculerClassement(){
-    	List<Pronostic> pronostics = pronosticRepository.findAll();
+    	//recherche des pronos
+    	List<Pronostic> pronostics = pronosticRepository.findForMatchsTerminesOnly();
     	
+    	//itération sur tous les pronos et calcul des points
     	Map<Long, LigneClassementDTO> lignesClassementByUserIdMap = new HashMap<Long, LigneClassementDTO>();
     	for(Pronostic pronostic : pronostics) {
     		if(pronostic.getPoints()==null) {
+    			log.warn("les points du prono sont null alors que le match est terminé "+pronostic.getId());
     			continue;
     		}
-    		User utilisateur =  pronostic.getUtilisateur();
     		
+    		User utilisateur =  pronostic.getUtilisateur();
     		Integer incPronosJustes=0;
     		Integer incPronosPartiels=0;
     		Integer incPronosFaux=0;
     		Integer incPronosJoues=1;
     		
-    		if(pronostic.getPoints()==3) {
+    		if(pronostic.getPoints()==POINT_PRONO_JUSTE) {
     			incPronosJustes=1;
-    		}else if(pronostic.getPoints()==1) {
+    		}else if(pronostic.getPoints()==POINT_PRONO_PARTIEL) {
     			incPronosPartiels=1;
     		}else {
     			incPronosFaux=1;
     		}
     		
+    		//création ou mise à jour de la ligne de classement
     		if(lignesClassementByUserIdMap.containsKey(utilisateur.getId())) {
     			LigneClassementDTO ligneClassementActuelle = lignesClassementByUserIdMap.get(utilisateur.getId());
     			ligneClassementActuelle.setNbPointsTotal(ligneClassementActuelle.getNbPointsTotal()+pronostic.getPoints());
@@ -203,11 +211,11 @@ public class CompetitionResource {
     		}
         }
         
+    	//récupération des lignes de classement et tri
         List<LigneClassementDTO>  lignesClassement = new ArrayList<LigneClassementDTO>();
         for(Map.Entry<Long,LigneClassementDTO> entry : lignesClassementByUserIdMap.entrySet()){
             lignesClassement.add(entry.getValue());
         }
-        
         Collections.sort(lignesClassement);
         Collections.reverse(lignesClassement);
     	
