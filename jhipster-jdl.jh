@@ -1,8 +1,8 @@
 entity Competition {
 	nom String required,
     description String,
-    dateDebut Instant required,
-    dateFin Instant required
+    dateDebut LocalDate required,
+    dateFin LocalDate required
 }
 
 entity Pays {
@@ -18,17 +18,19 @@ entity Stade {
 
 entity Equipe {
 	codeEquipe String,
+    nomEquipe String,
     rangFifa Integer,
     ecusson ImageBlob required
 }
 
 
 entity Match {
+	date Instant required,
+  	statut StatutMatch required,
+    code String,
 	scoreEquipeDomicile Integer,
     scoreEquipeVisiteur Integer,
-    date Instant required,
-    statut StatutMatch required,
-	phaseCompetition PhaseCompetition required
+	phaseCompetition PhaseCompetition,
     groupe String
 }
 
@@ -48,24 +50,21 @@ enum PhaseCompetition {
     GROUPE, HUITIEME, QUART, DEMI, FINAL
 }
 
-relationship OneToOne {
-	Competition{pays(nom)} to Pays,
+relationship ManyToOne {
+	Match{competition(nom)} to Competition,
     Equipe{pays(nom)} to Pays,
     Stade{pays(nom)} to Pays,
     Match{stade(nom)} to Stade,
-    Match{equipeDomicile(codeEquipe)} to Equipe,
-    Match{equipeVisiteur(codeEquipe)} to Equipe,
-    Match{stade(nom)} to Stade,
     Pronostic{match} to Match,
-    Pronostic{utilisateur(login)} to User
-}
-
-relationship ManyToOne {
-	Match{competition(nom)} to Competition
+    Pronostic{utilisateur(login)} to User,
+    Match{equipeDomicile(codeEquipe)} to Equipe,
+    Match{equipeVisiteur(codeEquipe)} to Equipe
 }
 
 relationship ManyToMany {
-	Competition{equipe(codeEquipe)} to Equipe{competition}
+	Competition{equipe(codeEquipe)} to Equipe{competition},
+	Competition{pays(nom)} to Pays{competition},
+    Competition{stade(nom)} to Stade{competition}
 }
 
 // Set pagination options

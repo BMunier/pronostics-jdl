@@ -33,20 +33,22 @@ describe('Match e2e test', () => {
 
     it('should create and save Matches', () => {
         matchComponentsPage.clickOnCreateButton();
+        matchDialogPage.setDateInput(12310020012301);
+        expect(matchDialogPage.getDateInput()).toMatch('2001-12-31T02:30');
+        matchDialogPage.statutSelectLastOption();
+        matchDialogPage.setCodeInput('code');
+        expect(matchDialogPage.getCodeInput()).toMatch('code');
         matchDialogPage.setScoreEquipeDomicileInput('5');
         expect(matchDialogPage.getScoreEquipeDomicileInput()).toMatch('5');
         matchDialogPage.setScoreEquipeVisiteurInput('5');
         expect(matchDialogPage.getScoreEquipeVisiteurInput()).toMatch('5');
-        matchDialogPage.setDateInput(12310020012301);
-        expect(matchDialogPage.getDateInput()).toMatch('2001-12-31T02:30');
-        matchDialogPage.statutSelectLastOption();
         matchDialogPage.phaseCompetitionSelectLastOption();
         matchDialogPage.setGroupeInput('groupe');
         expect(matchDialogPage.getGroupeInput()).toMatch('groupe');
+        matchDialogPage.competitionSelectLastOption();
         matchDialogPage.stadeSelectLastOption();
         matchDialogPage.equipeDomicileSelectLastOption();
         matchDialogPage.equipeVisiteurSelectLastOption();
-        matchDialogPage.competitionSelectLastOption();
         matchDialogPage.save();
         expect(matchDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -73,36 +75,21 @@ export class MatchDialogPage {
     modalTitle = element(by.css('h4#myMatchLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    scoreEquipeDomicileInput = element(by.css('input#field_scoreEquipeDomicile'));
-    scoreEquipeVisiteurInput = element(by.css('input#field_scoreEquipeVisiteur'));
     dateInput = element(by.css('input#field_date'));
     statutSelect = element(by.css('select#field_statut'));
+    codeInput = element(by.css('input#field_code'));
+    scoreEquipeDomicileInput = element(by.css('input#field_scoreEquipeDomicile'));
+    scoreEquipeVisiteurInput = element(by.css('input#field_scoreEquipeVisiteur'));
     phaseCompetitionSelect = element(by.css('select#field_phaseCompetition'));
     groupeInput = element(by.css('input#field_groupe'));
+    competitionSelect = element(by.css('select#field_competition'));
     stadeSelect = element(by.css('select#field_stade'));
     equipeDomicileSelect = element(by.css('select#field_equipeDomicile'));
     equipeVisiteurSelect = element(by.css('select#field_equipeVisiteur'));
-    competitionSelect = element(by.css('select#field_competition'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
-
-    setScoreEquipeDomicileInput = function(scoreEquipeDomicile) {
-        this.scoreEquipeDomicileInput.sendKeys(scoreEquipeDomicile);
-    };
-
-    getScoreEquipeDomicileInput = function() {
-        return this.scoreEquipeDomicileInput.getAttribute('value');
-    };
-
-    setScoreEquipeVisiteurInput = function(scoreEquipeVisiteur) {
-        this.scoreEquipeVisiteurInput.sendKeys(scoreEquipeVisiteur);
-    };
-
-    getScoreEquipeVisiteurInput = function() {
-        return this.scoreEquipeVisiteurInput.getAttribute('value');
-    };
 
     setDateInput = function(date) {
         this.dateInput.sendKeys(date);
@@ -123,6 +110,30 @@ export class MatchDialogPage {
     statutSelectLastOption = function() {
         this.statutSelect.all(by.tagName('option')).last().click();
     };
+    setCodeInput = function(code) {
+        this.codeInput.sendKeys(code);
+    };
+
+    getCodeInput = function() {
+        return this.codeInput.getAttribute('value');
+    };
+
+    setScoreEquipeDomicileInput = function(scoreEquipeDomicile) {
+        this.scoreEquipeDomicileInput.sendKeys(scoreEquipeDomicile);
+    };
+
+    getScoreEquipeDomicileInput = function() {
+        return this.scoreEquipeDomicileInput.getAttribute('value');
+    };
+
+    setScoreEquipeVisiteurInput = function(scoreEquipeVisiteur) {
+        this.scoreEquipeVisiteurInput.sendKeys(scoreEquipeVisiteur);
+    };
+
+    getScoreEquipeVisiteurInput = function() {
+        return this.scoreEquipeVisiteurInput.getAttribute('value');
+    };
+
     setPhaseCompetitionSelect = function(phaseCompetition) {
         this.phaseCompetitionSelect.sendKeys(phaseCompetition);
     };
@@ -140,6 +151,22 @@ export class MatchDialogPage {
 
     getGroupeInput = function() {
         return this.groupeInput.getAttribute('value');
+    };
+
+    competitionSelectLastOption = function() {
+        this.competitionSelect.all(by.tagName('option')).last().click();
+    };
+
+    competitionSelectOption = function(option) {
+        this.competitionSelect.sendKeys(option);
+    };
+
+    getCompetitionSelect = function() {
+        return this.competitionSelect;
+    };
+
+    getCompetitionSelectedOption = function() {
+        return this.competitionSelect.element(by.css('option:checked')).getText();
     };
 
     stadeSelectLastOption = function() {
@@ -188,22 +215,6 @@ export class MatchDialogPage {
 
     getEquipeVisiteurSelectedOption = function() {
         return this.equipeVisiteurSelect.element(by.css('option:checked')).getText();
-    };
-
-    competitionSelectLastOption = function() {
-        this.competitionSelect.all(by.tagName('option')).last().click();
-    };
-
-    competitionSelectOption = function(option) {
-        this.competitionSelect.sendKeys(option);
-    };
-
-    getCompetitionSelect = function() {
-        return this.competitionSelect;
-    };
-
-    getCompetitionSelectedOption = function() {
-        return this.competitionSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

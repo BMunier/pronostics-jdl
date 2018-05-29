@@ -3,8 +3,10 @@ package com.bmu.pronostics.web.rest;
 import com.bmu.pronostics.PronosticsApp;
 
 import com.bmu.pronostics.domain.Pronostic;
+import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
+import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -70,28 +72,31 @@ public class PronosticResourceIntTest {
 
     private Pronostic pronostic;
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private MatchRepository matchRepository;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PronosticResource pronosticResource = new PronosticResource(pronosticRepository, pronosticSearchRepository);
+        final PronosticResource pronosticResource = new PronosticResource(pronosticRepository,
+                pronosticSearchRepository,userService, matchRepository);
         this.restPronosticMockMvc = MockMvcBuilders.standaloneSetup(pronosticResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver).setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService()).setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
      * Create an entity for this test.
      *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
+     * This is a static method, as tests for other entities might also need it, if
+     * they test an entity which requires the current entity.
      */
     public static Pronostic createEntity(EntityManager em) {
-        Pronostic pronostic = new Pronostic()
-            .scoreEquipeDomicile(DEFAULT_SCORE_EQUIPE_DOMICILE)
-            .scoreEquipeVisiteur(DEFAULT_SCORE_EQUIPE_VISITEUR)
-            .points(DEFAULT_POINTS);
+        Pronostic pronostic = new Pronostic().scoreEquipeDomicile(DEFAULT_SCORE_EQUIPE_DOMICILE)
+                .scoreEquipeVisiteur(DEFAULT_SCORE_EQUIPE_VISITEUR).points(DEFAULT_POINTS);
         return pronostic;
     }
 
@@ -107,10 +112,8 @@ public class PronosticResourceIntTest {
         int databaseSizeBeforeCreate = pronosticRepository.findAll().size();
 
         // Create the Pronostic
-        restPronosticMockMvc.perform(post("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pronostic)))
-            .andExpect(status().isCreated());
+        restPronosticMockMvc.perform(post("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(pronostic))).andExpect(status().isCreated());
 
         // Validate the Pronostic in the database
         List<Pronostic> pronosticList = pronosticRepository.findAll();
@@ -134,10 +137,8 @@ public class PronosticResourceIntTest {
         pronostic.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPronosticMockMvc.perform(post("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pronostic)))
-            .andExpect(status().isBadRequest());
+        restPronosticMockMvc.perform(post("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(pronostic))).andExpect(status().isBadRequest());
 
         // Validate the Pronostic in the database
         List<Pronostic> pronosticList = pronosticRepository.findAll();
@@ -153,10 +154,8 @@ public class PronosticResourceIntTest {
 
         // Create the Pronostic, which fails.
 
-        restPronosticMockMvc.perform(post("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pronostic)))
-            .andExpect(status().isBadRequest());
+        restPronosticMockMvc.perform(post("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(pronostic))).andExpect(status().isBadRequest());
 
         List<Pronostic> pronosticList = pronosticRepository.findAll();
         assertThat(pronosticList).hasSize(databaseSizeBeforeTest);
@@ -171,10 +170,8 @@ public class PronosticResourceIntTest {
 
         // Create the Pronostic, which fails.
 
-        restPronosticMockMvc.perform(post("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pronostic)))
-            .andExpect(status().isBadRequest());
+        restPronosticMockMvc.perform(post("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(pronostic))).andExpect(status().isBadRequest());
 
         List<Pronostic> pronosticList = pronosticRepository.findAll();
         assertThat(pronosticList).hasSize(databaseSizeBeforeTest);
@@ -187,13 +184,12 @@ public class PronosticResourceIntTest {
         pronosticRepository.saveAndFlush(pronostic);
 
         // Get all the pronosticList
-        restPronosticMockMvc.perform(get("/api/pronostics?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(pronostic.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
-            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS)));
+        restPronosticMockMvc.perform(get("/api/pronostics?sort=id,desc")).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(pronostic.getId().intValue())))
+                .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
+                .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
+                .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS)));
     }
 
     @Test
@@ -203,21 +199,19 @@ public class PronosticResourceIntTest {
         pronosticRepository.saveAndFlush(pronostic);
 
         // Get the pronostic
-        restPronosticMockMvc.perform(get("/api/pronostics/{id}", pronostic.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(pronostic.getId().intValue()))
-            .andExpect(jsonPath("$.scoreEquipeDomicile").value(DEFAULT_SCORE_EQUIPE_DOMICILE))
-            .andExpect(jsonPath("$.scoreEquipeVisiteur").value(DEFAULT_SCORE_EQUIPE_VISITEUR))
-            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS));
+        restPronosticMockMvc.perform(get("/api/pronostics/{id}", pronostic.getId())).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(pronostic.getId().intValue()))
+                .andExpect(jsonPath("$.scoreEquipeDomicile").value(DEFAULT_SCORE_EQUIPE_DOMICILE))
+                .andExpect(jsonPath("$.scoreEquipeVisiteur").value(DEFAULT_SCORE_EQUIPE_VISITEUR))
+                .andExpect(jsonPath("$.points").value(DEFAULT_POINTS));
     }
 
     @Test
     @Transactional
     public void getNonExistingPronostic() throws Exception {
         // Get the pronostic
-        restPronosticMockMvc.perform(get("/api/pronostics/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restPronosticMockMvc.perform(get("/api/pronostics/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -230,17 +224,14 @@ public class PronosticResourceIntTest {
 
         // Update the pronostic
         Pronostic updatedPronostic = pronosticRepository.findOne(pronostic.getId());
-        // Disconnect from session so that the updates on updatedPronostic are not directly saved in db
+        // Disconnect from session so that the updates on updatedPronostic are not
+        // directly saved in db
         em.detach(updatedPronostic);
-        updatedPronostic
-            .scoreEquipeDomicile(UPDATED_SCORE_EQUIPE_DOMICILE)
-            .scoreEquipeVisiteur(UPDATED_SCORE_EQUIPE_VISITEUR)
-            .points(UPDATED_POINTS);
+        updatedPronostic.scoreEquipeDomicile(UPDATED_SCORE_EQUIPE_DOMICILE)
+                .scoreEquipeVisiteur(UPDATED_SCORE_EQUIPE_VISITEUR).points(UPDATED_POINTS);
 
-        restPronosticMockMvc.perform(put("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedPronostic)))
-            .andExpect(status().isOk());
+        restPronosticMockMvc.perform(put("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(updatedPronostic))).andExpect(status().isOk());
 
         // Validate the Pronostic in the database
         List<Pronostic> pronosticList = pronosticRepository.findAll();
@@ -262,11 +253,10 @@ public class PronosticResourceIntTest {
 
         // Create the Pronostic
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
-        restPronosticMockMvc.perform(put("/api/pronostics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pronostic)))
-            .andExpect(status().isCreated());
+        // If the entity doesn't have an ID, it will be created instead of just being
+        // updated
+        restPronosticMockMvc.perform(put("/api/pronostics").contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(pronostic))).andExpect(status().isCreated());
 
         // Validate the Pronostic in the database
         List<Pronostic> pronosticList = pronosticRepository.findAll();
@@ -282,9 +272,9 @@ public class PronosticResourceIntTest {
         int databaseSizeBeforeDelete = pronosticRepository.findAll().size();
 
         // Get the pronostic
-        restPronosticMockMvc.perform(delete("/api/pronostics/{id}", pronostic.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restPronosticMockMvc
+                .perform(delete("/api/pronostics/{id}", pronostic.getId()).accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean pronosticExistsInEs = pronosticSearchRepository.exists(pronostic.getId());
@@ -304,12 +294,11 @@ public class PronosticResourceIntTest {
 
         // Search the pronostic
         restPronosticMockMvc.perform(get("/api/_search/pronostics?query=id:" + pronostic.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(pronostic.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
-            .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS)));
+                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(pronostic.getId().intValue())))
+                .andExpect(jsonPath("$.[*].scoreEquipeDomicile").value(hasItem(DEFAULT_SCORE_EQUIPE_DOMICILE)))
+                .andExpect(jsonPath("$.[*].scoreEquipeVisiteur").value(hasItem(DEFAULT_SCORE_EQUIPE_VISITEUR)))
+                .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS)));
     }
 
     @Test

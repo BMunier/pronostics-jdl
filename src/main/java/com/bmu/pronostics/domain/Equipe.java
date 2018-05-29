@@ -32,6 +32,9 @@ public class Equipe implements Serializable {
     @Column(name = "code_equipe")
     private String codeEquipe;
 
+    @Column(name = "nom_equipe")
+    private String nomEquipe;
+
     @Column(name = "rang_fifa")
     private Integer rangFifa;
 
@@ -43,8 +46,7 @@ public class Equipe implements Serializable {
     @Column(name = "ecusson_content_type", nullable = false)
     private String ecussonContentType;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Pays pays;
 
     @ManyToMany(mappedBy = "equipes")
@@ -72,6 +74,19 @@ public class Equipe implements Serializable {
 
     public void setCodeEquipe(String codeEquipe) {
         this.codeEquipe = codeEquipe;
+    }
+
+    public String getNomEquipe() {
+        return nomEquipe;
+    }
+
+    public Equipe nomEquipe(String nomEquipe) {
+        this.nomEquipe = nomEquipe;
+        return this;
+    }
+
+    public void setNomEquipe(String nomEquipe) {
+        this.nomEquipe = nomEquipe;
     }
 
     public Integer getRangFifa() {
@@ -177,6 +192,7 @@ public class Equipe implements Serializable {
         return "Equipe{" +
             "id=" + getId() +
             ", codeEquipe='" + getCodeEquipe() + "'" +
+            ", nomEquipe='" + getNomEquipe() + "'" +
             ", rangFifa=" + getRangFifa() +
             ", ecusson='" + getEcusson() + "'" +
             ", ecussonContentType='" + getEcussonContentType() + "'" +

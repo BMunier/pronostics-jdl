@@ -39,19 +39,8 @@ export class EquipeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.paysService
-            .query({filter: 'equipe-is-null'})
-            .subscribe((res: HttpResponse<Pays[]>) => {
-                if (!this.equipe.pays || !this.equipe.pays.id) {
-                    this.pays = res.body;
-                } else {
-                    this.paysService
-                        .find(this.equipe.pays.id)
-                        .subscribe((subRes: HttpResponse<Pays>) => {
-                            this.pays = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.paysService.query()
+            .subscribe((res: HttpResponse<Pays[]>) => { this.pays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.competitionService.query()
             .subscribe((res: HttpResponse<Competition[]>) => { this.competitions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }

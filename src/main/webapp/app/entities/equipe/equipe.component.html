@@ -31,6 +31,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="codeEquipe"><span jhiTranslate="pronosticsApp.equipe.codeEquipe">Code Equipe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nomEquipe"><span jhiTranslate="pronosticsApp.equipe.nomEquipe">Nom Equipe</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="rangFifa"><span jhiTranslate="pronosticsApp.equipe.rangFifa">Rang Fifa</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="ecusson"><span jhiTranslate="pronosticsApp.equipe.ecusson">Ecusson</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="pays.nom"><span jhiTranslate="pronosticsApp.equipe.pays">Pays</span> <span class="fa fa-sort"></span></th>
@@ -41,6 +42,7 @@
             <tr *ngFor="let equipe of equipes ;trackBy: trackId">
                 <td><a [routerLink]="['../equipe', equipe.id ]">{{equipe.id}}</a></td>
                 <td>{{equipe.codeEquipe}}</td>
+                <td>{{equipe.nomEquipe}}</td>
                 <td>{{equipe.rangFifa}}</td>
                 <td>
                     <a *ngIf="equipe.ecusson" (click)="openFile(equipe.ecussonContentType, equipe.ecusson)">

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Competition.
+    -->
+    <changeSet id="20180501094355-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="competitions_id"
+                                 baseTableName="competition_equipe"
+                                 constraintName="fk_competition_equipe_competitions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="competition"/>
+        <addForeignKeyConstraint baseColumnNames="equipes_id"
+                                 baseTableName="competition_equipe"
+                                 constraintName="fk_competition_equipe_equipes_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="equipe"/>
+        
+        <addForeignKeyConstraint baseColumnNames="competitions_id"
+                                 baseTableName="competition_pays"
+                                 constraintName="fk_competition_pays_competitions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="competition"/>
+        <addForeignKeyConstraint baseColumnNames="pays_id"
+                                 baseTableName="competition_pays"
+                                 constraintName="fk_competition_pays_pays_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pays"/>
+        
+        <addForeignKeyConstraint baseColumnNames="competitions_id"
+                                 baseTableName="competition_stade"
+                                 constraintName="fk_competition_stade_competitions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="competition"/>
+        <addForeignKeyConstraint baseColumnNames="stades_id"
+                                 baseTableName="competition_stade"
+                                 constraintName="fk_competition_stade_stades_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="stade"/>
+        
+    </changeSet>
+</databaseChangeLog>

@@ -60,16 +60,4 @@
 
 <div>
     <jhi-alert-error></jhi-alert-error>
-    <div class="table-responsive" *ngIf="abouts">
-        <table class="table table-striped">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let about of abouts ;trackBy: trackId">
-            </tr>
-            </tbody>
-        </table>
-    </div>
 </div>

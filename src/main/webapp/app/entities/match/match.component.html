@@ -30,28 +30,35 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="scoreEquipeDomicile"><span jhiTranslate="pronosticsApp.match.scoreEquipeDomicile">Score Equipe Domicile</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="scoreEquipeVisiteur"><span jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur">Score Equipe Visiteur</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="date"><span jhiTranslate="pronosticsApp.match.date">Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="statut"><span jhiTranslate="pronosticsApp.match.statut">Statut</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="code"><span jhiTranslate="pronosticsApp.match.code">Code</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="scoreEquipeDomicile"><span jhiTranslate="pronosticsApp.match.scoreEquipeDomicile">Score Equipe Domicile</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="scoreEquipeVisiteur"><span jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur">Score Equipe Visiteur</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="phaseCompetition"><span jhiTranslate="pronosticsApp.match.phaseCompetition">Phase Competition</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="groupe"><span jhiTranslate="pronosticsApp.match.groupe">Groupe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="competition.nom"><span jhiTranslate="pronosticsApp.match.competition">Competition</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="stade.nom"><span jhiTranslate="pronosticsApp.match.stade">Stade</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="equipeDomicile.codeEquipe"><span jhiTranslate="pronosticsApp.match.equipeDomicile">Equipe Domicile</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="equipeVisiteur.codeEquipe"><span jhiTranslate="pronosticsApp.match.equipeVisiteur">Equipe Visiteur</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="competition.nom"><span jhiTranslate="pronosticsApp.match.competition">Competition</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let match of matches ;trackBy: trackId">
                 <td><a [routerLink]="['../match', match.id ]">{{match.id}}</a></td>
-                <td>{{match.scoreEquipeDomicile}}</td>
-                <td>{{match.scoreEquipeVisiteur}}</td>
                 <td>{{match.date | date:'medium'}}</td>
                 <td jhiTranslate="{{'pronosticsApp.StatutMatch.' + match.statut}}">{{match.statut}}</td>
+                <td>{{match.code}}</td>
+                <td>{{match.scoreEquipeDomicile}}</td>
+                <td>{{match.scoreEquipeVisiteur}}</td>
                 <td jhiTranslate="{{'pronosticsApp.PhaseCompetition.' + match.phaseCompetition}}">{{match.phaseCompetition}}</td>
                 <td>{{match.groupe}}</td>
+                <td>
+                    <div *ngIf="match.competition">
+                        <a [routerLink]="['../competition', match.competition?.id ]" >{{match.competition?.nom}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="match.stade">
                         <a [routerLink]="['../stade', match.stade?.id ]" >{{match.stade?.nom}}</a>
@@ -65,11 +72,6 @@
                 <td>
                     <div *ngIf="match.equipeVisiteur">
                         <a [routerLink]="['../equipe', match.equipeVisiteur?.id ]" >{{match.equipeVisiteur?.codeEquipe}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="match.competition">
-                        <a [routerLink]="['../competition', match.competition?.id ]" >{{match.competition?.nom}}</a>
                     </div>
                 </td>
                 <td class="text-right">

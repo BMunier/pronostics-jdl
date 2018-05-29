@@ -71,9 +71,9 @@ export class CompetitionService {
     private convertItemFromServer(competition: Competition): Competition {
         const copy: Competition = Object.assign({}, competition);
         copy.dateDebut = this.dateUtils
-            .convertDateTimeFromServer(competition.dateDebut);
+            .convertLocalDateFromServer(competition.dateDebut);
         copy.dateFin = this.dateUtils
-            .convertDateTimeFromServer(competition.dateFin);
+            .convertLocalDateFromServer(competition.dateFin);
         return copy;
     }
 
@@ -82,10 +82,10 @@ export class CompetitionService {
      */
     private convert(competition: Competition): Competition {
         const copy: Competition = Object.assign({}, competition);
-
-        copy.dateDebut = this.dateUtils.toDate(competition.dateDebut);
-
-        copy.dateFin = this.dateUtils.toDate(competition.dateFin);
+        copy.dateDebut = this.dateUtils
+            .convertLocalDateToServer(competition.dateDebut);
+        copy.dateFin = this.dateUtils
+            .convertLocalDateToServer(competition.dateFin);
         return copy;
     }
 }

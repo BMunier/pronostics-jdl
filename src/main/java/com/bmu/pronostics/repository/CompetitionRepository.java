@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
-    @Query("select distinct competition from Competition competition left join fetch competition.equipes")
+    @Query("select distinct competition from Competition competition left join fetch competition.equipes left join fetch competition.pays left join fetch competition.stades")
     List<Competition> findAllWithEagerRelationships();
 
-    @Query("select competition from Competition competition left join fetch competition.equipes where competition.id =:id")
+    @Query("select competition from Competition competition left join fetch competition.equipes left join fetch competition.pays left join fetch competition.stades where competition.id =:id")
     Competition findOneWithEagerRelationships(@Param("id") Long id);
 
 }

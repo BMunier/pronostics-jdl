@@ -37,12 +37,10 @@ public class Pronostic implements Serializable {
     @Column(name = "points")
     private Integer points;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Match match;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private User utilisateur;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

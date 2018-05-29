@@ -1,6 +1,14 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "competition",
+            "otherEntityName": "competition",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "pays"
+        }
+    ],
     "fields": [
         {
             "fieldName": "nom",
