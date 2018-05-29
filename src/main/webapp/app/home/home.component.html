@@ -18,7 +18,7 @@
             </div>
             <div class="alert alert-warning">
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
-                <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+                <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a> <span jhiTranslate="global.messages.info.register.suffix">.</span>
             </div>
         <!-- </div> -->
     </div>
@@ -26,12 +26,6 @@
 
 <!-- Affichage des matchs et prono si user loggé -->
 <div class="row" *ngIf="isAuthenticated()">
-    <!-- Matchs et pronos -->
-    <div class="col-md-8">
-        Matchs et pronos
-    </div>
-    <!-- Side bar droite pour classement-->
-    <div class="col-md-4">
-        Classement
-    </div>
-</div>
+
+        <jhi-pronostic-saisie></jhi-pronostic-saisie>
+</div>     

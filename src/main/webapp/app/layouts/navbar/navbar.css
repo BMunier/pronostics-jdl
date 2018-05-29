@@ -7,7 +7,8 @@ Navbar
 }
 
 .jh-navbar {
-    background-color: #353d47;
+    background-color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */ 
+    background-image: url("../../../content/images/background.png");
     padding: .2em 1em;
 }
 
@@ -19,7 +20,7 @@ Navbar
 }
 
 .jh-navbar .dropdown-item.active, .jh-navbar .dropdown-item.active:focus, .jh-navbar .dropdown-item.active:hover {
-    background-color: #353d47;
+    background-color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */
 }
 
 .jh-navbar .dropdown-toggle::after {
@@ -81,7 +82,7 @@ Logo styles
 
 .logo-img {
     height: 100%;
-    background: url("../../../content/images/FIFA_World_Cup_2018_Logo_small.png") no-repeat center center;
+    background: url("../../../content/images/logo-navbar.jpg") no-repeat center center;
     background-size: contain;
     width: 100%;
 }

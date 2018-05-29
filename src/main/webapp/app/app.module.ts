@@ -14,6 +14,7 @@ import { PronosticsAppRoutingModule} from './app-routing.module';
 import { PronosticsHomeModule } from './home/home.module';
 import { PronosticsAdminModule } from './admin/admin.module';
 import { PronosticsAccountModule } from './account/account.module';
+import { PronosticsPageSetsModule } from './pages/page-sets.module';
 import { PronosticsEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 import { StateStorageService } from './shared/auth/state-storage.service';
@@ -36,6 +37,7 @@ import {
         PronosticsSharedModule,
         PronosticsHomeModule,
         PronosticsAdminModule,
+        PronosticsPageSetsModule,
         PronosticsAccountModule,
         PronosticsEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
