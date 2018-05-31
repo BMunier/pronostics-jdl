@@ -1,6 +1,7 @@
 package com.bmu.pronostics.service.dto;
 
 public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
+	private Long idUtilisateur;
 	private String nomUtilisateur;
 	private String prenomUtilisateur;
 	private Integer nbPointsTotal;
@@ -8,9 +9,11 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	private Integer nbPronosPartiels;
 	private Integer nbPronosFaux;
 	private Integer nbPronosJoues;
+	private Long position;
 	
-	public LigneClassementDTO(String nomUtilisateur, String prenomUtilisateur, Integer nbPointsTotal,Integer nbPronosJustes, Integer nbPronosPartiels,Integer nbPronosFaux, Integer nbPronosJoues) {
+	public LigneClassementDTO(Long idUtilisateur, String nomUtilisateur, String prenomUtilisateur, Integer nbPointsTotal,Integer nbPronosJustes, Integer nbPronosPartiels,Integer nbPronosFaux, Integer nbPronosJoues) {
 		super();
+		this.idUtilisateur = idUtilisateur;
 		this.nomUtilisateur = nomUtilisateur;
 		this.prenomUtilisateur = prenomUtilisateur;
 		this.nbPointsTotal = nbPointsTotal;
@@ -61,6 +64,30 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	}
 	public void setNbPronosJoues(Integer nbPronosJoues) {
 		this.nbPronosJoues = nbPronosJoues;
+	}
+	/**
+	 * @return the idUtilisateur
+	 */
+	public Long getIdUtilisateur() {
+		return idUtilisateur;
+	}
+	/**
+	 * @param idUtilisateur the idUtilisateur to set
+	 */
+	public void setIdUtilisateur(Long idUtilisateur) {
+		this.idUtilisateur = idUtilisateur;
+	}
+	/**
+	 * @return the position
+	 */
+	public Long getPosition() {
+		return position;
+	}
+	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(Long position) {
+		this.position = position;
 	}
 	@Override
 	public int compareTo(LigneClassementDTO o) {

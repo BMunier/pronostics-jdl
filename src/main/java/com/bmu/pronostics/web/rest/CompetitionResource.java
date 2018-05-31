@@ -62,6 +62,8 @@ public class CompetitionResource {
     
     private final PronosticRepository pronosticRepository;
 
+    private long position;
+
     public CompetitionResource(CompetitionRepository competitionRepository, CompetitionSearchRepository competitionSearchRepository, PronosticRepository pronosticRepository) {
         this.competitionRepository = competitionRepository;
         this.competitionSearchRepository = competitionSearchRepository;
@@ -206,7 +208,7 @@ public class CompetitionResource {
     			ligneClassementActuelle.setNbPronosFaux(ligneClassementActuelle.getNbPronosFaux()+incPronosFaux);
     			ligneClassementActuelle.setNbPronosJoues(ligneClassementActuelle.getNbPronosJoues()+incPronosJoues);
     		}else {
-    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
+    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getId(),utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
     			lignesClassementByUserIdMap.put(utilisateur.getId(), ligneClassement);
     		}
         }
@@ -218,7 +220,14 @@ public class CompetitionResource {
         }
         Collections.sort(lignesClassement);
         Collections.reverse(lignesClassement);
-    	
+        
+        //On donne une position au classement
+        position= 0;
+        lignesClassement.forEach(ligneClassement->{
+            position++;
+            ligneClassement.setPosition(position);
+            
+        });
     	return lignesClassement;
     }
 

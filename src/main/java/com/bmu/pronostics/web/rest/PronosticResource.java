@@ -10,6 +10,8 @@ import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
 import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
+import com.bmu.pronostics.web.rest.errors.EmailNotFoundException;
+import com.bmu.pronostics.web.rest.errors.MatchAlreadyPlayedException;
 import com.bmu.pronostics.web.rest.errors.NoUserLoggedException;
 import com.bmu.pronostics.web.rest.util.HeaderUtil;
 import com.bmu.pronostics.web.rest.util.PaginationUtil;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -190,6 +193,10 @@ public class PronosticResource {
     public ResponseEntity<Pronostic> updatePronosticSaisie(@Valid @RequestBody Pronostic pronostic)
             throws URISyntaxException {
         log.debug("REST request to update PronosticSaisie : {}", pronostic);
+        if(pronostic.matchDejaJoue()){
+            throw new MatchAlreadyPlayedException();
+           
+        }
         if (pronostic.getId() == null) {
             return createPronostic(pronostic);
         }
@@ -198,6 +205,8 @@ public class PronosticResource {
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pronostic.getId().toString())).body(result);
     }
+
+  
 
     /**
      /**
