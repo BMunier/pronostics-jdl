@@ -59,11 +59,11 @@
                     <td>{{pronostic.match?.equipeVisiteur.pays.nom}}</td>
                     <td>{{pronostic.match?.scoreEquipeDomicile}} - {{pronostic.match?.scoreEquipeVisiteur}} </td>
                     <td>
-                        <input pattern="[0-9]+" ngModel [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeDomicile"
+                        <input pattern="[0-9]+" size="2" maxlength="2" ngModel [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeDomicile"
                             name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile" />
                     </td>
                     <td>
-                        <input size="2" maxlength="2" [disabled]="dateIsApres(pronostic.match.date)" type="number" class="form-control" id="scoreEquipeVisiteur"
+                        <input size="2" maxlength="2" [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeVisiteur"
                             name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur" />
                     </td>
                     <td>

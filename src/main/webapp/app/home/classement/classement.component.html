@@ -34,28 +34,31 @@
         </tr>
       </thead>
       <tbody>
+
         <tr *ngFor="let classement of classements">
-          <td>
+
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.position}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nomUtilisateur}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.prenomUtilisateur}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPointsTotal}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPronosPartiels}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPronosFaux}}
           </td>
-          <td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPronosJoues}}
           </td>
+
         </tr>
       </tbody>
     </table>

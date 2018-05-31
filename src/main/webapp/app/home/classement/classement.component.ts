@@ -18,15 +18,6 @@ export class ClassementComponent implements OnInit {
   currentAccount: any;
   eventSubscriber: Subscription;
   itemsPerPage: number;
-  links: any;
-  page: any;
-  predicate: any;
-  queryCount: any;
-  reverse: any;
-  totalItems: number;
-  currentSearch: string;
-  error: any;
-  success: any;
   routeData: any;
 
   constructor(
@@ -51,7 +42,17 @@ export class ClassementComponent implements OnInit {
         (res: HttpErrorResponse) => this.onError(res.message)
     );
 }
+getColor(idUtilisateur){
+    if(idUtilisateur== this.currentAccount.id){
+    return "#44E908";
+    }
+
+}
 ngOnInit(){
+    this.principal.identity().then((account) => {
+        console.log(account);
+        this.currentAccount = account;
+    });
   this.loadAll();
 }
 
