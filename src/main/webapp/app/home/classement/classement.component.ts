@@ -44,7 +44,7 @@ export class ClassementComponent implements OnInit {
 }
 getColor(idUtilisateur){
     if(idUtilisateur== this.currentAccount.id){
-    return "#44E908";
+    return "#C6F6A9";
     }
 
 }

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +102,8 @@ public class EquipeResource {
      */
     @GetMapping("/equipes")
     @Timed
-    public ResponseEntity<List<Equipe>> getAllEquipes(Pageable pageable) {
+    
+    public ResponseEntity<List<Equipe>> getAllEquipes(@PageableDefault(size=100)Pageable pageable) {
         log.debug("REST request to get a page of Equipes");
         Page<Equipe> page = equipeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/equipes");
