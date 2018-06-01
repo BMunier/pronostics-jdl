@@ -1,0 +1,66 @@
+<div>
+  <h2>
+    <span>Classement</span>
+  </h2>
+  <br/>
+ 
+
+
+  <div class="table-responsive" *ngIf="classements">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            <span>Pos</span>
+          </th>
+          <th>
+            <span>Nom</span>
+          </th>
+          <th>
+            <span>Nom</span>
+          </th>
+          <th>
+            <span>Nb points</span>
+          </th>
+          <th>
+            <span>Pronos partiels</span>
+          </th>
+          <th>
+            <span>Pronos faux</span>
+          </th>
+          <th>
+            <span>Pronos joués</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let classement of classements">
+
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.position}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nomUtilisateur}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.prenomUtilisateur}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nbPointsTotal}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nbPronosPartiels}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nbPronosFaux}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nbPronosJoues}}
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

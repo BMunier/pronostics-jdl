@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -117,7 +118,9 @@ public class Pronostic implements Serializable {
         this.utilisateur = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
+    public boolean matchDejaJoue(){
+        return Instant.now().isAfter(getMatch().getDate());
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

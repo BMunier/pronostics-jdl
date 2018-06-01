@@ -3,56 +3,32 @@
         <span jhiTranslate="pronosticsApp.pronostic.home.title">Pronostics</span>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'pronosticsApp.pronostic.home.search' | translate }}">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="pronostics">
         <table class="table table-striped">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                    <th jhiSortBy="match.date">
+                    <th>
                         <span>Date</span>
-                        <span class="fa fa-sort"></span>
                     </th>
                     <th>
-                        <span>Id</span>
-                        
-                    </th>
-                    <th>
-                        <span>Equipe Domicile</span>
-                        
-                    </th>
-                    <th>
-                        <span>Equipe Visiteur</span>
-                        
-                    </th>
-                    <th>
-                        <span>Score Equipe Domicile</span>
-                        
-                    </th>
-                    <th>
-                        <span>Score Equipe Visiteur</span>
+                        <span>Domicile</span>
 
                     </th>
                     <th>
-                        <span>Prono Score Equipe Domicile</span>
+                        <span>Visiteur</span>
 
                     </th>
                     <th>
-                        <span>Prono Score Equipe Visiteur</span>
+                        <span>Score</span>
+
+                    </th>
+                    <th>
+                        <span>Prono Domicile</span>
+
+                    </th>
+                    <th>
+                        <span>Prono Visiteur</span>
 
                     </th>
                     <th>
@@ -67,9 +43,9 @@
                         <span>Valider</span>
 
                     </th>
-                    <th jhiSortBy="points">
+                    <th>
                         <span jhiTranslate="pronosticsApp.pronostic.points">Points</span>
-                        <span class="fa fa-sort"></span>
+                        <span></span>
                     </th>
                     <th></th>
                 </tr>
@@ -79,18 +55,16 @@
                     <td>
                         {{pronostic.match?.date | date:'dd.MM.yyyy HH:mm'}}
                     </td>
-                    <td>{{pronostic.id}}</td>
                     <td>{{pronostic.match?.equipeDomicile.pays.nom}}</td>
                     <td>{{pronostic.match?.equipeVisiteur.pays.nom}}</td>
-                    <td>{{pronostic.match?.scoreEquipeDomicile}}</td>
-                    <td>{{pronostic.match?.scoreEquipeVisiteur}}</td>
+                    <td>{{pronostic.match?.scoreEquipeDomicile}} - {{pronostic.match?.scoreEquipeVisiteur}} </td>
                     <td>
-                        <input [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeDomicile" name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile"
-                        />
+                        <input pattern="[0-9]+" size="2" maxlength="2" ngModel [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeDomicile"
+                            name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile" />
                     </td>
                     <td>
-                        <input [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeVisiteur" name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur"
-                        />
+                        <input size="2" maxlength="2" [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeVisiteur"
+                            name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur" />
                     </td>
                     <td>
                         {{pronostic.match?.statut}}
