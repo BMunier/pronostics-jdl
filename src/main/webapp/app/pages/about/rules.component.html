@@ -1,17 +1,27 @@
 <div>
-    <h2><span data-translate="pronosticsApp.about.rules.title">Rules</span></h2>
-    <hr>
-	<h3>Enjeu</h3>
-		<p style="margin-left: 20px">
-			La moitié des perdants paye le repas de la moitié des gagnants.<br/>
-			<span style="margin-left: 25px">
-				En cas de nombre de joueurs impair, celui du milieu se paye son repas.
-			</span>
-		</p>
-	<h3>Mode de pronostic</h3>
-			<table style="margin-left: 20px">
-				<thead>
+	<h2><span jhiTranslate="pronosticsApp.about.rules.title">Rules</span></h2>
+	<hr>
 
+	<div class="row">
+        <div class="col-md-6">
+			<h3>Enjeu</h3>
+			<p style="margin-left: 20px">
+				La moitié des perdants paye le repas de la moitié des gagnants.<br/>
+				En cas de nombre de joueurs impair, celui du milieu se paye son repas.
+			</p>
+		<h3>Ajout/Modification des pronostics</h3>
+			<p style="margin-left: 20px">
+				Un joueur ne peut déposer qu'un seul pronostic par match.<br/>
+				Un joueur ne peut ajouter ou modifier un pronostic qu'avant le début du match.
+			</p>
+			<h4 style="margin-left: 25px">Mode de pronostic</h4>
+			<table style="margin-left: 30px">
+				<thead>
+						<tr>
+							<th>Modes</th>
+							<th>&nbsp;</th>
+							<th>Descriptions</th>
+						</tr>		
 				</thead>
 				<tbody>
 					<tr>
@@ -42,73 +52,62 @@
 				</tbody>
 			</table>
 			<p></p>
-	<h3>Ajout/Modification des pronostics</h3>
-		<p style="margin-left: 20px">
-			Un joueur ne peut déposer qu'un seul pronostic par match.<br/>
-			Un joueur ne peut ajouter ou modifier un pronostic qu'avant le début du match.
-		</p>
-	<h3>Evaluation des résultats</h3>
-		<p style="margin-left: 20px">
-			Les résultats pris en compte sont ceux du temps règlementaire<br/>
-			<span style="margin-left: 25px">
-				Ne sont pas comptés les prolonguations !<br>
-			</span>
-			<span style="margin-left: 25px">
-				Ne sont pas comptés les tirs au but !
-			</span>
-		</p>
-		<table style="margin-left: 20px">
-			<thead>
-				<tr>
-					<th width="300">PRONOSTIC</th>
-					<th width="10">&nbsp;</th>
-					<th width="100"><b>Point(s)</b></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Pronostic juste et résultat juste</td>
-					<td>&nbsp;</td>
-					<td><b>3 points</b></td>
-				</tr>
-				<tr>
-					<td>Pronostic juste et résultat faux</td>
-					<td>&nbsp;</td>
-					<td><b>1 points</b></td>
-				</tr>
-				<tr>
-					<td>Pronostic faux et résultat faux</td>
-					<td>&nbsp;</td>
-					<td><b>0 points</b></td>
-				</tr>
-			</tbody>
-		</table>
-		<p></p>
-	<h3>Classement</h3>
-		<p style="margin-left: 20px">
-			Le classement est établi selon les criètres suivants :
-		</p>
-		<p style="margin-left: 20px">
-			1. Maximum de points<br/>
-			2. Si égalité : Maximum de pronostics à 3 points<br/>
-			3. Si égalité : Maximum de pronostics à 1 point<br/>
-			4. Si égalité : Maximum de pronostics à 0 point<br/>
-			5. Maximum de pronostics<br/>
-			6. Ordre alphabétique du nom et prénom du pronostiqueur
-		</p>
+		</div>
+        <div class="col-md-6">
+			<h3>Evaluation des résultats</h3>
+			<p style="margin-left: 20px">
+				Les résultats pris en compte sont ceux du temps règlementaire<br/>
+				<span style="margin-left: 25px">
+					Ne sont pas comptés les prolonguations !<br>
+				</span>
+				<span style="margin-left: 25px">
+					Ne sont pas comptés les tirs au but !
+				</span>
+			</p>
+			<table style="margin-left: 20px">
+				<thead>
+					<tr>
+						<th width="300">Evaluations</th>
+						<th width="10">&nbsp;</th>
+						<th width="100"><b>Points)</b></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Pronostic juste et résultat juste</td>
+						<td>&nbsp;</td>
+						<td><b>3 points</b></td>
+					</tr>
+					<tr>
+						<td>Pronostic juste et résultat faux</td>
+						<td>&nbsp;</td>
+						<td><b>1 points</b></td>
+					</tr>
+					<tr>
+						<td>Pronostic faux et résultat faux</td>
+						<td>&nbsp;</td>
+						<td><b>0 points</b></td>
+					</tr>
+				</tbody>
+			</table>
+			<p></p>
+		<h3>Classement</h3>
+			<p style="margin-left: 20px">
+				Le classement est établi selon les criètres suivants :
+			</p>
+			<p style="margin-left: 20px">
+				<ol>
+					<li>Maximum de points</li>
+					<li>Si égalité : Maximum de pronostics à 3 points</li>
+					<li>Si égalité : Maximum de pronostics à 1 point</li>
+					<li>Si égalité : Maximum de pronostics à 0 point</li>
+					<li>Si égalité : Maximum de pronostics</li>
+					<li>Si toujours égalité : Ordre alphabétique du nom et prénom du pronostiqueur</li>
+					<li>Si encore et toujours égalité : à la tête du client !</li>
+				</ol>
+			</p>
+		</div>
+    </div>
 
 	<jhi-alert-error></jhi-alert-error>
-
-	<div class="table-responsive" *ngIf="rules">
-		<table class="table table-striped">
-			<thead>
-				<tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let rules of rules ;trackBy: trackId">
-				</tr>
-			</tbody>
-		</table>
-	</div>
 </div>

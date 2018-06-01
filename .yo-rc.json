@@ -40,7 +40,7 @@
       "de"
     ],
     "herokuDeployType": "git",
-    "herokuAppName": "whispering-waters-81552"
+    "herokuAppName": "pronostics-jdl"
   },
   "generator-jhipster-pages": {
     "promptValues": {

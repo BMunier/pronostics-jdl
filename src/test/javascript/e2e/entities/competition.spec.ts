@@ -37,12 +37,13 @@ describe('Competition e2e test', () => {
         expect(competitionDialogPage.getNomInput()).toMatch('nom');
         competitionDialogPage.setDescriptionInput('description');
         expect(competitionDialogPage.getDescriptionInput()).toMatch('description');
-        competitionDialogPage.setDateDebutInput(12310020012301);
-        expect(competitionDialogPage.getDateDebutInput()).toMatch('2001-12-31T02:30');
-        competitionDialogPage.setDateFinInput(12310020012301);
-        expect(competitionDialogPage.getDateFinInput()).toMatch('2001-12-31T02:30');
-        competitionDialogPage.paysSelectLastOption();
+        competitionDialogPage.setDateDebutInput('2000-12-31');
+        expect(competitionDialogPage.getDateDebutInput()).toMatch('2000-12-31');
+        competitionDialogPage.setDateFinInput('2000-12-31');
+        expect(competitionDialogPage.getDateFinInput()).toMatch('2000-12-31');
         // competitionDialogPage.equipeSelectLastOption();
+        // competitionDialogPage.paysSelectLastOption();
+        // competitionDialogPage.stadeSelectLastOption();
         competitionDialogPage.save();
         expect(competitionDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -73,8 +74,9 @@ export class CompetitionDialogPage {
     descriptionInput = element(by.css('input#field_description'));
     dateDebutInput = element(by.css('input#field_dateDebut'));
     dateFinInput = element(by.css('input#field_dateFin'));
-    paysSelect = element(by.css('select#field_pays'));
     equipeSelect = element(by.css('select#field_equipe'));
+    paysSelect = element(by.css('select#field_pays'));
+    stadeSelect = element(by.css('select#field_stade'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -112,6 +114,22 @@ export class CompetitionDialogPage {
         return this.dateFinInput.getAttribute('value');
     };
 
+    equipeSelectLastOption = function() {
+        this.equipeSelect.all(by.tagName('option')).last().click();
+    };
+
+    equipeSelectOption = function(option) {
+        this.equipeSelect.sendKeys(option);
+    };
+
+    getEquipeSelect = function() {
+        return this.equipeSelect;
+    };
+
+    getEquipeSelectedOption = function() {
+        return this.equipeSelect.element(by.css('option:checked')).getText();
+    };
+
     paysSelectLastOption = function() {
         this.paysSelect.all(by.tagName('option')).last().click();
     };
@@ -128,20 +146,20 @@ export class CompetitionDialogPage {
         return this.paysSelect.element(by.css('option:checked')).getText();
     };
 
-    equipeSelectLastOption = function() {
-        this.equipeSelect.all(by.tagName('option')).last().click();
+    stadeSelectLastOption = function() {
+        this.stadeSelect.all(by.tagName('option')).last().click();
     };
 
-    equipeSelectOption = function(option) {
-        this.equipeSelect.sendKeys(option);
+    stadeSelectOption = function(option) {
+        this.stadeSelect.sendKeys(option);
     };
 
-    getEquipeSelect = function() {
-        return this.equipeSelect;
+    getStadeSelect = function() {
+        return this.stadeSelect;
     };
 
-    getEquipeSelectedOption = function() {
-        return this.equipeSelect.element(by.css('option:checked')).getText();
+    getStadeSelectedOption = function() {
+        return this.stadeSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

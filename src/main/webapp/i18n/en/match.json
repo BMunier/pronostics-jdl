@@ -18,16 +18,17 @@
             "detail": {
                 "title": "Match"
             },
-            "scoreEquipeDomicile": "Score Equipe Domicile",
-            "scoreEquipeVisiteur": "Score Equipe Visiteur",
             "date": "Date",
             "statut": "Statut",
+            "code": "Code",
+            "scoreEquipeDomicile": "Score Equipe Domicile",
+            "scoreEquipeVisiteur": "Score Equipe Visiteur",
             "phaseCompetition": "Phase Competition",
             "groupe": "Groupe",
+            "competition": "Competition",
             "stade": "Stade",
             "equipeDomicile": "Equipe Domicile",
-            "equipeVisiteur": "Equipe Visiteur",
-            "competition": "Competition"
+            "equipeVisiteur": "Equipe Visiteur"
         }
     }
 }

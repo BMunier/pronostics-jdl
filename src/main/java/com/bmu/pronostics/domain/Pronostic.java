@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -37,12 +38,10 @@ public class Pronostic implements Serializable {
     @Column(name = "points")
     private Integer points;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Match match;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private User utilisateur;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -119,7 +118,9 @@ public class Pronostic implements Serializable {
         this.utilisateur = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
+    public boolean matchDejaJoue(){
+        return Instant.now().isAfter(getMatch().getDate());
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

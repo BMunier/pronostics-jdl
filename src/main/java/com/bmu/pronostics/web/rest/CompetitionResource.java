@@ -1,28 +1,45 @@
 package com.bmu.pronostics.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.bmu.pronostics.domain.Competition;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-import com.bmu.pronostics.repository.CompetitionRepository;
-import com.bmu.pronostics.repository.search.CompetitionSearchRepository;
-import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
-import com.bmu.pronostics.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bmu.pronostics.domain.Competition;
+import com.bmu.pronostics.domain.Pronostic;
+import com.bmu.pronostics.domain.User;
+import com.bmu.pronostics.repository.CompetitionRepository;
+import com.bmu.pronostics.repository.PronosticRepository;
+import com.bmu.pronostics.repository.search.CompetitionSearchRepository;
+import com.bmu.pronostics.service.dto.LigneClassementDTO;
+import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
+import com.bmu.pronostics.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Competition.
@@ -31,17 +48,26 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class CompetitionResource {
 
-    private final Logger log = LoggerFactory.getLogger(CompetitionResource.class);
+    private static final int POINT_PRONO_PARTIEL = 1;
+
+	private static final int POINT_PRONO_JUSTE = 3;
+
+	private final Logger log = LoggerFactory.getLogger(CompetitionResource.class);
 
     private static final String ENTITY_NAME = "competition";
 
     private final CompetitionRepository competitionRepository;
 
     private final CompetitionSearchRepository competitionSearchRepository;
+    
+    private final PronosticRepository pronosticRepository;
 
-    public CompetitionResource(CompetitionRepository competitionRepository, CompetitionSearchRepository competitionSearchRepository) {
+    private long position;
+
+    public CompetitionResource(CompetitionRepository competitionRepository, CompetitionSearchRepository competitionSearchRepository, PronosticRepository pronosticRepository) {
         this.competitionRepository = competitionRepository;
         this.competitionSearchRepository = competitionSearchRepository;
+        this.pronosticRepository = pronosticRepository;
     }
 
     /**
@@ -143,6 +169,66 @@ public class CompetitionResource {
         return StreamSupport
             .stream(competitionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/competitions/classement")
+    @Timed
+    public List<LigneClassementDTO> calculerClassement(){
+    	//recherche des pronos
+    	List<Pronostic> pronostics = pronosticRepository.findForMatchsTerminesOnly();
+    	
+    	//itération sur tous les pronos et calcul des points
+    	Map<Long, LigneClassementDTO> lignesClassementByUserIdMap = new HashMap<Long, LigneClassementDTO>();
+    	for(Pronostic pronostic : pronostics) {
+    		if(pronostic.getPoints()==null) {
+    			log.warn("les points du prono sont null alors que le match est terminé "+pronostic.getId());
+    			continue;
+    		}
+    		
+    		User utilisateur =  pronostic.getUtilisateur();
+    		Integer incPronosJustes=0;
+    		Integer incPronosPartiels=0;
+    		Integer incPronosFaux=0;
+    		Integer incPronosJoues=1;
+    		
+    		if(pronostic.getPoints()==POINT_PRONO_JUSTE) {
+    			incPronosJustes=1;
+    		}else if(pronostic.getPoints()==POINT_PRONO_PARTIEL) {
+    			incPronosPartiels=1;
+    		}else {
+    			incPronosFaux=1;
+    		}
+    		
+    		//création ou mise à jour de la ligne de classement
+    		if(lignesClassementByUserIdMap.containsKey(utilisateur.getId())) {
+    			LigneClassementDTO ligneClassementActuelle = lignesClassementByUserIdMap.get(utilisateur.getId());
+    			ligneClassementActuelle.setNbPointsTotal(ligneClassementActuelle.getNbPointsTotal()+pronostic.getPoints());
+    			ligneClassementActuelle.setNbPronosJustes(ligneClassementActuelle.getNbPronosJustes()+incPronosJustes);
+    			ligneClassementActuelle.setNbPronosPartiels(ligneClassementActuelle.getNbPronosPartiels()+incPronosPartiels);
+    			ligneClassementActuelle.setNbPronosFaux(ligneClassementActuelle.getNbPronosFaux()+incPronosFaux);
+    			ligneClassementActuelle.setNbPronosJoues(ligneClassementActuelle.getNbPronosJoues()+incPronosJoues);
+    		}else {
+    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getId(),utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
+    			lignesClassementByUserIdMap.put(utilisateur.getId(), ligneClassement);
+    		}
+        }
+        
+    	//récupération des lignes de classement et tri
+        List<LigneClassementDTO>  lignesClassement = new ArrayList<LigneClassementDTO>();
+        for(Map.Entry<Long,LigneClassementDTO> entry : lignesClassementByUserIdMap.entrySet()){
+            lignesClassement.add(entry.getValue());
+        }
+        Collections.sort(lignesClassement);
+        Collections.reverse(lignesClassement);
+        
+        //On donne une position au classement
+        position= 0;
+        lignesClassement.forEach(ligneClassement->{
+            position++;
+            ligneClassement.setPosition(position);
+            
+        });
+    	return lignesClassement;
     }
 
 }

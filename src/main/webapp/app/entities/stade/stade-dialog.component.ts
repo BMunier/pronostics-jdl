@@ -10,6 +10,7 @@ import { Stade } from './stade.model';
 import { StadePopupService } from './stade-popup.service';
 import { StadeService } from './stade.service';
 import { Pays, PaysService } from '../pays';
+import { Competition, CompetitionService } from '../competition';
 
 @Component({
     selector: 'jhi-stade-dialog',
@@ -22,30 +23,24 @@ export class StadeDialogComponent implements OnInit {
 
     pays: Pays[];
 
+    competitions: Competition[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private stadeService: StadeService,
         private paysService: PaysService,
+        private competitionService: CompetitionService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.paysService
-            .query({filter: 'stade-is-null'})
-            .subscribe((res: HttpResponse<Pays[]>) => {
-                if (!this.stade.pays || !this.stade.pays.id) {
-                    this.pays = res.body;
-                } else {
-                    this.paysService
-                        .find(this.stade.pays.id)
-                        .subscribe((subRes: HttpResponse<Pays>) => {
-                            this.pays = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.paysService.query()
+            .subscribe((res: HttpResponse<Pays[]>) => { this.pays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.competitionService.query()
+            .subscribe((res: HttpResponse<Competition[]>) => { this.competitions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -84,6 +79,21 @@ export class StadeDialogComponent implements OnInit {
 
     trackPaysById(index: number, item: Pays) {
         return item.id;
+    }
+
+    trackCompetitionById(index: number, item: Competition) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

@@ -1,60 +1,63 @@
 <div>
-    <h2><span data-translate="pronosticsApp.about.about.title">About</span></h2>
+    <h2><span jhitranslate="pronosticsApp.about.about.title">About</span></h2>
     <hr>
-    Ce programme a été développé par GLOBAZ pour permettre à ces employés de perpétuer le jeux des pronostics 
-    existants depuis la création de GLOBAZ en 2001.
-    </br>
-    </br>
-    Les participants à ce développement sont :
-    </br>
-    </br>
-    <table>
-        <thead>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <ul>
-                        <li>Bastien Munier</li>
-                        <li>Anthony Helg</li>
-                        <li>Benoît Joss</li>
-                        <li>Célin Chassot</li>
-                        <li>Dylan Claude</li>
-                        <li>Eddy Strambini</li>
-                        <li>Fabrice Gogniat</li>
-                        <li>Jean-Marc Colard</li>
-                    </ul>
-                <td>
-                </td>
-                    <ul>
-                        <li>Jérémy Wermeille</li>
-                        <li>Magali Butillon</li>
-                        <li>Morvan Perrinjaquet</li>
-                        <li>Pascal Taillard</li>
-                        <li>Sébastien Chappatte</li>
-                        <li>Sébastien Quiquerez</li>
-                        <li>Vithara Ong</li>
-                    </ul>    
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    </div>
-    <p>
-    <h4>Merci à toute c't'équipe pour leur engagement dans la joie et la bonne humeur !</h4>
-    </p>
-    <jhi-alert-error></jhi-alert-error>
 
-<div class="table-responsive" *ngIf="abouts">
-    <table class="table table-striped">
-        <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let about of abouts ;trackBy: trackId">
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="row">
+        <div class="col-md-6">
+            Ce programme a été développé par GLOBAZ pour permettre à ses employés de perpétuer le jeux des pronostics 
+            existants depuis la création de l'entreprise en 2001.
+            </br>
+            </br>
+            Les contributeurs à ce développement sont :
+            </br>
+            </br>
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td valign="top">
+                            <ul>
+                                <li>Bastien Munier</li>
+                                <li>Anthony Helg</li>
+                                <li>Benoît Joss</li>
+                                <li>Célin Chassot</li>
+                                <li>Dylan Claude</li>
+                                <li>Eddy Strambini</li>
+                                <li>Fabrice Gogniat</li>
+                                <li>Jean-Marc Colard</li>
+                            </ul>
+                        </td>
+                        <td valign="top">
+                            <ul>
+                                <li>Jérémy Wermeille</li>
+                                <li>Magali Butillon</li>
+                                <li>Morvan Perrinjaquet</li>
+                                <li>Pascal Taillard</li>
+                                <li>Sébastien Chappatte</li>
+                                <li>Sébastien Quiquerez</li>
+                                <li>Vithara Ong</li>
+                            </ul>    
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <span align="center">
+                <h4>Merci à toute c't'équipe pour leur engagement !</h4>
+                <br/>
+                <p style="text-align:center;"><img src="../../../content/images/mascotte.jpg" alt="Mascotte"  width="200"></p>
+                <br/>
+                <h4>Et tout cela dans la joie et la bonne humeur !</h4>
+            </span>            
+        </div>
+    </div>
+    <div>
+        <hr>
+        <a href="https://www.freepik.com/free-vector/abstract-waves-background-with-football-soccer-ball_2302170.htm">Background images : Designed by Freepik</a>
+    </div>
+
+<div>
+    <jhi-alert-error></jhi-alert-error>
 </div>

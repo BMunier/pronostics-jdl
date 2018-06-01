@@ -86,3 +86,10 @@ Logo styles
     background-size: contain;
     width: 100%;
 }
+
+.mascotte-img {
+    height: 100%;
+    background: url("../../../content/images/mascotte.jpg") no-repeat center center;
+    background-size: contain;
+    width: 100%;
+}

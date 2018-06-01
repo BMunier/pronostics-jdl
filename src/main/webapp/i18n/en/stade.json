@@ -19,7 +19,8 @@
             },
             "nom": "Nom",
             "ville": "Ville",
-            "pays": "Pays"
+            "pays": "Pays",
+            "competition": "Competition"
         }
     }
 }

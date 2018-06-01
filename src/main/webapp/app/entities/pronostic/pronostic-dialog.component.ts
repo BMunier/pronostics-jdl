@@ -37,19 +37,8 @@ export class PronosticDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.matchService
-            .query({filter: 'pronostic-is-null'})
-            .subscribe((res: HttpResponse<Match[]>) => {
-                if (!this.pronostic.match || !this.pronostic.match.id) {
-                    this.matches = res.body;
-                } else {
-                    this.matchService
-                        .find(this.pronostic.match.id)
-                        .subscribe((subRes: HttpResponse<Match>) => {
-                            this.matches = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.matchService.query()
+            .subscribe((res: HttpResponse<Match[]>) => { this.matches = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }

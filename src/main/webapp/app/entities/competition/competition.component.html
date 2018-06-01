@@ -34,8 +34,9 @@
             <th><span jhiTranslate="pronosticsApp.competition.description">Description</span></th>
             <th><span jhiTranslate="pronosticsApp.competition.dateDebut">Date Debut</span></th>
             <th><span jhiTranslate="pronosticsApp.competition.dateFin">Date Fin</span></th>
-            <th><span jhiTranslate="pronosticsApp.competition.pays">Pays</span></th>
             <th><span jhiTranslate="pronosticsApp.competition.equipe">Equipe</span></th>
+            <th><span jhiTranslate="pronosticsApp.competition.pays">Pays</span></th>
+            <th><span jhiTranslate="pronosticsApp.competition.stade">Stade</span></th>
             <th></th>
             </tr>
             </thead>
@@ -44,16 +45,21 @@
                 <td><a [routerLink]="['../competition', competition.id ]">{{competition.id}}</a></td>
                 <td>{{competition.nom}}</td>
                 <td>{{competition.description}}</td>
-                <td>{{competition.dateDebut | date:'medium'}}</td>
-                <td>{{competition.dateFin | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="competition.pays">
-                        <a [routerLink]="['../pays', competition.pays?.id ]" >{{competition.pays?.nom}}</a>
-                    </div>
-                </td>
+                <td>{{competition.dateDebut | date:'mediumDate'}}</td>
+                <td>{{competition.dateFin | date:'mediumDate'}}</td>
                 <td>
                     <span *ngFor="let equipe of competition.equipes; let last = last">
                             <a class="form-control-static" [routerLink]="['../equipe', equipe?.id ]">{{equipe.codeEquipe}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let pays of competition.pays; let last = last">
+                            <a class="form-control-static" [routerLink]="['../pays', pays?.id ]">{{pays.nom}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let stade of competition.stades; let last = last">
+                            <a class="form-control-static" [routerLink]="['../stade', stade?.id ]">{{stade.nom}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

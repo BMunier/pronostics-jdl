@@ -43,6 +43,9 @@ public class EquipeResourceIntTest {
     private static final String DEFAULT_CODE_EQUIPE = "AAAAAAAAAA";
     private static final String UPDATED_CODE_EQUIPE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_NOM_EQUIPE = "AAAAAAAAAA";
+    private static final String UPDATED_NOM_EQUIPE = "BBBBBBBBBB";
+
     private static final Integer DEFAULT_RANG_FIFA = 1;
     private static final Integer UPDATED_RANG_FIFA = 2;
 
@@ -93,6 +96,7 @@ public class EquipeResourceIntTest {
     public static Equipe createEntity(EntityManager em) {
         Equipe equipe = new Equipe()
             .codeEquipe(DEFAULT_CODE_EQUIPE)
+            .nomEquipe(DEFAULT_NOM_EQUIPE)
             .rangFifa(DEFAULT_RANG_FIFA)
             .ecusson(DEFAULT_ECUSSON)
             .ecussonContentType(DEFAULT_ECUSSON_CONTENT_TYPE);
@@ -121,6 +125,7 @@ public class EquipeResourceIntTest {
         assertThat(equipeList).hasSize(databaseSizeBeforeCreate + 1);
         Equipe testEquipe = equipeList.get(equipeList.size() - 1);
         assertThat(testEquipe.getCodeEquipe()).isEqualTo(DEFAULT_CODE_EQUIPE);
+        assertThat(testEquipe.getNomEquipe()).isEqualTo(DEFAULT_NOM_EQUIPE);
         assertThat(testEquipe.getRangFifa()).isEqualTo(DEFAULT_RANG_FIFA);
         assertThat(testEquipe.getEcusson()).isEqualTo(DEFAULT_ECUSSON);
         assertThat(testEquipe.getEcussonContentType()).isEqualTo(DEFAULT_ECUSSON_CONTENT_TYPE);
@@ -179,6 +184,7 @@ public class EquipeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(equipe.getId().intValue())))
             .andExpect(jsonPath("$.[*].codeEquipe").value(hasItem(DEFAULT_CODE_EQUIPE.toString())))
+            .andExpect(jsonPath("$.[*].nomEquipe").value(hasItem(DEFAULT_NOM_EQUIPE.toString())))
             .andExpect(jsonPath("$.[*].rangFifa").value(hasItem(DEFAULT_RANG_FIFA)))
             .andExpect(jsonPath("$.[*].ecussonContentType").value(hasItem(DEFAULT_ECUSSON_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].ecusson").value(hasItem(Base64Utils.encodeToString(DEFAULT_ECUSSON))));
@@ -196,6 +202,7 @@ public class EquipeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(equipe.getId().intValue()))
             .andExpect(jsonPath("$.codeEquipe").value(DEFAULT_CODE_EQUIPE.toString()))
+            .andExpect(jsonPath("$.nomEquipe").value(DEFAULT_NOM_EQUIPE.toString()))
             .andExpect(jsonPath("$.rangFifa").value(DEFAULT_RANG_FIFA))
             .andExpect(jsonPath("$.ecussonContentType").value(DEFAULT_ECUSSON_CONTENT_TYPE))
             .andExpect(jsonPath("$.ecusson").value(Base64Utils.encodeToString(DEFAULT_ECUSSON)));
@@ -223,6 +230,7 @@ public class EquipeResourceIntTest {
         em.detach(updatedEquipe);
         updatedEquipe
             .codeEquipe(UPDATED_CODE_EQUIPE)
+            .nomEquipe(UPDATED_NOM_EQUIPE)
             .rangFifa(UPDATED_RANG_FIFA)
             .ecusson(UPDATED_ECUSSON)
             .ecussonContentType(UPDATED_ECUSSON_CONTENT_TYPE);
@@ -237,6 +245,7 @@ public class EquipeResourceIntTest {
         assertThat(equipeList).hasSize(databaseSizeBeforeUpdate);
         Equipe testEquipe = equipeList.get(equipeList.size() - 1);
         assertThat(testEquipe.getCodeEquipe()).isEqualTo(UPDATED_CODE_EQUIPE);
+        assertThat(testEquipe.getNomEquipe()).isEqualTo(UPDATED_NOM_EQUIPE);
         assertThat(testEquipe.getRangFifa()).isEqualTo(UPDATED_RANG_FIFA);
         assertThat(testEquipe.getEcusson()).isEqualTo(UPDATED_ECUSSON);
         assertThat(testEquipe.getEcussonContentType()).isEqualTo(UPDATED_ECUSSON_CONTENT_TYPE);
@@ -299,6 +308,7 @@ public class EquipeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(equipe.getId().intValue())))
             .andExpect(jsonPath("$.[*].codeEquipe").value(hasItem(DEFAULT_CODE_EQUIPE.toString())))
+            .andExpect(jsonPath("$.[*].nomEquipe").value(hasItem(DEFAULT_NOM_EQUIPE.toString())))
             .andExpect(jsonPath("$.[*].rangFifa").value(hasItem(DEFAULT_RANG_FIFA)))
             .andExpect(jsonPath("$.[*].ecussonContentType").value(hasItem(DEFAULT_ECUSSON_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].ecusson").value(hasItem(Base64Utils.encodeToString(DEFAULT_ECUSSON))));

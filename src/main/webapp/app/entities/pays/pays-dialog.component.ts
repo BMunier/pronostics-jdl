@@ -4,11 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Pays } from './pays.model';
 import { PaysPopupService } from './pays-popup.service';
 import { PaysService } from './pays.service';
+import { Competition, CompetitionService } from '../competition';
 
 @Component({
     selector: 'jhi-pays-dialog',
@@ -19,10 +20,14 @@ export class PaysDialogComponent implements OnInit {
     pays: Pays;
     isSaving: boolean;
 
+    competitions: Competition[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
+        private jhiAlertService: JhiAlertService,
         private paysService: PaysService,
+        private competitionService: CompetitionService,
         private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
@@ -30,6 +35,8 @@ export class PaysDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.competitionService.query()
+            .subscribe((res: HttpResponse<Competition[]>) => { this.competitions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -76,6 +83,25 @@ export class PaysDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackCompetitionById(index: number, item: Competition) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

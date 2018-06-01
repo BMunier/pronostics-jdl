@@ -2,10 +2,12 @@
     "pronosticsApp": {
         "about": {
             "about": {
-                "title": "About"            }
+                "title": "A propos"
+            }
 ,
             "rules": {
-                "title": "Rules"            }
+                "title": "Règles du jeu"
+            }
         }
     }
 }

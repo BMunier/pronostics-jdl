@@ -6,9 +6,6 @@ TABLE DES COMPETITIONS
 - Date de début et de fin sans l'heure (inutile)
 - Revoir la liste des équipes (toutes en lieu et place des équipes de la compétition uniquement)
 - Plusieurs pays peuvent organiser la compétition (mais pour d'autre, il n'y a pas de pays)
-- ERREUR Pas possible de saisir un match
-  - Caused by: org.h2.jdbc.JdbcSQLException: Table "MATCH" not found; SQL statement:
-    - insert into match (competition_id, jhi_date, equipe_domicile_id, equipe_visiteur_id, groupe, phase_competition, score_equipe_domicile, score_equipe_visiteur, stade_id, statut, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [42102-196]
 - Revoir les phases de la compétition (pas toujours les mêmes)
 - Afficher le nombre d'équipes de la compétitions
 
@@ -27,6 +24,9 @@ TABLE DES EQUIPES
   - Voir le rang de cette équipe à chacune de ces compétitions
 
 TABLE DES MATCHES
+- ERREUR Pas possible de saisir un match
+  - Caused by: org.h2.jdbc.JdbcSQLException: Table "MATCH" not found; SQL statement:
+    - insert into match (competition_id, jhi_date, equipe_domicile_id, equipe_visiteur_id, groupe, phase_competition, score_equipe_domicile, score_equipe_visiteur, stade_id, statut, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [42102-196]
 - Ajouter un code de match (unique (pour une competition) repris du calendrier officiel des matches)
 - Revoir l'ordre des champs (Compétition, Date&Heure, Stade, Equipe1, Equipe2, Statut, Score1, Score2, Phase, Groupe (seulement si phase de groupe))
 - Revoir les libellés

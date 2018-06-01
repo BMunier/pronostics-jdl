@@ -18,6 +18,11 @@
                 [(ngModel)]="equipe.codeEquipe" />
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.equipe.nomEquipe" for="field_nomEquipe">Nom Equipe</label>
+            <input type="text" class="form-control" name="nomEquipe" id="field_nomEquipe"
+                [(ngModel)]="equipe.nomEquipe" />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.equipe.rangFifa" for="field_rangFifa">Rang Fifa</label>
             <input type="number" class="form-control" name="rangFifa" id="field_rangFifa"
                 [(ngModel)]="equipe.rangFifa" />
@@ -48,7 +53,7 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pronosticsApp.equipe.pays" for="field_pays">Pays</label>
-            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="equipe.pays">
+            <select class="form-control" id="field_pays" name="pays" [(ngModel)]="equipe.pays" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="paysOption.id === equipe.pays?.id ? equipe.pays : paysOption" *ngFor="let paysOption of pays; trackBy: trackPaysById">{{paysOption.nom}}</option>
             </select>

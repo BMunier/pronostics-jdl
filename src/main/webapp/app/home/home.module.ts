@@ -3,10 +3,12 @@ import { RouterModule } from '@angular/router';
 
 import { PronosticsSharedModule } from '../shared';
 import {PronosticSaisieService} from './pronostic-saisie/pronostic-saisie.service'
+import {ClassementService} from './classement/classement.service'
 
 
 import { HOME_ROUTE, HomeComponent} from './';
 import { PronosticSaisieComponent } from './pronostic-saisie/pronostic-saisie.component';
+import { ClassementComponent } from './classement/classement.component';
 
 @NgModule({
     imports: [
@@ -14,12 +16,12 @@ import { PronosticSaisieComponent } from './pronostic-saisie/pronostic-saisie.co
         RouterModule.forChild([ HOME_ROUTE ])
     ],
     declarations: [
-        HomeComponent, PronosticSaisieComponent
+        HomeComponent, PronosticSaisieComponent, ClassementComponent
     ],
     entryComponents: [
     ],
     providers: [
-        PronosticSaisieService
+        PronosticSaisieService,ClassementService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
