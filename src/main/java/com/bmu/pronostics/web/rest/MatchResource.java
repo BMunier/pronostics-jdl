@@ -17,10 +17,12 @@ import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.MatchSearchRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
+import com.bmu.pronostics.web.rest.errors.EmailAlreadyUsedException;
 import com.bmu.pronostics.web.rest.util.HeaderUtil;
 import com.bmu.pronostics.web.rest.util.PaginationUtil;
 import com.codahale.metrics.annotation.Timed;
 
+import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -214,8 +216,8 @@ public class MatchResource {
                 pronosticRepository.save(pronostic);
             }
         }
-        // return ResponseUtil.wrapOrNotFound(savedProno, HeaderUtil.createAlert("userManagement.updated", ""));
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "Success"))
+        
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", null))
                 .build();
     }
 
