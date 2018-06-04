@@ -6,7 +6,8 @@
                 "title": "Matches",
                 "createLabel": "Match erstellen",
                 "createOrEditLabel": "Match erstellen oder bearbeiten",
-                "search": "Suche nach Match"
+                "search": "Suche nach Match",
+                "refresh": "Verwirklichen"
             },
             "created": "Match erstellt mit ID {{ param }}",
             "updated": "Match aktualisiert mit ID {{ param }}",

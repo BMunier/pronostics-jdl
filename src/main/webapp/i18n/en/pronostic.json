@@ -19,6 +19,7 @@
             },
             "scoreEquipeDomicile": "Score Equipe Domicile",
             "scoreEquipeVisiteur": "Score Equipe Visiteur",
+            "scoreUpdated": "The scores of the forecasts were updated",
             "points": "Points",
             "match": "Match",
             "utilisateur": "Utilisateur"

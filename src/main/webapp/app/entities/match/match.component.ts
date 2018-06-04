@@ -144,4 +144,11 @@ export class MatchComponent implements OnInit, OnDestroy {
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
+
+    refresh() {
+        this.matchService.refresh().subscribe(
+            (res: HttpResponse<any>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError('Error')
+        );
+    }
 }

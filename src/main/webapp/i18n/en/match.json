@@ -6,7 +6,8 @@
                 "title": "Matches",
                 "createLabel": "Create a new Match",
                 "createOrEditLabel": "Create or edit a Match",
-                "search": "Search for Match"
+                "search": "Search for Match",
+                "refresh": "Refresh"
             },
             "created": "A new Match is created with identifier {{ param }}",
             "updated": "A Match is updated with identifier {{ param }}",

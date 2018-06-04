@@ -12,11 +12,11 @@ import{PronosticComponent} from '../entities/pronostic/pronostic.component';
     styleUrls: [
         'home.css'
     ]
-
 })
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    increment = 1;
 
     constructor(
         private principal: Principal,
@@ -46,5 +46,9 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    refresh() {
+        this.increment += 1;
     }
 }

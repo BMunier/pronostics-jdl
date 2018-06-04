@@ -13,8 +13,9 @@ export type EntityResponseType = HttpResponse<Match>;
 @Injectable()
 export class MatchService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/matches';
+    private resourceUrl = SERVER_API_URL + 'api/matches';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/matches';
+    private resourceRefreshUrl = SERVER_API_URL + 'api/matches/refresh';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -31,7 +32,7 @@ export class MatchService {
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Match>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<Match>(`${this.resourceUrl}/${id}`, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
@@ -41,8 +42,12 @@ export class MatchService {
             .map((res: HttpResponse<Match[]>) => this.convertArrayResponse(res));
     }
 
+    refresh(): Observable<EntityResponseType> {
+        return this.http.put<any>(this.resourceRefreshUrl, { observe: 'response' });
+    }
+
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
     search(req?: any): Observable<HttpResponse<Match[]>> {
@@ -53,7 +58,7 @@ export class MatchService {
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Match = this.convertItemFromServer(res.body);
-        return res.clone({body});
+        return res.clone({ body });
     }
 
     private convertArrayResponse(res: HttpResponse<Match[]>): HttpResponse<Match[]> {
@@ -62,7 +67,7 @@ export class MatchService {
         for (let i = 0; i < jsonResponse.length; i++) {
             body.push(this.convertItemFromServer(jsonResponse[i]));
         }
-        return res.clone({body});
+        return res.clone({ body });
     }
 
     /**
