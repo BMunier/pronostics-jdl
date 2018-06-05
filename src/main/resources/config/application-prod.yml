@@ -112,7 +112,7 @@ jhipster:
             key: 2165eb0a38331d1dcf9020622e9c8f0883e68959
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: pronostics@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        base-url: http://pronostics.globaz.ch # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
