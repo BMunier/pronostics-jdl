@@ -11,6 +11,7 @@ export class PronosticSaisie implements BaseEntity {
         public points?: number,
         public match?: BaseEntity,
         public utilisateur?: User,
+        public updated?:boolean
     ) {
     }
 }
