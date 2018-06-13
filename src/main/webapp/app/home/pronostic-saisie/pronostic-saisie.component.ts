@@ -57,9 +57,11 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       );
   }
   valideProno(pronostic) {
+    pronostic.updated = true;
        this.pronosticSaisieService.update(pronostic).subscribe(
         (response) => {
             pronostic.id=response.body.id;
+            
             if (response.status === 200) {
                 this.error = null;
                 this.success = 'OK';
