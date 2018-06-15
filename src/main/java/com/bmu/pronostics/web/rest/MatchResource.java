@@ -200,7 +200,7 @@ public class MatchResource {
                 scoreDiffMatch = scoreDom - scoreVisit;
                 switch (scoreDiffMatch.compareTo(scorePronoDom - scorePronoVisit)) {
                 case WIN:
-                    pronostic.setPoints(1);
+                     pronostic.setPoints(1);
                     break;
                 case DOUBLE_WIN:
                     if (scoreDom == scorePronoDom && scoreVisit == scorePronoVisit) {
@@ -210,7 +210,11 @@ public class MatchResource {
                     }
                     break;
                 case LOSE:
-                    pronostic.setPoints(0);
+                    if((scoreDom > scoreVisit) && (scorePronoDom > scorePronoVisit) ||  (scoreDom < scoreVisit) && (scorePronoDom < scorePronoVisit))  {
+                        pronostic.setPoints(1);
+                    }else{
+                        pronostic.setPoints(0);
+                    }
                     break;
                 }
                 pronosticRepository.save(pronostic);
