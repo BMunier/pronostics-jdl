@@ -11,7 +11,7 @@ export const competitionRoute: Routes = [
         path: 'competition',
         component: CompetitionComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.competition.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const competitionRoute: Routes = [
         path: 'competition/:id',
         component: CompetitionDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.competition.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const competitionPopupRoute: Routes = [
         path: 'competition-new',
         component: CompetitionPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.competition.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const competitionPopupRoute: Routes = [
         path: 'competition/:id/edit',
         component: CompetitionPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.competition.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const competitionPopupRoute: Routes = [
         path: 'competition/:id/delete',
         component: CompetitionDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.competition.home.title'
         },
         canActivate: [UserRouteAccessService],

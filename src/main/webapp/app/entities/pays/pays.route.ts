@@ -11,7 +11,7 @@ export const paysRoute: Routes = [
         path: 'pays',
         component: PaysComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pays.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const paysRoute: Routes = [
         path: 'pays/:id',
         component: PaysDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pays.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const paysPopupRoute: Routes = [
         path: 'pays-new',
         component: PaysPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pays.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const paysPopupRoute: Routes = [
         path: 'pays/:id/edit',
         component: PaysPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pays.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const paysPopupRoute: Routes = [
         path: 'pays/:id/delete',
         component: PaysDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pays.home.title'
         },
         canActivate: [UserRouteAccessService],

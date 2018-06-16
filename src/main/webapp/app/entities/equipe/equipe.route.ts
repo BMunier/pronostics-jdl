@@ -11,7 +11,7 @@ export const equipeRoute: Routes = [
         path: 'equipe',
         component: EquipeComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.equipe.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const equipeRoute: Routes = [
         path: 'equipe/:id',
         component: EquipeDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.equipe.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const equipePopupRoute: Routes = [
         path: 'equipe-new',
         component: EquipePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.equipe.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const equipePopupRoute: Routes = [
         path: 'equipe/:id/edit',
         component: EquipePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.equipe.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const equipePopupRoute: Routes = [
         path: 'equipe/:id/delete',
         component: EquipeDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.equipe.home.title'
         },
         canActivate: [UserRouteAccessService],

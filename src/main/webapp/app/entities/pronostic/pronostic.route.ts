@@ -11,7 +11,7 @@ export const pronosticRoute: Routes = [
         path: 'pronostic',
         component: PronosticComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pronostic.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const pronosticRoute: Routes = [
         path: 'pronostic/:id',
         component: PronosticDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pronostic.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const pronosticPopupRoute: Routes = [
         path: 'pronostic-new',
         component: PronosticPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pronostic.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const pronosticPopupRoute: Routes = [
         path: 'pronostic/:id/edit',
         component: PronosticPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pronostic.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const pronosticPopupRoute: Routes = [
         path: 'pronostic/:id/delete',
         component: PronosticDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.pronostic.home.title'
         },
         canActivate: [UserRouteAccessService],
