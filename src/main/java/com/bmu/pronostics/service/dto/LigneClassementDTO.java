@@ -111,6 +111,16 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 			return resultCompare;
 		}
 		
+		resultCompare = this.getNomUtilisateur().compareTo(o.getNomUtilisateur());
+		if(resultCompare!=0) {
+			return -resultCompare;
+		}
+		
+		resultCompare = this.getPrenomUtilisateur().compareTo(o.getPrenomUtilisateur());
+		if(resultCompare!=0) {
+			return -resultCompare;
+		}
+		
 		return 0;
 	}
 }
