@@ -188,7 +188,7 @@ public class MatchResource {
     public ResponseEntity<Void> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
         Match matchTermine;
-        Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
+        Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch, matchTendance, pronoTendance;
 
         for (Pronostic pronostic : pronosticRepository.findAll()) {
             matchTermine = matchRepository.findOne(pronostic.getMatch().getId());
@@ -197,30 +197,18 @@ public class MatchResource {
                 scoreVisit = matchTermine.getScoreEquipeVisiteur();
                 scorePronoDom = pronostic.getScoreEquipeDomicile();
                 scorePronoVisit = pronostic.getScoreEquipeVisiteur();
-                scoreDiffMatch = scoreDom - scoreVisit;
-                switch (scoreDiffMatch.compareTo(scorePronoDom - scorePronoVisit)) {
-                case WIN:
-                if(((scoreDom > scoreVisit) && (scorePronoDom > scorePronoVisit)) ||  ((scoreDom < scoreVisit) && (scorePronoDom < scorePronoVisit)))  {
-                    pronostic.setPoints(1);
-                   }else{
-                   pronostic.setPoints(0);
-                   }
-                    break;
-                case DOUBLE_WIN:
-                    if (scoreDom == scorePronoDom && scoreVisit == scorePronoVisit) {
+                matchTendance = scoreDom.compareTo(scoreVisit);
+                pronoTendance = scorePronoDom.compareTo(scorePronoVisit);
+                if(matchTendance.equals(pronoTendance)){
+                    if(scoreDom.equals(scorePronoDom) && scoreVisit.equals(scorePronoVisit)){
                         pronostic.setPoints(3);
-                    } else {
-                        pronostic.setPoints(1);
-                    }
-                    break;
-                case LOSE:
-                    if((scoreDom > scoreVisit) && (scorePronoDom > scorePronoVisit) ||  (scoreDom < scoreVisit) && (scorePronoDom < scorePronoVisit))  {
-                        pronostic.setPoints(1);
                     }else{
-                        pronostic.setPoints(0);
+                        pronostic.setPoints(1);
                     }
-                    break;
+                }else{
+                    pronostic.setPoints(0);
                 }
+               
                 pronosticRepository.save(pronostic);
             }
         }
