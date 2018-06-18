@@ -23,6 +23,9 @@
             <span>Nb points</span>
           </th>
           <th>
+            <span>Pronos justes</span>
+          </th>
+          <th>
             <span>Pronos partiels</span>
           </th>
           <th>
@@ -48,6 +51,9 @@
           </td>
           <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPointsTotal}}
+          </td>
+          <td [style.background-color]="getColor(classement.idUtilisateur)">
+            {{classement.nbPronosJustes}}
           </td>
           <td [style.background-color]="getColor(classement.idUtilisateur)">
             {{classement.nbPronosPartiels}}

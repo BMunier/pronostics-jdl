@@ -11,7 +11,7 @@ export const stadeRoute: Routes = [
         path: 'stade',
         component: StadeComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.stade.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const stadeRoute: Routes = [
         path: 'stade/:id',
         component: StadeDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.stade.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const stadePopupRoute: Routes = [
         path: 'stade-new',
         component: StadePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.stade.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const stadePopupRoute: Routes = [
         path: 'stade/:id/edit',
         component: StadePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.stade.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const stadePopupRoute: Routes = [
         path: 'stade/:id/delete',
         component: StadeDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pronosticsApp.stade.home.title'
         },
         canActivate: [UserRouteAccessService],

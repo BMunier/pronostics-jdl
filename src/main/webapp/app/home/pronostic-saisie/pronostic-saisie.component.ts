@@ -24,7 +24,6 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   queryCount: any;
   reverse: any;
   totalItems: number;
-  currentSearch: string;
   error: any;
   success: any;
   routeData: any;
@@ -46,45 +45,37 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       };
       this.predicate = 'id';
       this.reverse = true;
-      this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-          this.activatedRoute.snapshot.params['search'] : '';
   }
 
   loadAll() {
-      if (this.currentSearch) {
-          this.pronosticSaisieService.search({
-              query: this.currentSearch,
-              page: this.page,
-              size: this.itemsPerPage,
-              sort: this.sort()
-          }).subscribe(
-              (res: HttpResponse<PronosticSaisie[]>) => this.onSuccess(res.body, res.headers),
-              (res: HttpErrorResponse) => this.onError(res.message)
-          );
-          return;
-      }
       this.pronosticSaisieService.query({
           page: this.page,
-          size: this.itemsPerPage,
-          sort: this.sort()
+          size: this.itemsPerPage
       }).subscribe(
           (res: HttpResponse<PronosticSaisie[]>) => this.onSuccess(res.body, res.headers),
           (res: HttpErrorResponse) => this.onError(res.message)
       );
   }
   valideProno(pronostic) {
+    pronostic.updated = true;
        this.pronosticSaisieService.update(pronostic).subscribe(
         (response) => {
             pronostic.id=response.body.id;
+            
             if (response.status === 200) {
                 this.error = null;
                 this.success = 'OK';
-                this.reset();
+                pronostic.updated = true;
+               // this.reset();
             } else {
                 this.success = null;
                 this.error = 'ERROR';
             }
         });
+}
+changeValidate(pronostic){
+    pronostic.updated=false;
+    console.log(pronostic);
 }
 
   reset() {
@@ -106,7 +97,6 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       this.page = 0;
       this.predicate = 'id';
       this.reverse = true;
-      this.currentSearch = '';
       this.loadAll();
   }
 
@@ -121,7 +111,6 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       this.page = 0;
       this.predicate = '_score';
       this.reverse = false;
-      this.currentSearch = query;
       this.loadAll();
   }
   ngOnInit() {
@@ -142,15 +131,15 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   registerChangeInPronostics() {
       this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response) => this.reset());
   }
+  _keyPress(event: any) {
+    const pattern = /[0-9\+\ ]/;
+    let inputChar = String.fromCharCode(event.charCode);
 
-  sort() {
-     
-      const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-      if (this.predicate !== 'id') {
-          result.push('id');
-      }
-      return result;
-  }
+    if (!pattern.test(inputChar)) {
+      // invalid character, prevent input
+      event.preventDefault();
+    }
+}
 
   private onSuccess(data, headers) {
       this.links = this.parseLinks.parse(headers.get('link'));
@@ -166,7 +155,6 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
   }
 
   private dateIsApres(date){
-      
       var dateNow = new Date(Date.now());
       var dateD = new Date(date);
       return dateNow>dateD;
