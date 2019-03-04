@@ -102,7 +102,7 @@
     "clean-www": "rimraf target//www/app/{src,target/}",
     "start": "yarn run webpack:dev",
     "serve": "yarn run start",
-    "build": "yarn run webpack:prod",
+    "build": "webdriver-manager update && node node_modules/phantomjs-prebuilt/install.js",
     "test": "yarn run lint && karma start src/test/javascript/karma.conf.js",
     "test:watch": "yarn test -- --watch",
     "webpack:dev": "yarn run webpack-dev-server -- --config webpack/webpack.dev.js --progress --inline --hot --profile --port=9060 --watch-content-base",
@@ -113,7 +113,7 @@
     "webpack:test": "yarn run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
-    "e2e": "protractor src/test/javascript/protractor.conf.js",
-    "postinstall": "webdriver-manager update && node node_modules/phantomjs-prebuilt/install.js"
-  }
+    "e2e": "protractor src/test/javascript/protractor.conf.js"
+  },
+  "heroku-run-build-script": true
 }
