@@ -51,10 +51,8 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
-        #username: pronostic.gbz@gmail.com  #Replace this field with your Gmail username.
-        #password: za$#8xhL3bZu           #Replace this field with your Gmail password.
-        username: munier.bastien@gmail.com  #Replace this field with your Gmail username.
-        password: Knights1987           #Replace this field with your Gmail password.
+        username: pronostic.gbz@gmail.com  #Replace this field with your Gmail username.
+        password: za$#8xhL3bZu           #Replace this field with your Gmail password.
         protocol: smtp
         tls: true
         properties.mail.smtp:
