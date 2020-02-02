@@ -63,16 +63,16 @@ spring:
                     logs: target/elasticsearch/log
                     data: target/elasticsearch/data
     mail:
-        host: smtp.gmail.com
-        port: 587
-        username: pronostic.gbz@gmail.com  #Replace this field with your Gmail username.
-        password: za$#8xhL3bZu           #Replace this field with your Gmail password.
+        host: smtp.sendgrid.net
+        port: 465
+        username: apikey  #Replace this field with your Gmail username.
+        password: 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           #Replace this field with your Gmail password.
         protocol: smtp
         tls: true
         properties.mail.smtp:
             auth: true
             starttls.enable: true
-            ssl.trust: smtp.gmail.com
+            ssl.trust: smtp.sendgrid.net
     messages:
         cache-seconds: 1
     thymeleaf:
