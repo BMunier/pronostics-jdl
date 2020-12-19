@@ -45,7 +45,7 @@ module.exports = (config) => {
 
 
         remapIstanbulReporter: {
-            reports: { // eslint-disable-line
+            dir: require('path').join(__dirname, 'coverage'), reports: { // eslint-disable-line
                 'lcovonly': 'target/test-results/coverage/report-lcov/lcov.info',
                 'html': 'target/test-results/coverage',
                 'text-summary': null

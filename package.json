@@ -31,6 +31,7 @@
     "zone.js": "0.8.19"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.8.0",
     "@angular/cli": "6",
     "@angular/compiler-cli": "5.2.0",
     "@ngtools/webpack": "1.8.5",
