@@ -49,16 +49,16 @@ spring:
                     logs: /tmp/elasticsearch/log
                     data: /tmp/elasticsearch/data
     mail:
-        host: smtp.gmail.com
+        host: smtp-mail.outlook.com
         port: 587
-        username: pronostic.gbz@gmail.com  #Replace this field with your Gmail username.
-        password: za$#8xhL3bZu           #Replace this field with your Gmail password.
+        username: pronosticsGbz@outlook.com  #Replace this field with your Outlook username.
+        password: prono2020               #Replace this field with your Outlook password.
         protocol: smtp
         tls: true
         properties.mail.smtp:
             auth: true
             starttls.enable: true
-            ssl.trust: smtp.gmail.com
+            ssl.trust: smtp-mail.outlook.com
     thymeleaf:
         cache: true
 
@@ -111,7 +111,7 @@ jhipster:
             # security key (this key should be unique for your application, and kept secret)
             key: 2165eb0a38331d1dcf9020622e9c8f0883e68959
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: pronostics@localhost
+        from: pronosticsGbz@outlook.com
         base-url: http://pronostics.globaz.ch # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
