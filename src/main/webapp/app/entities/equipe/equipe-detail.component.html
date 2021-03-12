@@ -1,0 +1,49 @@
+
+<div *ngIf="equipe">
+    <h2><span jhiTranslate="pronosticsApp.equipe.detail.title">Equipe</span> {{equipe.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="pronosticsApp.equipe.codeEquipe">Code Equipe</span></dt>
+        <dd>
+            <span>{{equipe.codeEquipe}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.equipe.nomEquipe">Nom Equipe</span></dt>
+        <dd>
+            <span>{{equipe.nomEquipe}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.equipe.rangFifa">Rang Fifa</span></dt>
+        <dd>
+            <span>{{equipe.rangFifa}}</span>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.equipe.ecusson">Ecusson</span></dt>
+        <dd>
+            <div *ngIf="equipe.ecusson">
+                <a (click)="openFile(equipe.ecussonContentType, equipe.ecusson)">
+                    <img [src]="'data:' + equipe.ecussonContentType + ';base64,' + equipe.ecusson" style="max-width: 100%;" alt="equipe image"/>
+                </a>
+                {{equipe.ecussonContentType}}, {{byteSize(equipe.ecusson)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="pronosticsApp.equipe.pays">Pays</span></dt>
+        <dd>
+            <div *ngIf="equipe.pays">
+                <a [routerLink]="['/pays', equipe.pays?.id]">{{equipe.pays?.nom}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'equipe/'+ equipe.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

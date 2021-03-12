@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pays",
+            "otherEntityName": "pays",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "competition",
+            "otherEntityName": "competition",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "stade"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "nom",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ville",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180501094357",
+    "entityTableName": "stade",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

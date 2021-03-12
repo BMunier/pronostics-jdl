@@ -1,0 +1,27 @@
+
+{
+    "pronosticsApp": {
+        "pronostic" : {
+            "home": {
+                "title": "Pronostics",
+                "createLabel": "Pronostic erstellen",
+                "createOrEditLabel": "Pronostic erstellen oder bearbeiten",
+                "search": "Suche nach Pronostic"
+            },
+            "created": "Pronostic erstellt mit ID {{ param }}",
+            "updated": "Pronostic aktualisiert mit ID {{ param }}",
+            "deleted": "Pronostic gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Pronostic {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Pronostic"
+            },
+            "scoreEquipeDomicile": "Score Equipe Domicile",
+            "scoreEquipeVisiteur": "Score Equipe Visiteur",
+            "points": "Points",
+            "match": "Match",
+            "utilisateur": "Utilisateur"
+        }
+    }
+}

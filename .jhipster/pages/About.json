@@ -1,0 +1,18 @@
+{
+    "pages": [
+        {
+            "pageName": "About",
+            "pageType": "clientOnly",
+            "pageGlyphIcon": "bullhorn",
+            "fields": []
+        },
+        {
+            "pageName": "Rules",
+            "pageType": "clientOnly",
+            "pageGlyphIcon": "book",
+            "fields": []
+        }
+    ],
+    "pageSetGlyphIcon": "bullhorn",
+    "changelogDate": "20180518065453"
+}

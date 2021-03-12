@@ -1,0 +1,33 @@
+
+{
+    "pronosticsApp": {
+        "match" : {
+            "home": {
+                "title": "Matches",
+                "createLabel": "Créer un nouveau Match",
+                "createOrEditLabel": "Créer ou éditer un Match",
+                "search": "Recherche pour Match"
+            },
+            "created": "Un nouveau Match a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Match avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Match avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Match {{ id }} ?"
+            },
+            "detail": {
+                "title": "Match"
+            },
+            "date": "Date",
+            "statut": "Statut",
+            "code": "Code",
+            "scoreEquipeDomicile": "Score Equipe Domicile",
+            "scoreEquipeVisiteur": "Score Equipe Visiteur",
+            "phaseCompetition": "Phase Competition",
+            "groupe": "Groupe",
+            "competition": "Competition",
+            "stade": "Stade",
+            "equipeDomicile": "Equipe Domicile",
+            "equipeVisiteur": "Equipe Visiteur"
+        }
+    }
+}

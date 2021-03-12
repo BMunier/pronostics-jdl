@@ -1,0 +1,74 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myPronosticLabel" jhiTranslate="pronosticsApp.pronostic.home.createOrEditLabel">Create or edit a Pronostic</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!pronostic.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="pronostic.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile" for="field_scoreEquipeDomicile">Score Equipe Domicile</label>
+            <input type="number" class="form-control" name="scoreEquipeDomicile" id="field_scoreEquipeDomicile"
+                [(ngModel)]="pronostic.scoreEquipeDomicile" required/>
+            <div [hidden]="!(editForm.controls.scoreEquipeDomicile?.dirty && editForm.controls.scoreEquipeDomicile?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.scoreEquipeDomicile?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.scoreEquipeDomicile?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.scoreEquipeVisiteur" for="field_scoreEquipeVisiteur">Score Equipe Visiteur</label>
+            <input type="number" class="form-control" name="scoreEquipeVisiteur" id="field_scoreEquipeVisiteur"
+                [(ngModel)]="pronostic.scoreEquipeVisiteur" required/>
+            <div [hidden]="!(editForm.controls.scoreEquipeVisiteur?.dirty && editForm.controls.scoreEquipeVisiteur?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.scoreEquipeVisiteur?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.scoreEquipeVisiteur?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.points" for="field_points">Points</label>
+            <input type="number" class="form-control" name="points" id="field_points"
+                [(ngModel)]="pronostic.points" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.match" for="field_match">Match</label>
+            <select class="form-control" id="field_match" name="match" [(ngModel)]="pronostic.match" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="matchOption.id === pronostic.match?.id ? pronostic.match : matchOption" *ngFor="let matchOption of matches; trackBy: trackMatchById">{{matchOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pronosticsApp.pronostic.utilisateur" for="field_utilisateur">Utilisateur</label>
+            <select class="form-control" id="field_utilisateur" name="utilisateur" [(ngModel)]="pronostic.utilisateur" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === pronostic.utilisateur?.id ? pronostic.utilisateur : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

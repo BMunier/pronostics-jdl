@@ -1,0 +1,26 @@
+
+{
+    "pronosticsApp": {
+        "stade" : {
+            "home": {
+                "title": "Stades",
+                "createLabel": "Create a new Stade",
+                "createOrEditLabel": "Create or edit a Stade",
+                "search": "Search for Stade"
+            },
+            "created": "A new Stade is created with identifier {{ param }}",
+            "updated": "A Stade is updated with identifier {{ param }}",
+            "deleted": "A Stade is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Stade {{ id }}?"
+            },
+            "detail": {
+                "title": "Stade"
+            },
+            "nom": "Nom",
+            "ville": "Ville",
+            "pays": "Pays",
+            "competition": "Competition"
+        }
+    }
+}

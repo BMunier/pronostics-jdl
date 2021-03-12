@@ -1,0 +1,28 @@
+
+{
+    "pronosticsApp": {
+        "equipe" : {
+            "home": {
+                "title": "Equipes",
+                "createLabel": "Equipe erstellen",
+                "createOrEditLabel": "Equipe erstellen oder bearbeiten",
+                "search": "Suche nach Equipe"
+            },
+            "created": "Equipe erstellt mit ID {{ param }}",
+            "updated": "Equipe aktualisiert mit ID {{ param }}",
+            "deleted": "Equipe gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Equipe {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Equipe"
+            },
+            "codeEquipe": "Code Equipe",
+            "nomEquipe": "Nom Equipe",
+            "rangFifa": "Rang Fifa",
+            "ecusson": "Ecusson",
+            "pays": "Pays",
+            "competition": "Competition"
+        }
+    }
+}
