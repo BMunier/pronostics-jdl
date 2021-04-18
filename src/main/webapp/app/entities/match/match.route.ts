@@ -1,60 +1,83 @@
-import { Routes } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
-import { UserRouteAccessService } from '../../shared';
+import { Authority } from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IMatch, Match } from 'app/shared/model/match.model';
+import { MatchService } from './match.service';
 import { MatchComponent } from './match.component';
 import { MatchDetailComponent } from './match-detail.component';
-import { MatchPopupComponent } from './match-dialog.component';
-import { MatchDeletePopupComponent } from './match-delete-dialog.component';
+import { MatchUpdateComponent } from './match-update.component';
+
+@Injectable({ providedIn: 'root' })
+export class MatchResolve implements Resolve<IMatch> {
+  constructor(private service: MatchService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IMatch> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((match: HttpResponse<Match>) => {
+          if (match.body) {
+            return of(match.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of(new Match());
+  }
+}
 
 export const matchRoute: Routes = [
-    {
-        path: 'match',
-        component: MatchComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.match.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'match/:id',
-        component: MatchDetailComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.match.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
-];
-
-export const matchPopupRoute: Routes = [
-    {
-        path: 'match-new',
-        component: MatchPopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.match.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: '',
+    component: MatchComponent,
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.match.home.title',
     },
-    {
-        path: 'match/:id/edit',
-        component: MatchPopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.match.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/view',
+    component: MatchDetailComponent,
+    resolve: {
+      match: MatchResolve,
     },
-    {
-        path: 'match/:id/delete',
-        component: MatchDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.match.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.match.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'new',
+    component: MatchUpdateComponent,
+    resolve: {
+      match: MatchResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.match.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/edit',
+    component: MatchUpdateComponent,
+    resolve: {
+      match: MatchResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.match.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
 ];

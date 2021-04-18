@@ -1,49 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../../shared';
-import {
-    EquipeService,
-    EquipePopupService,
-    EquipeComponent,
-    EquipeDetailComponent,
-    EquipeDialogComponent,
-    EquipePopupComponent,
-    EquipeDeletePopupComponent,
-    EquipeDeleteDialogComponent,
-    equipeRoute,
-    equipePopupRoute,
-} from './';
-
-const ENTITY_STATES = [
-    ...equipeRoute,
-    ...equipePopupRoute,
-];
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { EquipeComponent } from './equipe.component';
+import { EquipeDetailComponent } from './equipe-detail.component';
+import { EquipeUpdateComponent } from './equipe-update.component';
+import { EquipeDeleteDialogComponent } from './equipe-delete-dialog.component';
+import { equipeRoute } from './equipe.route';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        EquipeComponent,
-        EquipeDetailComponent,
-        EquipeDialogComponent,
-        EquipeDeleteDialogComponent,
-        EquipePopupComponent,
-        EquipeDeletePopupComponent,
-    ],
-    entryComponents: [
-        EquipeComponent,
-        EquipeDialogComponent,
-        EquipePopupComponent,
-        EquipeDeleteDialogComponent,
-        EquipeDeletePopupComponent,
-    ],
-    providers: [
-        EquipeService,
-        EquipePopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild(equipeRoute)],
+  declarations: [EquipeComponent, EquipeDetailComponent, EquipeUpdateComponent, EquipeDeleteDialogComponent],
+  entryComponents: [EquipeDeleteDialogComponent],
 })
 export class PronosticsEquipeModule {}

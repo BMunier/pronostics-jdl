@@ -1,54 +1,69 @@
-/* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { JhiDataUtils } from 'ng-jhipster';
 
 import { PronosticsTestModule } from '../../../test.module';
-import { PaysDetailComponent } from '../../../../../../main/webapp/app/entities/pays/pays-detail.component';
-import { PaysService } from '../../../../../../main/webapp/app/entities/pays/pays.service';
-import { Pays } from '../../../../../../main/webapp/app/entities/pays/pays.model';
+import { PaysDetailComponent } from 'app/entities/pays/pays-detail.component';
+import { Pays } from 'app/shared/model/pays.model';
 
 describe('Component Tests', () => {
+  describe('Pays Management Detail Component', () => {
+    let comp: PaysDetailComponent;
+    let fixture: ComponentFixture<PaysDetailComponent>;
+    let dataUtils: JhiDataUtils;
+    const route = ({ data: of({ pays: new Pays(123) }) } as any) as ActivatedRoute;
 
-    describe('Pays Management Detail Component', () => {
-        let comp: PaysDetailComponent;
-        let fixture: ComponentFixture<PaysDetailComponent>;
-        let service: PaysService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [PronosticsTestModule],
-                declarations: [PaysDetailComponent],
-                providers: [
-                    PaysService
-                ]
-            })
-            .overrideTemplate(PaysDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(PaysDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(PaysService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Pays(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.pays).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [PronosticsTestModule],
+        declarations: [PaysDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }],
+      })
+        .overrideTemplate(PaysDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(PaysDetailComponent);
+      comp = fixture.componentInstance;
+      dataUtils = fixture.debugElement.injector.get(JhiDataUtils);
     });
 
+    describe('OnInit', () => {
+      it('Should load pays on init', () => {
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.pays).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+
+    describe('byteSize', () => {
+      it('Should call byteSize from JhiDataUtils', () => {
+        // GIVEN
+        spyOn(dataUtils, 'byteSize');
+        const fakeBase64 = 'fake base64';
+
+        // WHEN
+        comp.byteSize(fakeBase64);
+
+        // THEN
+        expect(dataUtils.byteSize).toBeCalledWith(fakeBase64);
+      });
+    });
+
+    describe('openFile', () => {
+      it('Should call openFile from JhiDataUtils', () => {
+        // GIVEN
+        spyOn(dataUtils, 'openFile');
+        const fakeContentType = 'fake content type';
+        const fakeBase64 = 'fake base64';
+
+        // WHEN
+        comp.openFile(fakeContentType, fakeBase64);
+
+        // THEN
+        expect(dataUtils.openFile).toBeCalledWith(fakeContentType, fakeBase64);
+      });
+    });
+  });
 });

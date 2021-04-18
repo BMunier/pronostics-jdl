@@ -1,60 +1,83 @@
-import { Routes } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
-import { UserRouteAccessService } from '../../shared';
+import { Authority } from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IStade, Stade } from 'app/shared/model/stade.model';
+import { StadeService } from './stade.service';
 import { StadeComponent } from './stade.component';
 import { StadeDetailComponent } from './stade-detail.component';
-import { StadePopupComponent } from './stade-dialog.component';
-import { StadeDeletePopupComponent } from './stade-delete-dialog.component';
+import { StadeUpdateComponent } from './stade-update.component';
+
+@Injectable({ providedIn: 'root' })
+export class StadeResolve implements Resolve<IStade> {
+  constructor(private service: StadeService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IStade> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((stade: HttpResponse<Stade>) => {
+          if (stade.body) {
+            return of(stade.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of(new Stade());
+  }
+}
 
 export const stadeRoute: Routes = [
-    {
-        path: 'stade',
-        component: StadeComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.stade.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'stade/:id',
-        component: StadeDetailComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.stade.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
-];
-
-export const stadePopupRoute: Routes = [
-    {
-        path: 'stade-new',
-        component: StadePopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.stade.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: '',
+    component: StadeComponent,
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.stade.home.title',
     },
-    {
-        path: 'stade/:id/edit',
-        component: StadePopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.stade.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/view',
+    component: StadeDetailComponent,
+    resolve: {
+      stade: StadeResolve,
     },
-    {
-        path: 'stade/:id/delete',
-        component: StadeDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_ADMIN'],
-            pageTitle: 'pronosticsApp.stade.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.stade.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'new',
+    component: StadeUpdateComponent,
+    resolve: {
+      stade: StadeResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.stade.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/edit',
+    component: StadeUpdateComponent,
+    resolve: {
+      stade: StadeResolve,
+    },
+    data: {
+      authorities: [Authority.ADMIN],
+      pageTitle: 'pronosticsApp.stade.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
 ];

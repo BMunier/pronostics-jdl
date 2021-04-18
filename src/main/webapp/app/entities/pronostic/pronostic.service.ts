@@ -1,81 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { Pronostic } from './pronostic.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
+import { IPronostic } from 'app/shared/model/pronostic.model';
 
-export type EntityResponseType = HttpResponse<Pronostic>;
+type EntityResponseType = HttpResponse<IPronostic>;
+type EntityArrayResponseType = HttpResponse<IPronostic[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PronosticService {
+  public resourceUrl = SERVER_API_URL + 'api/pronostics';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/pronostics';
 
-    private resourceUrl =  SERVER_API_URL + 'api/pronostics';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/pronostics';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  create(pronostic: IPronostic): Observable<EntityResponseType> {
+    return this.http.post<IPronostic>(this.resourceUrl, pronostic, { observe: 'response' });
+  }
 
-    create(pronostic: Pronostic): Observable<EntityResponseType> {
-        const copy = this.convert(pronostic);
-        return this.http.post<Pronostic>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  update(pronostic: IPronostic): Observable<EntityResponseType> {
+    return this.http.put<IPronostic>(this.resourceUrl, pronostic, { observe: 'response' });
+  }
 
-    update(pronostic: Pronostic): Observable<EntityResponseType> {
-        const copy = this.convert(pronostic);
-        return this.http.put<Pronostic>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<IPronostic>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Pronostic>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IPronostic[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    query(req?: any): Observable<HttpResponse<Pronostic[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Pronostic[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Pronostic[]>) => this.convertArrayResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<Pronostic[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Pronostic[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Pronostic[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Pronostic = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Pronostic[]>): HttpResponse<Pronostic[]> {
-        const jsonResponse: Pronostic[] = res.body;
-        const body: Pronostic[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Pronostic.
-     */
-    private convertItemFromServer(pronostic: Pronostic): Pronostic {
-        const copy: Pronostic = Object.assign({}, pronostic);
-        return copy;
-    }
-
-    /**
-     * Convert a Pronostic to a JSON which can be sent to the server.
-     */
-    private convert(pronostic: Pronostic): Pronostic {
-        const copy: Pronostic = Object.assign({}, pronostic);
-        return copy;
-    }
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IPronostic[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
 }

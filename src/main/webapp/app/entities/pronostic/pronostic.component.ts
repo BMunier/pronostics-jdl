@@ -1,147 +1,141 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { Subscription } from 'rxjs';
+import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Pronostic } from './pronostic.model';
+import { IPronostic } from 'app/shared/model/pronostic.model';
+
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { PronosticService } from './pronostic.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { PronosticDeleteDialogComponent } from './pronostic-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-pronostic',
-    templateUrl: './pronostic.component.html'
+  selector: 'jhi-pronostic',
+  templateUrl: './pronostic.component.html',
 })
 export class PronosticComponent implements OnInit, OnDestroy {
+  pronostics: IPronostic[];
+  eventSubscriber?: Subscription;
+  itemsPerPage: number;
+  links: any;
+  page: number;
+  predicate: string;
+  ascending: boolean;
+  currentSearch: string;
 
-    pronostics: Pronostic[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    itemsPerPage: number;
-    links: any;
-    page: any;
-    predicate: any;
-    queryCount: any;
-    reverse: any;
-    totalItems: number;
-    currentSearch: string;
+  constructor(
+    protected pronosticService: PronosticService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal,
+    protected parseLinks: JhiParseLinks,
+    protected activatedRoute: ActivatedRoute
+  ) {
+    this.pronostics = [];
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.page = 0;
+    this.links = {
+      last: 0,
+    };
+    this.predicate = 'id';
+    this.ascending = true;
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+        ? this.activatedRoute.snapshot.queryParams['search']
+        : '';
+  }
 
-    constructor(
-        private pronosticService: PronosticService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private parseLinks: JhiParseLinks,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.pronostics = [];
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.page = 0;
-        this.links = {
-            last: 0
-        };
-        this.predicate = 'id';
-        this.reverse = true;
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
-
-    loadAll() {
-        if (this.currentSearch) {
-            this.pronosticService.search({
-                query: this.currentSearch,
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.sort()
-            }).subscribe(
-                (res: HttpResponse<Pronostic[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-            return;
-        }
-        this.pronosticService.query({
-            page: this.page,
-            size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: HttpResponse<Pronostic[]>) => this.onSuccess(res.body, res.headers),
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    if (this.currentSearch) {
+      this.pronosticService
+        .search({
+          query: this.currentSearch,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe((res: HttpResponse<IPronostic[]>) => this.paginatePronostics(res.body, res.headers));
+      return;
     }
 
-    reset() {
-        this.page = 0;
-        this.pronostics = [];
-        this.loadAll();
-    }
+    this.pronosticService
+      .query({
+        page: this.page,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe((res: HttpResponse<IPronostic[]>) => this.paginatePronostics(res.body, res.headers));
+  }
 
-    loadPage(page) {
-        this.page = page;
-        this.loadAll();
-    }
+  reset(): void {
+    this.page = 0;
+    this.pronostics = [];
+    this.loadAll();
+  }
 
-    clear() {
-        this.pronostics = [];
-        this.links = {
-            last: 0
-        };
-        this.page = 0;
-        this.predicate = 'id';
-        this.reverse = true;
-        this.currentSearch = '';
-        this.loadAll();
-    }
+  loadPage(page: number): void {
+    this.page = page;
+    this.loadAll();
+  }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.pronostics = [];
-        this.links = {
-            last: 0
-        };
-        this.page = 0;
-        this.predicate = '_score';
-        this.reverse = false;
-        this.currentSearch = query;
-        this.loadAll();
+  search(query: string): void {
+    this.pronostics = [];
+    this.links = {
+      last: 0,
+    };
+    this.page = 0;
+    if (query) {
+      this.predicate = '_score';
+      this.ascending = false;
+    } else {
+      this.predicate = 'id';
+      this.ascending = true;
     }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInPronostics();
-    }
+    this.currentSearch = query;
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInPronostics();
+  }
 
-    trackId(index: number, item: Pronostic) {
-        return item.id;
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
-    registerChangeInPronostics() {
-        this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response) => this.reset());
-    }
+  }
 
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
+  trackId(index: number, item: IPronostic): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    private onSuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
-        for (let i = 0; i < data.length; i++) {
-            this.pronostics.push(data[i]);
-        }
-    }
+  registerChangeInPronostics(): void {
+    this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', () => this.reset());
+  }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+  delete(pronostic: IPronostic): void {
+    const modalRef = this.modalService.open(PronosticDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.pronostic = pronostic;
+  }
+
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    if (this.predicate !== 'id') {
+      result.push('id');
     }
+    return result;
+  }
+
+  protected paginatePronostics(data: IPronostic[] | null, headers: HttpHeaders): void {
+    const headersLink = headers.get('link');
+    this.links = this.parseLinks.parse(headersLink ? headersLink : '');
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        this.pronostics.push(data[i]);
+      }
+    }
+  }
 }

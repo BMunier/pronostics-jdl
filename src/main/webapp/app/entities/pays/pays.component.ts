@@ -1,94 +1,84 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { Subscription } from 'rxjs';
+import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Pays } from './pays.model';
+import { IPays } from 'app/shared/model/pays.model';
 import { PaysService } from './pays.service';
-import { Principal } from '../../shared';
+import { PaysDeleteDialogComponent } from './pays-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-pays',
-    templateUrl: './pays.component.html'
+  selector: 'jhi-pays',
+  templateUrl: './pays.component.html',
 })
 export class PaysComponent implements OnInit, OnDestroy {
-pays: Pays[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
+  pays?: IPays[];
+  eventSubscriber?: Subscription;
+  currentSearch: string;
 
-    constructor(
-        private paysService: PaysService,
-        private jhiAlertService: JhiAlertService,
-        private dataUtils: JhiDataUtils,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
+  constructor(
+    protected paysService: PaysService,
+    protected dataUtils: JhiDataUtils,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal,
+    protected activatedRoute: ActivatedRoute
+  ) {
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+        ? this.activatedRoute.snapshot.queryParams['search']
+        : '';
+  }
 
-    loadAll() {
-        if (this.currentSearch) {
-            this.paysService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<Pays[]>) => this.pays = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
-        this.paysService.query().subscribe(
-            (res: HttpResponse<Pays[]>) => {
-                this.pays = res.body;
-                this.currentSearch = '';
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    if (this.currentSearch) {
+      this.paysService
+        .search({
+          query: this.currentSearch,
+        })
+        .subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
+      return;
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
+    this.paysService.query().subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
+  }
 
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInPays();
-    }
+  search(query: string): void {
+    this.currentSearch = query;
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInPays();
+  }
 
-    trackId(index: number, item: Pays) {
-        return item.id;
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
+  trackId(index: number, item: IPays): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
-    registerChangeInPays() {
-        this.eventSubscriber = this.eventManager.subscribe('paysListModification', (response) => this.loadAll());
-    }
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+  openFile(contentType = '', base64String: string): void {
+    return this.dataUtils.openFile(contentType, base64String);
+  }
+
+  registerChangeInPays(): void {
+    this.eventSubscriber = this.eventManager.subscribe('paysListModification', () => this.loadAll());
+  }
+
+  delete(pays: IPays): void {
+    const modalRef = this.modalService.open(PaysDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.pays = pays;
+  }
 }

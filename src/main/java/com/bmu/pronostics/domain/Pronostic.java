@@ -1,12 +1,13 @@
 package com.bmu.pronostics.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -16,8 +17,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "pronostic")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "pronostic")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "pronostic")
 public class Pronostic implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,12 +40,14 @@ public class Pronostic implements Serializable {
     private Integer points;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "pronostics", allowSetters = true)
     private Match match;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "pronostics", allowSetters = true)
     private User utilisateur;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -117,30 +120,29 @@ public class Pronostic implements Serializable {
     public void setUtilisateur(User user) {
         this.utilisateur = user;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     public boolean matchDejaJoue(){
         return Instant.now().isAfter(getMatch().getDate());
     }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pronostic)) {
             return false;
         }
-        Pronostic pronostic = (Pronostic) o;
-        if (pronostic.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), pronostic.getId());
+        return id != null && id.equals(((Pronostic) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Pronostic{" +

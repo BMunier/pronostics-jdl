@@ -1,45 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AccountService } from 'app/core/auth/account.service';
 import { Session } from './session.model';
 import { SessionsService } from './sessions.service';
-import { Principal } from '../../shared';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
-    selector: 'jhi-sessions',
-    templateUrl: './sessions.component.html'
+  selector: 'jhi-sessions',
+  templateUrl: './sessions.component.html',
 })
 export class SessionsComponent implements OnInit {
+  account: Account | null = null;
+  error = false;
+  success = false;
+  sessions: Session[] = [];
 
-    account: any;
-    error: string;
-    success: string;
-    sessions: Session[];
+  constructor(private sessionsService: SessionsService, private accountService: AccountService) {}
 
-    constructor(
-        private sessionsService: SessionsService,
-        private principal: Principal
-    ) {
-    }
+  ngOnInit(): void {
+    this.sessionsService.findAll().subscribe(sessions => (this.sessions = sessions));
 
-    ngOnInit() {
-        this.sessionsService.findAll().subscribe((sessions) => this.sessions = sessions);
+    this.accountService.identity().subscribe(account => (this.account = account));
+  }
 
-        this.principal.identity().then((account) => {
-            this.account = account;
-        });
-    }
+  invalidate(series: string): void {
+    this.error = false;
+    this.success = false;
 
-    invalidate(series) {
-        this.sessionsService.delete(encodeURIComponent(series)).subscribe(
-            (response) => {
-                if (response.status === 200) {
-                    this.error = null;
-                    this.success = 'OK';
-                    this.sessionsService.findAll().subscribe((sessions) => this.sessions = sessions);
-                } else {
-                    this.success = null;
-                    this.error = 'ERROR';
-                }
-            });
-    }
+    this.sessionsService.delete(encodeURIComponent(series)).subscribe(
+      () => {
+        this.success = true;
+        this.sessionsService.findAll().subscribe(sessions => (this.sessions = sessions));
+      },
+      () => (this.error = true)
+    );
+  }
 }

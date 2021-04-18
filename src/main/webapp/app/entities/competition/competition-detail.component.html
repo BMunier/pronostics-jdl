@@ -1,56 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="competition">
+            <h2><span jhiTranslate="pronosticsApp.competition.detail.title">Competition</span> {{ competition.id }}</h2>
 
-<div *ngIf="competition">
-    <h2><span jhiTranslate="pronosticsApp.competition.detail.title">Competition</span> {{competition.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pronosticsApp.competition.nom">Nom</span></dt>
-        <dd>
-            <span>{{competition.nom}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.description">Description</span></dt>
-        <dd>
-            <span>{{competition.description}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.dateDebut">Date Debut</span></dt>
-        <dd>
-            <span>{{competition.dateDebut | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.dateFin">Date Fin</span></dt>
-        <dd>
-            <span>{{competition.dateFin | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.equipe">Equipe</span></dt>
-        <dd>
-            <span *ngFor="let equipe of competition.equipes; let last = last">
-                <a [routerLink]="['/equipe', equipe?.id ]">{{equipe.codeEquipe}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.pays">Pays</span></dt>
-        <dd>
-            <span *ngFor="let pays of competition.pays; let last = last">
-                <a [routerLink]="['/pays', pays?.id ]">{{pays.nom}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.competition.stade">Stade</span></dt>
-        <dd>
-            <span *ngFor="let stade of competition.stades; let last = last">
-                <a [routerLink]="['/stade', stade?.id ]">{{stade.nom}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-    </dl>
+            <hr>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+            <jhi-alert-error></jhi-alert-error>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'competition/'+ competition.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="pronosticsApp.competition.nom">Nom</span></dt>
+                <dd>
+                    <span>{{ competition.nom }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.description">Description</span></dt>
+                <dd>
+                    <span>{{ competition.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.dateDebut">Date Debut</span></dt>
+                <dd>
+                    <span>{{ competition.dateDebut }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.dateFin">Date Fin</span></dt>
+                <dd>
+                    <span>{{ competition.dateFin }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.equipe">Equipe</span></dt>
+                <dd>
+                    <span *ngFor="let equipe of competition.equipes; let last = last">
+                        <a [routerLink]="['/equipe', equipe?.id, 'view']">{{ equipe.codeEquipe }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.pays">Pays</span></dt>
+                <dd>
+                    <span *ngFor="let pays of competition.pays; let last = last">
+                        <a [routerLink]="['/pays', pays?.id, 'view']">{{ pays.nom }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.competition.stade">Stade</span></dt>
+                <dd>
+                    <span *ngFor="let stade of competition.stades; let last = last">
+                        <a [routerLink]="['/stade', stade?.id, 'view']">{{ stade.nom }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/competition', competition.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

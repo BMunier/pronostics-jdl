@@ -1,51 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../../shared';
-import { PronosticsAdminModule } from '../../admin/admin.module';
-import {
-    PronosticService,
-    PronosticPopupService,
-    PronosticComponent,
-    PronosticDetailComponent,
-    PronosticDialogComponent,
-    PronosticPopupComponent,
-    PronosticDeletePopupComponent,
-    PronosticDeleteDialogComponent,
-    pronosticRoute,
-    pronosticPopupRoute,
-} from './';
-
-const ENTITY_STATES = [
-    ...pronosticRoute,
-    ...pronosticPopupRoute,
-];
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { PronosticComponent } from './pronostic.component';
+import { PronosticDetailComponent } from './pronostic-detail.component';
+import { PronosticUpdateComponent } from './pronostic-update.component';
+import { PronosticDeleteDialogComponent } from './pronostic-delete-dialog.component';
+import { pronosticRoute } from './pronostic.route';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        PronosticsAdminModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        PronosticComponent,
-        PronosticDetailComponent,
-        PronosticDialogComponent,
-        PronosticDeleteDialogComponent,
-        PronosticPopupComponent,
-        PronosticDeletePopupComponent,
-    ],
-    entryComponents: [
-        PronosticComponent,
-        PronosticDialogComponent,
-        PronosticPopupComponent,
-        PronosticDeleteDialogComponent,
-        PronosticDeletePopupComponent,
-    ],
-    providers: [
-        PronosticService,
-        PronosticPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild(pronosticRoute)],
+  declarations: [PronosticComponent, PronosticDetailComponent, PronosticUpdateComponent, PronosticDeleteDialogComponent],
+  entryComponents: [PronosticDeleteDialogComponent],
 })
 export class PronosticsPronosticModule {}

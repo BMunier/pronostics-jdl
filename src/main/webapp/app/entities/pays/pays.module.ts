@@ -1,49 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../../shared';
-import {
-    PaysService,
-    PaysPopupService,
-    PaysComponent,
-    PaysDetailComponent,
-    PaysDialogComponent,
-    PaysPopupComponent,
-    PaysDeletePopupComponent,
-    PaysDeleteDialogComponent,
-    paysRoute,
-    paysPopupRoute,
-} from './';
-
-const ENTITY_STATES = [
-    ...paysRoute,
-    ...paysPopupRoute,
-];
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { PaysComponent } from './pays.component';
+import { PaysDetailComponent } from './pays-detail.component';
+import { PaysUpdateComponent } from './pays-update.component';
+import { PaysDeleteDialogComponent } from './pays-delete-dialog.component';
+import { paysRoute } from './pays.route';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        PaysComponent,
-        PaysDetailComponent,
-        PaysDialogComponent,
-        PaysDeleteDialogComponent,
-        PaysPopupComponent,
-        PaysDeletePopupComponent,
-    ],
-    entryComponents: [
-        PaysComponent,
-        PaysDialogComponent,
-        PaysPopupComponent,
-        PaysDeleteDialogComponent,
-        PaysDeletePopupComponent,
-    ],
-    providers: [
-        PaysService,
-        PaysPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild(paysRoute)],
+  declarations: [PaysComponent, PaysDetailComponent, PaysUpdateComponent, PaysDeleteDialogComponent],
+  entryComponents: [PaysDeleteDialogComponent],
 })
 export class PronosticsPaysModule {}

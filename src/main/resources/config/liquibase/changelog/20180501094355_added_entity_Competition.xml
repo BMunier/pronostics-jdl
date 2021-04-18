@@ -3,76 +3,92 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <property name="now" value="now()" dbms="h2"/>
-
-    <property name="now" value="current_timestamp" dbms="postgresql"/>
-
-    <property name="floatType" value="float4" dbms="postgresql, h2"/>
-    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
-
+    
     <!--
         Added the entity Competition.
     -->
     <changeSet id="20180501094355-1" author="jhipster">
         <createTable tableName="competition">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="nom" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="date_debut" type="date">
                 <constraints nullable="false" />
             </column>
-
             <column name="date_fin" type="date">
                 <constraints nullable="false" />
             </column>
-
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        
+    </changeSet>
+
+    <changeSet id="20180501094355-1-relations" author="jhipster">
+
         <createTable tableName="competition_equipe">
-            <column name="equipes_id" type="bigint">
+            <column name="equipe_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="competitions_id" type="bigint">
+            <column name="competition_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="competitions_id, equipes_id" tableName="competition_equipe"/>
+        <addPrimaryKey columnNames="competition_id, equipe_id" tableName="competition_equipe"/>
         
         <createTable tableName="competition_pays">
             <column name="pays_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="competitions_id" type="bigint">
+            <column name="competition_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="competitions_id, pays_id" tableName="competition_pays"/>
+        <addPrimaryKey columnNames="competition_id, pays_id" tableName="competition_pays"/>
         
         <createTable tableName="competition_stade">
-            <column name="stades_id" type="bigint">
+            <column name="stade_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="competitions_id" type="bigint">
+            <column name="competition_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="competitions_id, stades_id" tableName="competition_stade"/>
+        <addPrimaryKey columnNames="competition_id, stade_id" tableName="competition_stade"/>
         
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20180501094355-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/competition.csv"
+                  separator=";"
+                  tableName="competition">
+            <column name="id" type="numeric"/>
+            <column name="nom" type="string"/>
+            <column name="description" type="string"/>
+            <column name="date_debut" type="date"/>
+            <column name="date_fin" type="date"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+
 </databaseChangeLog>

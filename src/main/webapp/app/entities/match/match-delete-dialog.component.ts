@@ -1,64 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Match } from './match.model';
-import { MatchPopupService } from './match-popup.service';
+import { IMatch } from 'app/shared/model/match.model';
 import { MatchService } from './match.service';
 
 @Component({
-    selector: 'jhi-match-delete-dialog',
-    templateUrl: './match-delete-dialog.component.html'
+  templateUrl: './match-delete-dialog.component.html',
 })
 export class MatchDeleteDialogComponent {
+  match?: IMatch;
 
-    match: Match;
+  constructor(protected matchService: MatchService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-    constructor(
-        private matchService: MatchService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  cancel(): void {
+    this.activeModal.dismiss();
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.matchService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'matchListModification',
-                content: 'Deleted an match'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
-}
-
-@Component({
-    selector: 'jhi-match-delete-popup',
-    template: ''
-})
-export class MatchDeletePopupComponent implements OnInit, OnDestroy {
-
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private matchPopupService: MatchPopupService
-    ) {}
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.matchPopupService
-                .open(MatchDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  confirmDelete(id: number): void {
+    this.matchService.delete(id).subscribe(() => {
+      this.eventManager.broadcast('matchListModification');
+      this.activeModal.close();
+    });
+  }
 }

@@ -1,70 +1,141 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { JhiDateUtils } from 'ng-jhipster';
-
-import { MatchService } from '../../../../../../main/webapp/app/entities/match/match.service';
-import { SERVER_API_URL } from '../../../../../../main/webapp/app/app.constants';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { MatchService } from 'app/entities/match/match.service';
+import { IMatch, Match } from 'app/shared/model/match.model';
+import { StatutMatch } from 'app/shared/model/enumerations/statut-match.model';
+import { PhaseCompetition } from 'app/shared/model/enumerations/phase-competition.model';
 
 describe('Service Tests', () => {
+  describe('Match Service', () => {
+    let injector: TestBed;
+    let service: MatchService;
+    let httpMock: HttpTestingController;
+    let elemDefault: IMatch;
+    let expectedResult: IMatch | IMatch[] | boolean | null;
+    let currentDate: moment.Moment;
 
-    describe('Match Service', () => {
-        let injector: TestBed;
-        let service: MatchService;
-        let httpMock: HttpTestingController;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+      });
+      expectedResult = null;
+      injector = getTestBed();
+      service = injector.get(MatchService);
+      httpMock = injector.get(HttpTestingController);
+      currentDate = moment();
 
-        beforeEach(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    HttpClientTestingModule
-                ],
-                providers: [
-                    JhiDateUtils,
-                    MatchService
-                ]
-            });
-            injector = getTestBed();
-            service = injector.get(MatchService);
-            httpMock = injector.get(HttpTestingController);
-        });
-
-        describe('Service methods', () => {
-            it('should call correct URL', () => {
-                service.find(123).subscribe(() => {});
-
-                const req  = httpMock.expectOne({ method: 'GET' });
-
-                const resourceUrl = SERVER_API_URL + 'api/matches';
-                expect(req.request.url).toEqual(resourceUrl + '/' + 123);
-            });
-            it('should return Match', () => {
-
-                service.find(123).subscribe((received) => {
-                    expect(received.body.id).toEqual(123);
-                });
-
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush({id: 123});
-            });
-
-            it('should propagate not found response', () => {
-
-                service.find(123).subscribe(null, (_error: any) => {
-                    expect(_error.status).toEqual(404);
-                });
-
-                const req  = httpMock.expectOne({ method: 'GET' });
-                req.flush('Invalid request parameters', {
-                    status: 404, statusText: 'Bad Request'
-                });
-
-            });
-        });
-
-        afterEach(() => {
-            httpMock.verify();
-        });
-
+      elemDefault = new Match(0, currentDate, StatutMatch.PAS_DEMARRE, 'AAAAAAA', 0, 0, PhaseCompetition.GROUPE, 'AAAAAAA');
     });
 
+    describe('Service methods', () => {
+      it('should find an element', () => {
+        const returnedFromService = Object.assign(
+          {
+            date: currentDate.format(DATE_TIME_FORMAT),
+          },
+          elemDefault
+        );
+
+        service.find(123).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(elemDefault);
+      });
+
+      it('should create a Match', () => {
+        const returnedFromService = Object.assign(
+          {
+            id: 0,
+            date: currentDate.format(DATE_TIME_FORMAT),
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate,
+          },
+          returnedFromService
+        );
+
+        service.create(new Match()).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'POST' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
+      it('should update a Match', () => {
+        const returnedFromService = Object.assign(
+          {
+            date: currentDate.format(DATE_TIME_FORMAT),
+            statut: 'BBBBBB',
+            code: 'BBBBBB',
+            scoreEquipeDomicile: 1,
+            scoreEquipeVisiteur: 1,
+            phaseCompetition: 'BBBBBB',
+            groupe: 'BBBBBB',
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate,
+          },
+          returnedFromService
+        );
+
+        service.update(expected).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'PUT' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
+      it('should return a list of Match', () => {
+        const returnedFromService = Object.assign(
+          {
+            date: currentDate.format(DATE_TIME_FORMAT),
+            statut: 'BBBBBB',
+            code: 'BBBBBB',
+            scoreEquipeDomicile: 1,
+            scoreEquipeVisiteur: 1,
+            phaseCompetition: 'BBBBBB',
+            groupe: 'BBBBBB',
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate,
+          },
+          returnedFromService
+        );
+
+        service.query().subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        httpMock.verify();
+        expect(expectedResult).toContainEqual(expected);
+      });
+
+      it('should delete a Match', () => {
+        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+
+        const req = httpMock.expectOne({ method: 'DELETE' });
+        req.flush({ status: 200 });
+        expect(expectedResult);
+      });
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+  });
 });

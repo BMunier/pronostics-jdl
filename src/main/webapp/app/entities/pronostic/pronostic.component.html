@@ -1,84 +1,92 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span jhiTranslate="pronosticsApp.pronostic.home.title">Pronostics</span>
-        <button class="btn btn-primary float-right jh-create-entity create-pronostic" [routerLink]="['/', { outlets: { popup: ['pronostic-new'] } }]">
-            <span class="fa fa-plus"></span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pronostic" [routerLink]="['/pronostic/new']">
+            <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="pronosticsApp.pronostic.home.createLabel">
-            Create new Pronostic
+            Create a new Pronostic
             </span>
         </button>
     </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
+
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'pronosticsApp.pronostic.home.search' | translate }}">
+
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon icon="search"></fa-icon>
                     </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <br/>
-    <div class="table-responsive" *ngIf="pronostics">
-        <table class="table table-striped">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="pronostics?.length === 0">
+        <span jhiTranslate="pronosticsApp.pronostic.home.notFound">No pronostics found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="pronostics && pronostics.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="scoreEquipeDomicile"><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile">Score Equipe Domicile</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="scoreEquipeVisiteur"><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeVisiteur">Score Equipe Visiteur</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="points"><span jhiTranslate="pronosticsApp.pronostic.points">Points</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="match.id"><span jhiTranslate="pronosticsApp.pronostic.match">Match</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="utilisateur.login"><span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="scoreEquipeDomicile"><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile">Score Equipe Domicile</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="scoreEquipeVisiteur"><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeVisiteur">Score Equipe Visiteur</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="points"><span jhiTranslate="pronosticsApp.pronostic.points">Points</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="match.id"><span jhiTranslate="pronosticsApp.pronostic.match">Match</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="utilisateur.login"><span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let pronostic of pronostics ;trackBy: trackId">
-                <td><a [routerLink]="['../pronostic', pronostic.id ]">{{pronostic.id}}</a></td>
-                <td>{{pronostic.scoreEquipeDomicile}}</td>
-                <td>{{pronostic.scoreEquipeVisiteur}}</td>
-                <td>{{pronostic.points}}</td>
-                <td>
-                    <div *ngIf="pronostic.match">
-                        <a [routerLink]="['../match', pronostic.match?.id ]" >{{pronostic.match?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    {{pronostic.utilisateur?.login}}
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../pronostic', pronostic.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'pronostic/'+ pronostic.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'pronostic/'+ pronostic.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let pronostic of pronostics ;trackBy: trackId">
+                    <td><a [routerLink]="['/pronostic', pronostic.id, 'view']">{{ pronostic.id }}</a></td>
+                    <td>{{ pronostic.scoreEquipeDomicile }}</td>
+                    <td>{{ pronostic.scoreEquipeVisiteur }}</td>
+                    <td>{{ pronostic.points }}</td>
+                    <td>
+                        <div *ngIf="pronostic.match">
+                            <a [routerLink]="['/match', pronostic.match?.id, 'view']" >{{ pronostic.match?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        {{ pronostic.utilisateur?.login }}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/pronostic', pronostic.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/pronostic', pronostic.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(pronostic)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

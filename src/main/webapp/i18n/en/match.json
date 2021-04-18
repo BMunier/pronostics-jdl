@@ -1,34 +1,33 @@
-
 {
-    "pronosticsApp": {
-        "match" : {
-            "home": {
-                "title": "Matches",
-                "createLabel": "Create a new Match",
-                "createOrEditLabel": "Create or edit a Match",
-                "search": "Search for Match",
-                "refresh": "Refresh"
-            },
-            "created": "A new Match is created with identifier {{ param }}",
-            "updated": "A Match is updated with identifier {{ param }}",
-            "deleted": "A Match is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Are you sure you want to delete Match {{ id }}?"
-            },
-            "detail": {
-                "title": "Match"
-            },
-            "date": "Date",
-            "statut": "Statut",
-            "code": "Code",
-            "scoreEquipeDomicile": "Score Equipe Domicile",
-            "scoreEquipeVisiteur": "Score Equipe Visiteur",
-            "phaseCompetition": "Phase Competition",
-            "groupe": "Groupe",
-            "competition": "Competition",
-            "stade": "Stade",
-            "equipeDomicile": "Equipe Domicile",
-            "equipeVisiteur": "Equipe Visiteur"
-        }
+  "pronosticsApp": {
+    "match": {
+      "home": {
+        "title": "Matches",
+        "createLabel": "Create a new Match",
+        "createOrEditLabel": "Create or edit a Match",
+        "search": "Search for Match",
+        "notFound": "No Matches found"
+      },
+      "created": "A new Match is created with identifier {{ param }}",
+      "updated": "A Match is updated with identifier {{ param }}",
+      "deleted": "A Match is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Match {{ id }}?"
+      },
+      "detail": {
+        "title": "Match"
+      },
+      "date": "Date",
+      "statut": "Statut",
+      "code": "Code",
+      "scoreEquipeDomicile": "Score Equipe Domicile",
+      "scoreEquipeVisiteur": "Score Equipe Visiteur",
+      "phaseCompetition": "Phase Competition",
+      "groupe": "Groupe",
+      "competition": "Competition",
+      "stade": "Stade",
+      "equipeDomicile": "Equipe Domicile",
+      "equipeVisiteur": "Equipe Visiteur"
     }
+  }
 }

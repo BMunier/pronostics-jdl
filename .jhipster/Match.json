@@ -1,73 +1,69 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "competition",
-            "otherEntityName": "competition",
-            "otherEntityField": "nom"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "stade",
-            "otherEntityName": "stade",
-            "otherEntityField": "nom"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "equipeDomicile",
-            "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "equipeVisiteur",
-            "otherEntityName": "equipe",
-            "otherEntityField": "codeEquipe"
-        }
-    ],
-    "fields": [
-        {
-            "fieldName": "date",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "statut",
-            "fieldType": "StatutMatch",
-            "fieldValues": "PAS_DEMARRE,EN_COURS,TERMINE",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "code",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "scoreEquipeDomicile",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "scoreEquipeVisiteur",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "phaseCompetition",
-            "fieldType": "PhaseCompetition",
-            "fieldValues": "GROUPE,HUITIEME,QUART,DEMI,FINAL"
-        },
-        {
-            "fieldName": "groupe",
-            "fieldType": "String"
-        }
-    ],
-    "changelogDate": "20180501094359",
-    "entityTableName": "match",
-    "dto": "no",
-    "pagination": "infinite-scroll",
-    "service": "no",
-    "jpaMetamodelFiltering": false
+  "fluentMethods": true,
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "relationshipName": "competition",
+      "otherEntityName": "competition",
+      "otherEntityField": "nom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "relationshipName": "stade",
+      "otherEntityName": "stade",
+      "otherEntityField": "nom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "relationshipName": "equipeDomicile",
+      "otherEntityName": "equipe",
+      "otherEntityField": "codeEquipe"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "relationshipName": "equipeVisiteur",
+      "otherEntityName": "equipe",
+      "otherEntityField": "codeEquipe"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "statut",
+      "fieldType": "StatutMatch",
+      "fieldValues": "PAS_DEMARRE,EN_COURS,TERMINE",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "scoreEquipeDomicile",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "scoreEquipeVisiteur",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "phaseCompetition",
+      "fieldType": "PhaseCompetition",
+      "fieldValues": "GROUPE,HUITIEME,QUART,DEMI,FINAL"
+    },
+    {
+      "fieldName": "groupe",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20180501094359",
+  "entityTableName": "match",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "no",
+  "jpaMetamodelFiltering": false
 }

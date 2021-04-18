@@ -1,85 +1,75 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Competition } from './competition.model';
+import { ICompetition } from 'app/shared/model/competition.model';
 import { CompetitionService } from './competition.service';
-import { Principal } from '../../shared';
+import { CompetitionDeleteDialogComponent } from './competition-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-competition',
-    templateUrl: './competition.component.html'
+  selector: 'jhi-competition',
+  templateUrl: './competition.component.html',
 })
 export class CompetitionComponent implements OnInit, OnDestroy {
-competitions: Competition[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
+  competitions?: ICompetition[];
+  eventSubscriber?: Subscription;
+  currentSearch: string;
 
-    constructor(
-        private competitionService: CompetitionService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
+  constructor(
+    protected competitionService: CompetitionService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal,
+    protected activatedRoute: ActivatedRoute
+  ) {
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+        ? this.activatedRoute.snapshot.queryParams['search']
+        : '';
+  }
 
-    loadAll() {
-        if (this.currentSearch) {
-            this.competitionService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<Competition[]>) => this.competitions = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
-        this.competitionService.query().subscribe(
-            (res: HttpResponse<Competition[]>) => {
-                this.competitions = res.body;
-                this.currentSearch = '';
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    if (this.currentSearch) {
+      this.competitionService
+        .search({
+          query: this.currentSearch,
+        })
+        .subscribe((res: HttpResponse<ICompetition[]>) => (this.competitions = res.body || []));
+      return;
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
+    this.competitionService.query().subscribe((res: HttpResponse<ICompetition[]>) => (this.competitions = res.body || []));
+  }
 
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInCompetitions();
-    }
+  search(query: string): void {
+    this.currentSearch = query;
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInCompetitions();
+  }
 
-    trackId(index: number, item: Competition) {
-        return item.id;
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
-    registerChangeInCompetitions() {
-        this.eventSubscriber = this.eventManager.subscribe('competitionListModification', (response) => this.loadAll());
-    }
+  }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+  trackId(index: number, item: ICompetition): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
+
+  registerChangeInCompetitions(): void {
+    this.eventSubscriber = this.eventManager.subscribe('competitionListModification', () => this.loadAll());
+  }
+
+  delete(competition: ICompetition): void {
+    const modalRef = this.modalService.open(CompetitionDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.competition = competition;
+  }
 }

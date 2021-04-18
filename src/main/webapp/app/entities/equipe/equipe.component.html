@@ -1,87 +1,95 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span jhiTranslate="pronosticsApp.equipe.home.title">Equipes</span>
-        <button class="btn btn-primary float-right jh-create-entity create-equipe" [routerLink]="['/', { outlets: { popup: ['equipe-new'] } }]">
-            <span class="fa fa-plus"></span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-equipe" [routerLink]="['/equipe/new']">
+            <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="pronosticsApp.equipe.home.createLabel">
-            Create new Equipe
+            Create a new Equipe
             </span>
         </button>
     </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
+
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'pronosticsApp.equipe.home.search' | translate }}">
+
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon icon="search"></fa-icon>
                     </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <br/>
-    <div class="table-responsive" *ngIf="equipes">
-        <table class="table table-striped">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="equipes?.length === 0">
+        <span jhiTranslate="pronosticsApp.equipe.home.notFound">No equipes found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="equipes && equipes.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="codeEquipe"><span jhiTranslate="pronosticsApp.equipe.codeEquipe">Code Equipe</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="nomEquipe"><span jhiTranslate="pronosticsApp.equipe.nomEquipe">Nom Equipe</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="rangFifa"><span jhiTranslate="pronosticsApp.equipe.rangFifa">Rang Fifa</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="ecusson"><span jhiTranslate="pronosticsApp.equipe.ecusson">Ecusson</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="pays.nom"><span jhiTranslate="pronosticsApp.equipe.pays">Pays</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="codeEquipe"><span jhiTranslate="pronosticsApp.equipe.codeEquipe">Code Equipe</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="nomEquipe"><span jhiTranslate="pronosticsApp.equipe.nomEquipe">Nom Equipe</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="rangFifa"><span jhiTranslate="pronosticsApp.equipe.rangFifa">Rang Fifa</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ecusson"><span jhiTranslate="pronosticsApp.equipe.ecusson">Ecusson</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="pays.nom"><span jhiTranslate="pronosticsApp.equipe.pays">Pays</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let equipe of equipes ;trackBy: trackId">
-                <td><a [routerLink]="['../equipe', equipe.id ]">{{equipe.id}}</a></td>
-                <td>{{equipe.codeEquipe}}</td>
-                <td>{{equipe.nomEquipe}}</td>
-                <td>{{equipe.rangFifa}}</td>
-                <td>
-                    <a *ngIf="equipe.ecusson" (click)="openFile(equipe.ecussonContentType, equipe.ecusson)">
-                        <img [src]="'data:' + equipe.ecussonContentType + ';base64,' + equipe.ecusson" style="max-height: 30px;" alt="equipe image"/>
-                    </a>
-                    <span *ngIf="equipe.ecusson">{{equipe.ecussonContentType}}, {{byteSize(equipe.ecusson)}}</span>
-                </td>
-                <td>
-                    <div *ngIf="equipe.pays">
-                        <a [routerLink]="['../pays', equipe.pays?.id ]" >{{equipe.pays?.nom}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../equipe', equipe.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'equipe/'+ equipe.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'equipe/'+ equipe.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let equipe of equipes ;trackBy: trackId">
+                    <td><a [routerLink]="['/equipe', equipe.id, 'view']">{{ equipe.id }}</a></td>
+                    <td>{{ equipe.codeEquipe }}</td>
+                    <td>{{ equipe.nomEquipe }}</td>
+                    <td>{{ equipe.rangFifa }}</td>
+                    <td>
+                        <a *ngIf="equipe.ecusson" (click)="openFile(equipe.ecussonContentType, equipe.ecusson)">
+                            <img [src]="'data:' + equipe.ecussonContentType + ';base64,' + equipe.ecusson" style="max-height: 30px;" alt="equipe image"/>
+                        </a>
+                        <span *ngIf="equipe.ecusson">{{ equipe.ecussonContentType }}, {{ byteSize(equipe.ecusson) }}</span>
+                    </td>
+                    <td>
+                        <div *ngIf="equipe.pays">
+                            <a [routerLink]="['/pays', equipe.pays?.id, 'view']" >{{ equipe.pays?.nom }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/equipe', equipe.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/equipe', equipe.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(equipe)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

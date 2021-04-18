@@ -1,39 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pays">
+            <h2><span jhiTranslate="pronosticsApp.pays.detail.title">Pays</span> {{ pays.id }}</h2>
 
-<div *ngIf="pays">
-    <h2><span jhiTranslate="pronosticsApp.pays.detail.title">Pays</span> {{pays.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pronosticsApp.pays.nom">Nom</span></dt>
-        <dd>
-            <span>{{pays.nom}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pays.codeIso">Code Iso</span></dt>
-        <dd>
-            <span>{{pays.codeIso}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pays.drapeau">Drapeau</span></dt>
-        <dd>
-            <div *ngIf="pays.drapeau">
-                <a (click)="openFile(pays.drapeauContentType, pays.drapeau)">
-                    <img [src]="'data:' + pays.drapeauContentType + ';base64,' + pays.drapeau" style="max-width: 100%;" alt="pays image"/>
-                </a>
-                {{pays.drapeauContentType}}, {{byteSize(pays.drapeau)}}
-            </div>
-        </dd>
-    </dl>
+            <hr>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+            <jhi-alert-error></jhi-alert-error>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'pays/'+ pays.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="pronosticsApp.pays.nom">Nom</span></dt>
+                <dd>
+                    <span>{{ pays.nom }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pays.codeIso">Code Iso</span></dt>
+                <dd>
+                    <span>{{ pays.codeIso }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pays.drapeau">Drapeau</span></dt>
+                <dd>
+                    <div *ngIf="pays.drapeau">
+                        <a (click)="openFile(pays.drapeauContentType, pays.drapeau)">
+                            <img [src]="'data:' + pays.drapeauContentType + ';base64,' + pays.drapeau" style="max-width: 100%;" alt="pays image"/>
+                        </a>
+                        {{ pays.drapeauContentType }}, {{ byteSize(pays.drapeau) }}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pays', pays.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

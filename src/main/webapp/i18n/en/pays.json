@@ -1,26 +1,26 @@
-
 {
-    "pronosticsApp": {
-        "pays" : {
-            "home": {
-                "title": "Pays",
-                "createLabel": "Create a new Pays",
-                "createOrEditLabel": "Create or edit a Pays",
-                "search": "Search for Pays"
-            },
-            "created": "A new Pays is created with identifier {{ param }}",
-            "updated": "A Pays is updated with identifier {{ param }}",
-            "deleted": "A Pays is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Are you sure you want to delete Pays {{ id }}?"
-            },
-            "detail": {
-                "title": "Pays"
-            },
-            "nom": "Nom",
-            "codeIso": "Code Iso",
-            "drapeau": "Drapeau",
-            "competition": "Competition"
-        }
+  "pronosticsApp": {
+    "pays": {
+      "home": {
+        "title": "Pays",
+        "createLabel": "Create a new Pays",
+        "createOrEditLabel": "Create or edit a Pays",
+        "search": "Search for Pays",
+        "notFound": "No Pays found"
+      },
+      "created": "A new Pays is created with identifier {{ param }}",
+      "updated": "A Pays is updated with identifier {{ param }}",
+      "deleted": "A Pays is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Pays {{ id }}?"
+      },
+      "detail": {
+        "title": "Pays"
+      },
+      "nom": "Nom",
+      "codeIso": "Code Iso",
+      "drapeau": "Drapeau",
+      "competition": "Competition"
     }
+  }
 }
