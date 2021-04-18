@@ -1,0 +1,125 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-match-heading" jhiTranslate="pronosticsApp.match.home.createOrEditLabel">Create or edit a Match</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.date" for="field_date">Date</label>
+                    <div class="d-flex">
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" formControlName="date" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('date')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.statut" for="field_statut">Statut</label>
+                    <select class="form-control" name="statut" formControlName="statut" id="field_statut">
+                        <option value="PAS_DEMARRE">{{ 'pronosticsApp.StatutMatch.PAS_DEMARRE' | translate }}</option>
+                        <option value="EN_COURS">{{ 'pronosticsApp.StatutMatch.EN_COURS' | translate }}</option>
+                        <option value="TERMINE">{{ 'pronosticsApp.StatutMatch.TERMINE' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('statut')!.invalid && (editForm.get('statut')!.dirty || editForm.get('statut')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('statut')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.code" for="field_code">Code</label>
+                    <input type="text" class="form-control" name="code" id="field_code"
+                           formControlName="code"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.scoreEquipeDomicile" for="field_scoreEquipeDomicile">Score Equipe Domicile</label>
+                    <input type="number" class="form-control" name="scoreEquipeDomicile" id="field_scoreEquipeDomicile"
+                           formControlName="scoreEquipeDomicile"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.scoreEquipeVisiteur" for="field_scoreEquipeVisiteur">Score Equipe Visiteur</label>
+                    <input type="number" class="form-control" name="scoreEquipeVisiteur" id="field_scoreEquipeVisiteur"
+                           formControlName="scoreEquipeVisiteur"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.phaseCompetition" for="field_phaseCompetition">Phase Competition</label>
+                    <select class="form-control" name="phaseCompetition" formControlName="phaseCompetition" id="field_phaseCompetition">
+                        <option value="GROUPE">{{ 'pronosticsApp.PhaseCompetition.GROUPE' | translate }}</option>
+                        <option value="HUITIEME">{{ 'pronosticsApp.PhaseCompetition.HUITIEME' | translate }}</option>
+                        <option value="QUART">{{ 'pronosticsApp.PhaseCompetition.QUART' | translate }}</option>
+                        <option value="DEMI">{{ 'pronosticsApp.PhaseCompetition.DEMI' | translate }}</option>
+                        <option value="FINAL">{{ 'pronosticsApp.PhaseCompetition.FINAL' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.groupe" for="field_groupe">Groupe</label>
+                    <input type="text" class="form-control" name="groupe" id="field_groupe"
+                           formControlName="groupe"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.competition" for="field_competition">Competition</label>
+                    <select class="form-control" id="field_competition" name="competition" formControlName="competition">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="competitionOption.id === editForm.get('competition')!.value?.id ? editForm.get('competition')!.value : competitionOption" *ngFor="let competitionOption of competitions; trackBy: trackById">{{ competitionOption.nom }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.stade" for="field_stade">Stade</label>
+                    <select class="form-control" id="field_stade" name="stade" formControlName="stade">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="stadeOption.id === editForm.get('stade')!.value?.id ? editForm.get('stade')!.value : stadeOption" *ngFor="let stadeOption of stades; trackBy: trackById">{{ stadeOption.nom }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.equipeDomicile" for="field_equipeDomicile">Equipe Domicile</label>
+                    <select class="form-control" id="field_equipeDomicile" name="equipeDomicile" formControlName="equipeDomicile">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="equipeOption.id === editForm.get('equipeDomicile')!.value?.id ? editForm.get('equipeDomicile')!.value : equipeOption" *ngFor="let equipeOption of equipes; trackBy: trackById">{{ equipeOption.codeEquipe }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.match.equipeVisiteur" for="field_equipeVisiteur">Equipe Visiteur</label>
+                    <select class="form-control" id="field_equipeVisiteur" name="equipeVisiteur" formControlName="equipeVisiteur">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="equipeOption.id === editForm.get('equipeVisiteur')!.value?.id ? editForm.get('equipeVisiteur')!.value : equipeOption" *ngFor="let equipeOption of equipes; trackBy: trackById">{{ equipeOption.codeEquipe }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
