@@ -1,5 +1,3 @@
-import { BaseEntity, User } from './../../shared';
-
 export class Classement  {
     constructor(
         public idUtilisateur?: number,
@@ -9,7 +7,8 @@ export class Classement  {
         public nbPronosJustes?: number,
         public nbPronosPartiels?: number,
         public nbPronosFaux?: number,
-        public nbPronosJoues?: number
+        public nbPronosJoues?: number,
+        public position?: number
 
     ) {
     }

@@ -138,10 +138,10 @@ export class MatchComponent implements OnInit, OnDestroy {
       }
     }
   }
-  /* refresh() {
-      this.matchService.refresh().subscribe(
+  refresh() {
+/*       this.matchService.refresh().subscribe(
           (res: HttpResponse<any>) => this.onSuccess(res.body, res.headers),
           (res: HttpErrorResponse) => this.onError('Error')
-      );
-  } */
+      ); */
+  }
 }

@@ -116,7 +116,7 @@
     "delete": {
       "title": "Confirmation de suppression"
     },
-    "footer": "Rendez-vous sur le site officiel de la FIFA !"
+    "footer": "Rendez-vous sur le site officiel de la FIFA !",
     "validation": {
       "required": "Ce champ est obligatoire.",
       "minlength": "Ce champ doit faire au minimum {{min}} caractères.",

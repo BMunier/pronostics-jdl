@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Classement } from './classement.model';
-import { createRequestOption } from '../../shared';
+import { Observable } from 'rxjs';
+import { createRequestOption } from 'app/shared/util/request-util';
+import { map } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<Classement>;
 
@@ -20,7 +21,7 @@ export class ClassementService {
     query(req?: any): Observable<HttpResponse<Classement[]>> {
         const options = createRequestOption(req);
         return this.http.get<Classement[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Classement[]>) => this.convertArrayResponse(res));
+            .pipe(map((res: HttpResponse<Classement[]>) => this.convertArrayResponse(res)));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
@@ -29,7 +30,10 @@ export class ClassementService {
     }
 
     private convertArrayResponse(res: HttpResponse<Classement[]>): HttpResponse<Classement[]> {
-        const jsonResponse: Classement[] = res.body;
+        var jsonResponse: Classement[] = [];
+        if(res.body){
+          jsonResponse = res.body;
+        }
         const body: Classement[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
             body.push(this.convertItemFromServer(jsonResponse[i]));
@@ -40,7 +44,7 @@ export class ClassementService {
         /**
      * Convert a returned JSON object to Pronostic.
      */
-    private convertItemFromServer(pronostic: Classement): Classement {
+    private convertItemFromServer(pronostic: any): Classement {
         const copy: Classement = Object.assign({}, pronostic);
         return copy;
     }

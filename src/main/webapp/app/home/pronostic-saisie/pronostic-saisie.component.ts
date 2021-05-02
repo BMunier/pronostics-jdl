@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import {PronosticSaisie} from './pronostic-saisie.model';
 import {PronosticSaisieService} from './pronostic-saisie.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'jhi-pronostic-saisie',
@@ -16,7 +15,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
 
   pronostics: PronosticSaisie[];
   currentAccount: any;
-  eventSubscriber: Subscription;
+  eventSubscriber?: Subscription;
   itemsPerPage: number;
   links: any;
   page: any;
@@ -34,7 +33,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       private eventManager: JhiEventManager,
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
-      private principal: Principal
+      //private principal: Principal
 
   ) {
       this.pronostics = [];
@@ -45,6 +44,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       };
       this.predicate = 'id';
       this.reverse = true;
+      this.totalItems = 0;
   }
 
   loadAll() {
@@ -56,12 +56,12 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
           (res: HttpErrorResponse) => this.onError(res.message)
       );
   }
-  valideProno(pronostic) {
+  valideProno(pronostic: any) {
     pronostic.updated = true;
        this.pronosticSaisieService.update(pronostic).subscribe(
-        (response) => {
+        (response: any) => {
             pronostic.id=response.body.id;
-            
+
             if (response.status === 200) {
                 this.error = null;
                 this.success = 'OK';
@@ -73,7 +73,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
             }
         });
 }
-changeValidate(pronostic){
+changeValidate(pronostic: any){
     pronostic.updated=false;
     console.log(pronostic);
 }
@@ -84,7 +84,7 @@ changeValidate(pronostic){
       this.loadAll();
   }
 
-  loadPage(page) {
+  loadPage(page: any) {
       this.page = page;
       this.loadAll();
   }
@@ -100,7 +100,7 @@ changeValidate(pronostic){
       this.loadAll();
   }
 
-  search(query) {
+  search(query: any) {
       if (!query) {
           return this.clear();
       }
@@ -115,21 +115,23 @@ changeValidate(pronostic){
   }
   ngOnInit() {
       this.loadAll();
-      this.principal.identity().then((account) => {
+/*       this.principal.identity().then((account: any) => {
           this.currentAccount = account;
-      });
+      }); */
       this.registerChangeInPronostics();
   }
 
   ngOnDestroy() {
-      this.eventManager.destroy(this.eventSubscriber);
+    if(this.eventSubscriber){
+      this.eventManager.destroy(this.eventSubscriber)
+    };
   }
 
   trackId(index: number, item: PronosticSaisie) {
       return item.id;
   }
   registerChangeInPronostics() {
-      this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response) => this.reset());
+      this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response: any) => this.reset());
   }
   _keyPress(event: any) {
     const pattern = /[0-9\+\ ]/;
@@ -141,7 +143,7 @@ changeValidate(pronostic){
     }
 }
 
-  private onSuccess(data, headers) {
+  private onSuccess(data: any, headers: any) {
       this.links = this.parseLinks.parse(headers.get('link'));
       this.totalItems = headers.get('X-Total-Count');
       for (let i = 0; i < data.length; i++) {
@@ -150,11 +152,11 @@ changeValidate(pronostic){
       }
   }
 
-  private onError(error) {
-      this.jhiAlertService.error(error.message, null, null);
+  private onError(error: any) {
+      this.jhiAlertService.error(error.message, null, undefined);
   }
 
-  private dateIsApres(date){
+  dateIsApres(date: any){
       var dateNow = new Date(Date.now());
       var dateD = new Date(date);
       return dateNow>dateD;

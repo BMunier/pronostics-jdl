@@ -1,6 +1,8 @@
 package com.bmu.pronostics.web.rest;
 
 import com.bmu.pronostics.domain.Match;
+import com.bmu.pronostics.domain.Pronostic;
+import com.bmu.pronostics.domain.enumeration.StatutMatch;
 import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
 import com.bmu.pronostics.repository.search.MatchSearchRepository;
@@ -10,6 +12,8 @@ import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.micrometer.core.annotation.Timed;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -170,14 +174,14 @@ public class MatchResource {
         }
 
     @PutMapping("/matches/refresh")
-    @Time
+    @Timed
     public ResponseEntity<Void> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
         Match matchTermine;
         Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
 
         for (Pronostic pronostic : pronosticRepository.findAll()) {
-            matchTermine = matchRepository.findOne(pronostic.getMatch().getId());
+            matchTermine = matchRepository.getOne(pronostic.getMatch().getId());
             if (matchTermine.getStatut().equals(StatutMatch.TERMINE)) {
                 scoreDom = matchTermine.getScoreEquipeDomicile();
                 scoreVisit = matchTermine.getScoreEquipeVisiteur();
@@ -211,7 +215,7 @@ public class MatchResource {
             }
         }
 
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", null))
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "", ""))
                 .build();
     }
 

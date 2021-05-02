@@ -115,7 +115,7 @@
     "delete": {
       "title": "Confirm delete operation"
     },
-    "footer": "Got to the official FIFA site !"
+    "footer": "Got to the official FIFA site !",
     "validation": {
       "required": "This field is required.",
       "minlength": "This field is required to be at least {{ min }} characters.",

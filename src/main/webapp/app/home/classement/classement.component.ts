@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import {Classement} from './classement.model';
 import {ClassementService} from './classement.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'jhi-classement',
@@ -16,7 +15,7 @@ export class ClassementComponent implements OnInit {
 
   classements: Classement[];
   currentAccount: any;
-  eventSubscriber: Subscription;
+  //eventSubscriber: Subscription;
   itemsPerPage: number;
   routeData: any;
 
@@ -26,7 +25,7 @@ export class ClassementComponent implements OnInit {
       private eventManager: JhiEventManager,
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
-      private principal: Principal
+      //private principal: Principal
 
   ) {
       this.classements = [];
@@ -38,26 +37,32 @@ export class ClassementComponent implements OnInit {
     this.classementService.query({
             size: this.itemsPerPage,
       }).subscribe(
-        (res: HttpResponse<Classement[]>) => this.classements =res.body,
+        (res: HttpResponse<Classement[]>) => {
+          if(res.body){
+            this.classements =res.body
+        }
+      },
         (res: HttpErrorResponse) => this.onError(res.message)
     );
 }
-getColor(idUtilisateur){
+getColor(idUtilisateur: any){
     if(idUtilisateur== this.currentAccount.id){
-    return "#C6F6A9";
+      return "#C6F6A9";
+    } else {
+      return ""
     }
 
 }
 ngOnInit(){
-    this.principal.identity().then((account) => {
+/*     this.principal.identity().then((account: any) => {
         console.log(account);
         this.currentAccount = account;
-    });
+    }); */
   this.loadAll();
 }
 
-private onError(error) {
-    this.jhiAlertService.error(error.message, null, null);
+private onError(error: any) {
+    this.jhiAlertService.error(error.message, null, undefined);
 }
 
 }
