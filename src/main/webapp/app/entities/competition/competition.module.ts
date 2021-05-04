@@ -1,49 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../../shared';
-import {
-    CompetitionService,
-    CompetitionPopupService,
-    CompetitionComponent,
-    CompetitionDetailComponent,
-    CompetitionDialogComponent,
-    CompetitionPopupComponent,
-    CompetitionDeletePopupComponent,
-    CompetitionDeleteDialogComponent,
-    competitionRoute,
-    competitionPopupRoute,
-} from './';
-
-const ENTITY_STATES = [
-    ...competitionRoute,
-    ...competitionPopupRoute,
-];
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { CompetitionComponent } from './competition.component';
+import { CompetitionDetailComponent } from './competition-detail.component';
+import { CompetitionUpdateComponent } from './competition-update.component';
+import { CompetitionDeleteDialogComponent } from './competition-delete-dialog.component';
+import { competitionRoute } from './competition.route';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        CompetitionComponent,
-        CompetitionDetailComponent,
-        CompetitionDialogComponent,
-        CompetitionDeleteDialogComponent,
-        CompetitionPopupComponent,
-        CompetitionDeletePopupComponent,
-    ],
-    entryComponents: [
-        CompetitionComponent,
-        CompetitionDialogComponent,
-        CompetitionPopupComponent,
-        CompetitionDeleteDialogComponent,
-        CompetitionDeletePopupComponent,
-    ],
-    providers: [
-        CompetitionService,
-        CompetitionPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild(competitionRoute)],
+  declarations: [CompetitionComponent, CompetitionDetailComponent, CompetitionUpdateComponent, CompetitionDeleteDialogComponent],
+  entryComponents: [CompetitionDeleteDialogComponent],
 })
 export class PronosticsCompetitionModule {}

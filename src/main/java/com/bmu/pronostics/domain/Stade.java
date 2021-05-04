@@ -1,25 +1,25 @@
 package com.bmu.pronostics.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Stade.
  */
 @Entity
 @Table(name = "stade")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "stade")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "stade")
 public class Stade implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,14 +38,15 @@ public class Stade implements Serializable {
     private String ville;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "stades", allowSetters = true)
     private Pays pays;
 
     @ManyToMany(mappedBy = "stades")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Competition> competitions = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -117,28 +118,25 @@ public class Stade implements Serializable {
     public void setCompetitions(Set<Competition> competitions) {
         this.competitions = competitions;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Stade)) {
             return false;
         }
-        Stade stade = (Stade) o;
-        if (stade.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), stade.getId());
+        return id != null && id.equals(((Stade) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Stade{" +

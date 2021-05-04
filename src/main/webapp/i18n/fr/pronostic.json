@@ -1,28 +1,27 @@
-
 {
-    "pronosticsApp": {
-        "pronostic" : {
-            "home": {
-                "title": "Pronostics",
-                "createLabel": "Créer un nouveau Pronostic",
-                "createOrEditLabel": "Créer ou éditer un Pronostic",
-                "search": "Recherche pour Pronostic"
-            },
-            "created": "Un nouveau Pronostic a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Pronostic avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Pronostic avec l'identifiant {{ param }} a été supprimé",
-            "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Pronostic {{ id }} ?"
-            },
-            "detail": {
-                "title": "Pronostic"
-            },
-            "scoreEquipeDomicile": "Score Equipe Domicile",
-            "scoreEquipeVisiteur": "Score Equipe Visiteur",
-            "scoreUpdated": "Les scores des pronostics ont été mis à jour",
-            "points": "Points",
-            "match": "Match",
-            "utilisateur": "Utilisateur"
-        }
+  "pronosticsApp": {
+    "pronostic": {
+      "home": {
+        "title": "Pronostics",
+        "createLabel": "Créer un nouveau Pronostic",
+        "createOrEditLabel": "Créer ou éditer un Pronostic",
+        "search": "Recherche pour Pronostic",
+        "notFound": "Aucun Pronostic trouvé"
+      },
+      "created": "Un nouveau Pronostic a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Pronostic avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Pronostic avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Pronostic {{ id }} ?"
+      },
+      "detail": {
+        "title": "Pronostic"
+      },
+      "scoreEquipeDomicile": "Score Equipe Domicile",
+      "scoreEquipeVisiteur": "Score Equipe Visiteur",
+      "points": "Points",
+      "match": "Match",
+      "utilisateur": "Utilisateur"
     }
+  }
 }

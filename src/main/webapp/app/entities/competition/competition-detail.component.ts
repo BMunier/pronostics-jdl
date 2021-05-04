@@ -1,55 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { Competition } from './competition.model';
-import { CompetitionService } from './competition.service';
+import { ICompetition } from 'app/shared/model/competition.model';
 
 @Component({
-    selector: 'jhi-competition-detail',
-    templateUrl: './competition-detail.component.html'
+  selector: 'jhi-competition-detail',
+  templateUrl: './competition-detail.component.html',
 })
-export class CompetitionDetailComponent implements OnInit, OnDestroy {
+export class CompetitionDetailComponent implements OnInit {
+  competition: ICompetition | null = null;
 
-    competition: Competition;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private competitionService: CompetitionService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ competition }) => (this.competition = competition));
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInCompetitions();
-    }
-
-    load(id) {
-        this.competitionService.find(id)
-            .subscribe((competitionResponse: HttpResponse<Competition>) => {
-                this.competition = competitionResponse.body;
-            });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInCompetitions() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'competitionListModification',
-            (response) => this.load(this.competition.id)
-        );
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

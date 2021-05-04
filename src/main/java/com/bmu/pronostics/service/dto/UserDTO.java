@@ -5,9 +5,6 @@ import com.bmu.pronostics.config.Constants;
 import com.bmu.pronostics.domain.Authority;
 import com.bmu.pronostics.domain.User;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
@@ -22,7 +19,7 @@ public class UserDTO {
 
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 50)
     private String login;
 
     @Size(max = 50)
@@ -32,7 +29,7 @@ public class UserDTO {
     private String lastName;
 
     @Email
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 254)
     private String email;
 
     @Size(max = 256)
@@ -40,7 +37,7 @@ public class UserDTO {
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
+    @Size(min = 2, max = 10)
     private String langKey;
 
     private String createdBy;
@@ -179,6 +176,7 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "UserDTO{" +

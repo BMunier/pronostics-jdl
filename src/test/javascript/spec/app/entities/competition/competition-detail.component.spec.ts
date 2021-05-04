@@ -1,54 +1,37 @@
-/* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { PronosticsTestModule } from '../../../test.module';
-import { CompetitionDetailComponent } from '../../../../../../main/webapp/app/entities/competition/competition-detail.component';
-import { CompetitionService } from '../../../../../../main/webapp/app/entities/competition/competition.service';
-import { Competition } from '../../../../../../main/webapp/app/entities/competition/competition.model';
+import { CompetitionDetailComponent } from 'app/entities/competition/competition-detail.component';
+import { Competition } from 'app/shared/model/competition.model';
 
 describe('Component Tests', () => {
+  describe('Competition Management Detail Component', () => {
+    let comp: CompetitionDetailComponent;
+    let fixture: ComponentFixture<CompetitionDetailComponent>;
+    const route = ({ data: of({ competition: new Competition(123) }) } as any) as ActivatedRoute;
 
-    describe('Competition Management Detail Component', () => {
-        let comp: CompetitionDetailComponent;
-        let fixture: ComponentFixture<CompetitionDetailComponent>;
-        let service: CompetitionService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [PronosticsTestModule],
-                declarations: [CompetitionDetailComponent],
-                providers: [
-                    CompetitionService
-                ]
-            })
-            .overrideTemplate(CompetitionDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(CompetitionDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CompetitionService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Competition(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.competition).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [PronosticsTestModule],
+        declarations: [CompetitionDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }],
+      })
+        .overrideTemplate(CompetitionDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(CompetitionDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should load competition on init', () => {
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.competition).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

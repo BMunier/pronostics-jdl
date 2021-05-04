@@ -1,91 +1,85 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, Search } from 'app/shared/util/request-util';
+import { ICompetition } from 'app/shared/model/competition.model';
 
-import { Competition } from './competition.model';
-import { createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<ICompetition>;
+type EntityArrayResponseType = HttpResponse<ICompetition[]>;
 
-export type EntityResponseType = HttpResponse<Competition>;
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CompetitionService {
+  public resourceUrl = SERVER_API_URL + 'api/competitions';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/competitions';
 
-    private resourceUrl =  SERVER_API_URL + 'api/competitions';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/competitions';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+  create(competition: ICompetition): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(competition);
+    return this.http
+      .post<ICompetition>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    create(competition: Competition): Observable<EntityResponseType> {
-        const copy = this.convert(competition);
-        return this.http.post<Competition>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+  update(competition: ICompetition): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(competition);
+    return this.http
+      .put<ICompetition>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<ICompetition>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ICompetition[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  search(req: Search): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ICompetition[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  protected convertDateFromClient(competition: ICompetition): ICompetition {
+    const copy: ICompetition = Object.assign({}, competition, {
+      dateDebut: competition.dateDebut && competition.dateDebut.isValid() ? competition.dateDebut.format(DATE_FORMAT) : undefined,
+      dateFin: competition.dateFin && competition.dateFin.isValid() ? competition.dateFin.format(DATE_FORMAT) : undefined,
+    });
+    return copy;
+  }
+
+  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    if (res.body) {
+      res.body.dateDebut = res.body.dateDebut ? moment(res.body.dateDebut) : undefined;
+      res.body.dateFin = res.body.dateFin ? moment(res.body.dateFin) : undefined;
     }
+    return res;
+  }
 
-    update(competition: Competition): Observable<EntityResponseType> {
-        const copy = this.convert(competition);
-        return this.http.put<Competition>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    if (res.body) {
+      res.body.forEach((competition: ICompetition) => {
+        competition.dateDebut = competition.dateDebut ? moment(competition.dateDebut) : undefined;
+        competition.dateFin = competition.dateFin ? moment(competition.dateFin) : undefined;
+      });
     }
-
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Competition>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    query(req?: any): Observable<HttpResponse<Competition[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Competition[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Competition[]>) => this.convertArrayResponse(res));
-    }
-
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<Competition[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Competition[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Competition[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Competition = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Competition[]>): HttpResponse<Competition[]> {
-        const jsonResponse: Competition[] = res.body;
-        const body: Competition[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Competition.
-     */
-    private convertItemFromServer(competition: Competition): Competition {
-        const copy: Competition = Object.assign({}, competition);
-        copy.dateDebut = this.dateUtils
-            .convertLocalDateFromServer(competition.dateDebut);
-        copy.dateFin = this.dateUtils
-            .convertLocalDateFromServer(competition.dateFin);
-        return copy;
-    }
-
-    /**
-     * Convert a Competition to a JSON which can be sent to the server.
-     */
-    private convert(competition: Competition): Competition {
-        const copy: Competition = Object.assign({}, competition);
-        copy.dateDebut = this.dateUtils
-            .convertLocalDateToServer(competition.dateDebut);
-        copy.dateFin = this.dateUtils
-            .convertLocalDateToServer(competition.dateFin);
-        return copy;
-    }
+    return res;
+  }
 }

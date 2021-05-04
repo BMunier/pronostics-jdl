@@ -6,20 +6,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Competition.
  */
 @Entity
 @Table(name = "competition")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "competition")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "competition")
 public class Competition implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,27 +44,27 @@ public class Competition implements Serializable {
     private LocalDate dateFin;
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "competition_equipe",
-               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="equipes_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "competition_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "equipe_id", referencedColumnName = "id"))
     private Set<Equipe> equipes = new HashSet<>();
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "competition_pays",
-               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="pays_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "competition_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "pays_id", referencedColumnName = "id"))
     private Set<Pays> pays = new HashSet<>();
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "competition_stade",
-               joinColumns = @JoinColumn(name="competitions_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="stades_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "competition_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "stade_id", referencedColumnName = "id"))
     private Set<Stade> stades = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -200,28 +199,25 @@ public class Competition implements Serializable {
     public void setStades(Set<Stade> stades) {
         this.stades = stades;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Competition)) {
             return false;
         }
-        Competition competition = (Competition) o;
-        if (competition.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), competition.getId());
+        return id != null && id.equals(((Competition) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Competition{" +

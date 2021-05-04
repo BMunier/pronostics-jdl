@@ -1,28 +1,28 @@
-
 {
-    "pronosticsApp": {
-        "equipe" : {
-            "home": {
-                "title": "Equipes",
-                "createLabel": "Créer un nouveau Equipe",
-                "createOrEditLabel": "Créer ou éditer un Equipe",
-                "search": "Recherche pour Equipe"
-            },
-            "created": "Un nouveau Equipe a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Equipe avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Equipe avec l'identifiant {{ param }} a été supprimé",
-            "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Equipe {{ id }} ?"
-            },
-            "detail": {
-                "title": "Equipe"
-            },
-            "codeEquipe": "Code Equipe",
-            "nomEquipe": "Nom Equipe",
-            "rangFifa": "Rang Fifa",
-            "ecusson": "Ecusson",
-            "pays": "Pays",
-            "competition": "Competition"
-        }
+  "pronosticsApp": {
+    "equipe": {
+      "home": {
+        "title": "Equipes",
+        "createLabel": "Créer un nouveau Equipe",
+        "createOrEditLabel": "Créer ou éditer un Equipe",
+        "search": "Recherche pour Equipe",
+        "notFound": "Aucun Equipe trouvé"
+      },
+      "created": "Un nouveau Equipe a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Equipe avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Equipe avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Equipe {{ id }} ?"
+      },
+      "detail": {
+        "title": "Equipe"
+      },
+      "codeEquipe": "Code Equipe",
+      "nomEquipe": "Nom Equipe",
+      "rangFifa": "Rang Fifa",
+      "ecusson": "Ecusson",
+      "pays": "Pays",
+      "competition": "Competition"
     }
+  }
 }

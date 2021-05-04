@@ -1,54 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { Account, LoginModalService, Principal } from '../shared';
-
-import{PronosticComponent} from '../entities/pronostic/pronostic.component';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
-    selector: 'jhi-home',
-    templateUrl: './home.component.html',
-    styleUrls: [
-        'home.css'
-    ]
+  selector: 'jhi-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['home.scss'],
 })
-export class HomeComponent implements OnInit {
-    account: Account;
-    modalRef: NgbModalRef;
-    increment = 1;
+export class HomeComponent implements OnInit, OnDestroy {
+  account: Account | null = null;
+  authSubscription?: Subscription;
 
-    constructor(
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  constructor(private accountService: AccountService, private loginModalService: LoginModalService) {}
 
-    ngOnInit() {
-        this.principal.identity().then((account) => {
-            this.account = account;
-        });
-        this.registerAuthenticationSuccess();
-    }
+  ngOnInit(): void {
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+  }
 
-    registerAuthenticationSuccess() {
-        this.eventManager.subscribe('authenticationSuccess', (message) => {
-            this.principal.identity().then((account) => {
-                this.account = account;
-            });
-        });
-    }
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
 
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
+  login(): void {
+    this.loginModalService.open();
+  }
 
-    login() {
-        this.modalRef = this.loginModalService.open();
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
-
-    refresh() {
-        this.increment += 1;
-    }
+  }
 }

@@ -1,49 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../../shared';
-import {
-    StadeService,
-    StadePopupService,
-    StadeComponent,
-    StadeDetailComponent,
-    StadeDialogComponent,
-    StadePopupComponent,
-    StadeDeletePopupComponent,
-    StadeDeleteDialogComponent,
-    stadeRoute,
-    stadePopupRoute,
-} from './';
-
-const ENTITY_STATES = [
-    ...stadeRoute,
-    ...stadePopupRoute,
-];
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { StadeComponent } from './stade.component';
+import { StadeDetailComponent } from './stade-detail.component';
+import { StadeUpdateComponent } from './stade-update.component';
+import { StadeDeleteDialogComponent } from './stade-delete-dialog.component';
+import { stadeRoute } from './stade.route';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        StadeComponent,
-        StadeDetailComponent,
-        StadeDialogComponent,
-        StadeDeleteDialogComponent,
-        StadePopupComponent,
-        StadeDeletePopupComponent,
-    ],
-    entryComponents: [
-        StadeComponent,
-        StadeDialogComponent,
-        StadePopupComponent,
-        StadeDeleteDialogComponent,
-        StadeDeletePopupComponent,
-    ],
-    providers: [
-        StadeService,
-        StadePopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild(stadeRoute)],
+  declarations: [StadeComponent, StadeDetailComponent, StadeUpdateComponent, StadeDeleteDialogComponent],
+  entryComponents: [StadeDeleteDialogComponent],
 })
 export class PronosticsStadeModule {}

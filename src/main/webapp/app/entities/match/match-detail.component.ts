@@ -1,55 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { Match } from './match.model';
-import { MatchService } from './match.service';
+import { IMatch } from 'app/shared/model/match.model';
 
 @Component({
-    selector: 'jhi-match-detail',
-    templateUrl: './match-detail.component.html'
+  selector: 'jhi-match-detail',
+  templateUrl: './match-detail.component.html',
 })
-export class MatchDetailComponent implements OnInit, OnDestroy {
+export class MatchDetailComponent implements OnInit {
+  match: IMatch | null = null;
 
-    match: Match;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private matchService: MatchService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ match }) => (this.match = match));
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInMatches();
-    }
-
-    load(id) {
-        this.matchService.find(id)
-            .subscribe((matchResponse: HttpResponse<Match>) => {
-                this.match = matchResponse.body;
-            });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInMatches() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'matchListModification',
-            (response) => this.load(this.match.id)
-        );
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

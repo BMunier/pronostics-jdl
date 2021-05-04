@@ -53,25 +53,25 @@
                     <td>
                         {{pronostic.match?.date | date:'dd.MM.yyyy HH:mm'}}
                     </td>
-                    <td>{{pronostic.match?.equipeDomicile.pays.nom}} </td>
-                    <td><img [src]="'data:' + pronostic.match.equipeDomicile.ecussonContentType + ';base64,' + pronostic.match.equipeDomicile.ecusson" style="max-height: 30px;" alt="equipe image"/></td>
-                   
-                    <td>{{pronostic.match?.equipeVisiteur.pays.nom}} </td>
-                    <td><img [src]="'data:' + pronostic.match.equipeVisiteur.ecussonContentType + ';base64,' + pronostic.match.equipeVisiteur.ecusson" style="max-height: 30px;" alt="equipe image"/></td>
+                    <td>{{pronostic.match?.equipeDomicile?.pays?.nom}} </td>
+                    <td><img [src]="'data:' + pronostic.match?.equipeDomicile?.ecussonContentType + ';base64,' + pronostic.match?.equipeDomicile?.ecusson" style="max-height: 30px;" alt="equipe image"/></td>
+
+                    <td>{{pronostic.match?.equipeVisiteur?.pays?.nom}} </td>
+                    <td><img [src]="'data:' + pronostic.match?.equipeVisiteur?.ecussonContentType + ';base64,' + pronostic.match?.equipeVisiteur?.ecusson" style="max-height: 30px;" alt="equipe image"/></td>
                     <td>{{pronostic.match?.scoreEquipeDomicile}} - {{pronostic.match?.scoreEquipeVisiteur}} </td>
                     <td>
-                        <input (keypress)="_keyPress($event)" size="2" maxlength="2" (click)="changeValidate(pronostic)" [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeDomicile"
+                        <input (keypress)="_keyPress($event)" size="2" maxlength="2" (click)="changeValidate(pronostic)" [disabled]="dateIsApres(pronostic.match?.date)" type="text" class="form-control" id="scoreEquipeDomicile"
                             name="scoreEquipeDomicile" [(ngModel)]="pronostic.scoreEquipeDomicile" />
                     </td>
                     <td>
-                        <input (keypress)="_keyPress($event)" size="2" maxlength="2" (click)="changeValidate(pronostic)" [disabled]="dateIsApres(pronostic.match.date)" type="text" class="form-control" id="scoreEquipeVisiteur"
+                        <input (keypress)="_keyPress($event)" size="2" maxlength="2" (click)="changeValidate(pronostic)" [disabled]="dateIsApres(pronostic.match?.date)" type="text" class="form-control" id="scoreEquipeVisiteur"
                             name="scoreEquipeVisiteur" [(ngModel)]="pronostic.scoreEquipeVisiteur" />
                     </td>
                     <td>
                         {{pronostic.match?.statut}}
                     </td>
                      <td>
-                        <button *ngIf="!dateIsApres(pronostic.match.date)" class="btn btn-danger btn-sm" [disabled]="pronostic.updated" (click)="valideProno(pronostic)">Valider</button>
+                        <button *ngIf="!dateIsApres(pronostic.match?.date)" class="btn btn-danger btn-sm" [disabled]="pronostic.updated" (click)="valideProno(pronostic)">Valider</button>
                     </td>
                     <td>{{pronostic.points}}</td>
                 </tr>

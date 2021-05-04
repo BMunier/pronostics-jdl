@@ -1,28 +1,15 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PronosticsSharedModule } from '../shared';
-import {PronosticSaisieService} from './pronostic-saisie/pronostic-saisie.service'
-import {ClassementService} from './classement/classement.service'
-
-
-import { HOME_ROUTE, HomeComponent} from './';
-import { PronosticSaisieComponent } from './pronostic-saisie/pronostic-saisie.component';
-import { ClassementComponent } from './classement/classement.component';
+import { PronosticsSharedModule } from 'app/shared/shared.module';
+import { HOME_ROUTE } from './home.route';
+import { HomeComponent } from './home.component';
+import { ClassementComponent, PronosticSaisieComponent, PronosticSaisieService } from '.';
+import { ClassementService } from './classement/classement.service';
 
 @NgModule({
-    imports: [
-        PronosticsSharedModule,
-        RouterModule.forChild([ HOME_ROUTE ])
-    ],
-    declarations: [
-        HomeComponent, PronosticSaisieComponent, ClassementComponent
-    ],
-    entryComponents: [
-    ],
-    providers: [
-        PronosticSaisieService,ClassementService
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [PronosticsSharedModule, RouterModule.forChild([HOME_ROUTE])],
+  declarations: [HomeComponent, PronosticSaisieComponent, ClassementComponent],
+  providers: [PronosticSaisieService,ClassementService],
 })
 export class PronosticsHomeModule {}

@@ -1,44 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pronostic">
+            <h2><span jhiTranslate="pronosticsApp.pronostic.detail.title">Pronostic</span> {{ pronostic.id }}</h2>
 
-<div *ngIf="pronostic">
-    <h2><span jhiTranslate="pronosticsApp.pronostic.detail.title">Pronostic</span> {{pronostic.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile">Score Equipe Domicile</span></dt>
-        <dd>
-            <span>{{pronostic.scoreEquipeDomicile}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeVisiteur">Score Equipe Visiteur</span></dt>
-        <dd>
-            <span>{{pronostic.scoreEquipeVisiteur}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pronostic.points">Points</span></dt>
-        <dd>
-            <span>{{pronostic.points}}</span>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pronostic.match">Match</span></dt>
-        <dd>
-            <div *ngIf="pronostic.match">
-                <a [routerLink]="['/match', pronostic.match?.id]">{{pronostic.match?.id}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span></dt>
-        <dd>
-            {{pronostic.utilisateur?.login}}
-        </dd>
-    </dl>
+            <hr>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+            <jhi-alert-error></jhi-alert-error>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'pronostic/'+ pronostic.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeDomicile">Score Equipe Domicile</span></dt>
+                <dd>
+                    <span>{{ pronostic.scoreEquipeDomicile }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pronostic.scoreEquipeVisiteur">Score Equipe Visiteur</span></dt>
+                <dd>
+                    <span>{{ pronostic.scoreEquipeVisiteur }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pronostic.points">Points</span></dt>
+                <dd>
+                    <span>{{ pronostic.points }}</span>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pronostic.match">Match</span></dt>
+                <dd>
+                    <div *ngIf="pronostic.match">
+                        <a [routerLink]="['/match', pronostic.match?.id, 'view']">{{ pronostic.match?.id }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="pronosticsApp.pronostic.utilisateur">Utilisateur</span></dt>
+                <dd>
+                    {{ pronostic.utilisateur?.login }}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pronostic', pronostic.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

@@ -1,42 +1,36 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "competition",
-            "otherEntityName": "competition",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "pays"
-        }
-    ],
-    "fields": [
-        {
-            "fieldName": "nom",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "codeIso",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "drapeau",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "image",
-            "fieldValidateRules": [
-                "required"
-            ]
-        }
-    ],
-    "changelogDate": "20180501094356",
-    "entityTableName": "pays",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no",
-    "jpaMetamodelFiltering": false
+  "fluentMethods": true,
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "relationshipName": "competition",
+      "otherEntityName": "competition",
+      "ownerSide": false,
+      "otherEntityRelationshipName": "pays"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codeIso",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "drapeau",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "changelogDate": "20180501094356",
+  "entityTableName": "pays",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false
 }

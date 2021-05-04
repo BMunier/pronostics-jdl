@@ -1,29 +1,29 @@
-
 {
-    "pronosticsApp": {
-        "competition" : {
-            "home": {
-                "title": "Competitions",
-                "createLabel": "Créer un nouveau Competition",
-                "createOrEditLabel": "Créer ou éditer un Competition",
-                "search": "Recherche pour Competition"
-            },
-            "created": "Un nouveau Competition a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Competition avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Competition avec l'identifiant {{ param }} a été supprimé",
-            "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Competition {{ id }} ?"
-            },
-            "detail": {
-                "title": "Competition"
-            },
-            "nom": "Nom",
-            "description": "Description",
-            "dateDebut": "Date Debut",
-            "dateFin": "Date Fin",
-            "equipe": "Equipe",
-            "pays": "Pays",
-            "stade": "Stade"
-        }
+  "pronosticsApp": {
+    "competition": {
+      "home": {
+        "title": "Competitions",
+        "createLabel": "Créer un nouveau Competition",
+        "createOrEditLabel": "Créer ou éditer un Competition",
+        "search": "Recherche pour Competition",
+        "notFound": "Aucun Competition trouvé"
+      },
+      "created": "Un nouveau Competition a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Competition avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Competition avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Competition {{ id }} ?"
+      },
+      "detail": {
+        "title": "Competition"
+      },
+      "nom": "Nom",
+      "description": "Description",
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "equipe": "Equipe",
+      "pays": "Pays",
+      "stade": "Stade"
     }
+  }
 }

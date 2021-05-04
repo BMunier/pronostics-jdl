@@ -7,19 +7,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Pays.
  */
 @Entity
 @Table(name = "pays")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "pays")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "pays")
 public class Pays implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +36,7 @@ public class Pays implements Serializable {
     @Column(name = "code_iso", nullable = false)
     private String codeIso;
 
-    @NotNull
+    
     @Lob
     @Column(name = "drapeau", nullable = false)
     private byte[] drapeau;
@@ -46,11 +45,11 @@ public class Pays implements Serializable {
     private String drapeauContentType;
 
     @ManyToMany(mappedBy = "pays")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Competition> competitions = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -135,28 +134,25 @@ public class Pays implements Serializable {
     public void setCompetitions(Set<Competition> competitions) {
         this.competitions = competitions;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pays)) {
             return false;
         }
-        Pays pays = (Pays) o;
-        if (pays.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), pays.getId());
+        return id != null && id.equals(((Pays) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Pays{" +

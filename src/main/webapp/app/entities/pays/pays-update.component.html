@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-pays-heading" jhiTranslate="pronosticsApp.pays.home.createOrEditLabel">Create or edit a Pays</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.pays.nom" for="field_nom">Nom</label>
+                    <input type="text" class="form-control" name="nom" id="field_nom"
+                           formControlName="nom"/>
+                    <div *ngIf="editForm.get('nom')!.invalid && (editForm.get('nom')!.dirty || editForm.get('nom')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nom')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.pays.codeIso" for="field_codeIso">Code Iso</label>
+                    <input type="text" class="form-control" name="codeIso" id="field_codeIso"
+                           formControlName="codeIso"/>
+                    <div *ngIf="editForm.get('codeIso')!.invalid && (editForm.get('codeIso')!.dirty || editForm.get('codeIso')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('codeIso')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pronosticsApp.pays.drapeau" for="field_drapeau">Drapeau</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('drapeauContentType')!.value + ';base64,' + editForm.get('drapeau')!.value" style="max-height: 100px;" *ngIf="editForm.get('drapeau')!.value" alt="pays image"/>
+                        <div *ngIf="editForm.get('drapeau')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('drapeauContentType')!.value }}, {{ byteSize(editForm.get('drapeau')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('drapeau', 'drapeauContentType', 'file_drapeau')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_drapeau" (change)="setFileData($event, 'drapeau', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="drapeau" id="field_drapeau"
+                           formControlName="drapeau"/>
+                    <input type="hidden" class="form-control" name="drapeauContentType" id="field_drapeauContentType"
+                           formControlName="drapeauContentType" />
+                    <div *ngIf="editForm.get('drapeau')!.invalid && (editForm.get('drapeau')!.dirty || editForm.get('drapeau')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('drapeau')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

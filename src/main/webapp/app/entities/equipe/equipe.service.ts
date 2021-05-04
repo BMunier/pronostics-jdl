@@ -1,81 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { Equipe } from './equipe.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
+import { IEquipe } from 'app/shared/model/equipe.model';
 
-export type EntityResponseType = HttpResponse<Equipe>;
+type EntityResponseType = HttpResponse<IEquipe>;
+type EntityArrayResponseType = HttpResponse<IEquipe[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EquipeService {
+  public resourceUrl = SERVER_API_URL + 'api/equipes';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/equipes';
 
-    private resourceUrl =  SERVER_API_URL + 'api/equipes';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/equipes';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  create(equipe: IEquipe): Observable<EntityResponseType> {
+    return this.http.post<IEquipe>(this.resourceUrl, equipe, { observe: 'response' });
+  }
 
-    create(equipe: Equipe): Observable<EntityResponseType> {
-        const copy = this.convert(equipe);
-        return this.http.post<Equipe>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  update(equipe: IEquipe): Observable<EntityResponseType> {
+    return this.http.put<IEquipe>(this.resourceUrl, equipe, { observe: 'response' });
+  }
 
-    update(equipe: Equipe): Observable<EntityResponseType> {
-        const copy = this.convert(equipe);
-        return this.http.put<Equipe>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<IEquipe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Equipe>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IEquipe[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    query(req?: any): Observable<HttpResponse<Equipe[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Equipe[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Equipe[]>) => this.convertArrayResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<Equipe[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<Equipe[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Equipe[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Equipe = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Equipe[]>): HttpResponse<Equipe[]> {
-        const jsonResponse: Equipe[] = res.body;
-        const body: Equipe[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Equipe.
-     */
-    private convertItemFromServer(equipe: Equipe): Equipe {
-        const copy: Equipe = Object.assign({}, equipe);
-        return copy;
-    }
-
-    /**
-     * Convert a Equipe to a JSON which can be sent to the server.
-     */
-    private convert(equipe: Equipe): Equipe {
-        const copy: Equipe = Object.assign({}, equipe);
-        return copy;
-    }
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IEquipe[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
 }

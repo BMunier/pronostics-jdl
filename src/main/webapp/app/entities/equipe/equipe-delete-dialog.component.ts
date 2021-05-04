@@ -1,64 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Equipe } from './equipe.model';
-import { EquipePopupService } from './equipe-popup.service';
+import { IEquipe } from 'app/shared/model/equipe.model';
 import { EquipeService } from './equipe.service';
 
 @Component({
-    selector: 'jhi-equipe-delete-dialog',
-    templateUrl: './equipe-delete-dialog.component.html'
+  templateUrl: './equipe-delete-dialog.component.html',
 })
 export class EquipeDeleteDialogComponent {
+  equipe?: IEquipe;
 
-    equipe: Equipe;
+  constructor(protected equipeService: EquipeService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-    constructor(
-        private equipeService: EquipeService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  cancel(): void {
+    this.activeModal.dismiss();
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.equipeService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'equipeListModification',
-                content: 'Deleted an equipe'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
-}
-
-@Component({
-    selector: 'jhi-equipe-delete-popup',
-    template: ''
-})
-export class EquipeDeletePopupComponent implements OnInit, OnDestroy {
-
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private equipePopupService: EquipePopupService
-    ) {}
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.equipePopupService
-                .open(EquipeDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  confirmDelete(id: number): void {
+    this.equipeService.delete(id).subscribe(() => {
+      this.eventManager.broadcast('equipeListModification');
+      this.activeModal.close();
+    });
+  }
 }

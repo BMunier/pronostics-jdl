@@ -1,225 +1,233 @@
 import { element, by, ElementFinder } from 'protractor';
 
+/* eslint @typescript-eslint/no-use-before-define: 0 */
 export class NavBarPage {
-    entityMenu = element(by.id('entity-menu'));
-    accountMenu = element(by.id('account-menu'));
-    adminMenu: ElementFinder;
-    signIn = element(by.id('login'));
-    register = element(by.css('[routerLink="register"]'));
-    signOut = element(by.id('logout'));
-    passwordMenu = element(by.css('[routerLink="password"]'));
-    settingsMenu = element(by.css('[routerLink="settings"]'));
+  entityMenu = element(by.id('entity-menu'));
+  accountMenu = element(by.id('account-menu'));
+  adminMenu!: ElementFinder;
+  signIn = element(by.id('login'));
+  register = element(by.css('[routerLink="account/register"]'));
+  signOut = element(by.id('logout'));
+  passwordMenu = element(by.css('[routerLink="account/password"]'));
+  settingsMenu = element(by.css('[routerLink="account/settings"]'));
 
-    constructor(asAdmin?: Boolean) {
-        if (asAdmin) {
-            this.adminMenu = element(by.id('admin-menu'));
-        }
+  constructor(asAdmin?: Boolean) {
+    if (asAdmin) {
+      this.adminMenu = element(by.id('admin-menu'));
     }
+  }
 
-    clickOnEntityMenu() {
-        return this.entityMenu.click();
-    }
+  async clickOnEntityMenu(): Promise<void> {
+    await this.entityMenu.click();
+  }
 
-    clickOnAccountMenu() {
-        return this.accountMenu.click();
-    }
+  async clickOnAccountMenu(): Promise<void> {
+    await this.accountMenu.click();
+  }
 
-    clickOnAdminMenu() {
-        return this.adminMenu.click();
-    }
+  async clickOnAdminMenu(): Promise<void> {
+    await this.adminMenu.click();
+  }
 
-    clickOnSignIn() {
-        return this.signIn.click();
-    }
+  async clickOnSignIn(): Promise<void> {
+    await this.signIn.click();
+  }
 
-    clickOnRegister() {
-        return this.signIn.click();
-    }
+  async clickOnRegister(): Promise<void> {
+    await this.signIn.click();
+  }
 
-    clickOnSignOut() {
-        return this.signOut.click();
-    }
+  async clickOnSignOut(): Promise<void> {
+    await this.signOut.click();
+  }
 
-    clickOnPasswordMenu() {
-        return this.passwordMenu.click();
-    }
+  async clickOnPasswordMenu(): Promise<void> {
+    await this.passwordMenu.click();
+  }
 
-    clickOnSettingsMenu() {
-        return this.settingsMenu.click();
-    }
+  async clickOnSettingsMenu(): Promise<void> {
+    await this.settingsMenu.click();
+  }
 
-    clickOnEntity(entityName: string) {
-        return element(by.css('[routerLink="' + entityName + '"]')).click();
-    }
+  async clickOnEntity(entityName: string): Promise<void> {
+    await element(by.css('[routerLink="' + entityName + '"]')).click();
+  }
 
-    clickOnAdmin(entityName: string) {
-        return element(by.css('[routerLink="' + entityName + '"]')).click();
-    }
+  async clickOnAdmin(entityName: string): Promise<void> {
+    await element(by.css('[routerLink="admin/' + entityName + '"]')).click();
+  }
 
-    getSignInPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSignIn();
-        return new SignInPage();
-    }
-    getPasswordPage() {
-        this.clickOnAccountMenu();
-        this.clickOnPasswordMenu();
-        return new PasswordPage();
-    }
+  async getSignInPage(): Promise<SignInPage> {
+    await this.clickOnAccountMenu();
+    await this.clickOnSignIn();
+    return new SignInPage();
+  }
 
-    getSettingsPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSettingsMenu();
-        return new SettingsPage();
-    }
+  async getPasswordPage(): Promise<PasswordPage> {
+    await this.clickOnAccountMenu();
+    await this.clickOnPasswordMenu();
+    return new PasswordPage();
+  }
 
-    goToEntity(entityName: string) {
-        this.clickOnEntityMenu();
-        return this.clickOnEntity(entityName);
-    }
+  async getSettingsPage(): Promise<SettingsPage> {
+    await this.clickOnAccountMenu();
+    await this.clickOnSettingsMenu();
+    return new SettingsPage();
+  }
 
-    goToSignInPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSignIn();
-    }
+  async goToEntity(entityName: string): Promise<void> {
+    await this.clickOnEntityMenu();
+    await this.clickOnEntity(entityName);
+  }
 
-    goToPasswordMenu() {
-        this.clickOnAccountMenu();
-        this.clickOnPasswordMenu();
-    }
+  async goToSignInPage(): Promise<void> {
+    await this.clickOnAccountMenu();
+    await this.clickOnSignIn();
+  }
 
-    autoSignOut() {
-        this.clickOnAccountMenu();
-        this.clickOnSignOut();
-    }
+  async goToPasswordMenu(): Promise<void> {
+    await this.clickOnAccountMenu();
+    await this.clickOnPasswordMenu();
+  }
+
+  async autoSignOut(): Promise<void> {
+    await this.clickOnAccountMenu();
+    await this.clickOnSignOut();
+  }
 }
 
 export class SignInPage {
-    username = element(by.id('username'));
-    password = element(by.id('password'));
-    loginButton = element(by.css('button[type=submit]'));
+  username = element(by.id('username'));
+  password = element(by.id('password'));
+  loginButton = element(by.css('button[type=submit]'));
 
-    setUserName(username) {
-        this.username.sendKeys(username);
-    }
+  async setUserName(username: string): Promise<void> {
+    await this.username.sendKeys(username);
+  }
 
-    getUserName() {
-        return this.username.getAttribute('value');
-    }
+  async getUserName(): Promise<string> {
+    return this.username.getAttribute('value');
+  }
 
-    clearUserName() {
-        this.username.clear();
-    }
+  async clearUserName(): Promise<void> {
+    await this.username.clear();
+  }
 
-    setPassword(password) {
-        this.password.sendKeys(password);
-    }
+  async setPassword(password: string): Promise<void> {
+    await this.password.sendKeys(password);
+  }
 
-    getPassword() {
-        return this.password.getAttribute('value');
-    }
+  async getPassword(): Promise<string> {
+    return this.password.getAttribute('value');
+  }
 
-    clearPassword() {
-        this.password.clear();
-    }
+  async clearPassword(): Promise<void> {
+    await this.password.clear();
+  }
 
-    autoSignInUsing(username: string, password: string) {
-        this.setUserName(username);
-        this.setPassword(password);
-        return this.login();
-    }
+  async autoSignInUsing(username: string, password: string): Promise<void> {
+    await this.setUserName(username);
+    await this.setPassword(password);
+    await this.login();
+  }
 
-    login() {
-        return this.loginButton.click();
-    }
+  async login(): Promise<void> {
+    await this.loginButton.click();
+  }
 }
+
 export class PasswordPage {
-    password = element(by.id('password'));
-    confirmPassword = element(by.id('confirmPassword'));
-    saveButton = element(by.css('button[type=submit]'));
-    title = element.all(by.css('h2')).first();
+  currentPassword = element(by.id('currentPassword'));
+  password = element(by.id('newPassword'));
+  confirmPassword = element(by.id('confirmPassword'));
+  saveButton = element(by.css('button[type=submit]'));
+  title = element.all(by.css('h2')).first();
 
-    setPassword(password) {
-        this.password.sendKeys(password);
-    }
+  async setCurrentPassword(password: string): Promise<void> {
+    await this.currentPassword.sendKeys(password);
+  }
 
-    getPassword() {
-        return this.password.getAttribute('value');
-    }
+  async setPassword(password: string): Promise<void> {
+    await this.password.sendKeys(password);
+  }
 
-    clearPassword() {
-        this.password.clear();
-    }
+  async getPassword(): Promise<string> {
+    return this.password.getAttribute('value');
+  }
 
-    setConfirmPassword(confirmPassword) {
-        this.confirmPassword.sendKeys(confirmPassword);
-    }
+  async clearPassword(): Promise<void> {
+    await this.password.clear();
+  }
 
-    getConfirmPassword() {
-        return this.confirmPassword.getAttribute('value');
-    }
+  async setConfirmPassword(confirmPassword: string): Promise<void> {
+    await this.confirmPassword.sendKeys(confirmPassword);
+  }
 
-    clearConfirmPassword() {
-        this.confirmPassword.clear();
-    }
+  async getConfirmPassword(): Promise<string> {
+    return this.confirmPassword.getAttribute('value');
+  }
 
-    getTitle() {
-        return this.title.getAttribute('jhiTranslate');
-    }
+  async clearConfirmPassword(): Promise<void> {
+    await this.confirmPassword.clear();
+  }
 
-    save() {
-        return this.saveButton.click();
-    }
+  async getTitle(): Promise<string> {
+    return this.title.getAttribute('jhiTranslate');
+  }
+
+  async save(): Promise<void> {
+    await this.saveButton.click();
+  }
 }
 
 export class SettingsPage {
-    firstName = element(by.id('firstName'));
-    lastName = element(by.id('lastName'));
-    email = element(by.id('email'));
-    saveButton = element(by.css('button[type=submit]'));
-    title = element.all(by.css('h2')).first();
+  firstName = element(by.id('firstName'));
+  lastName = element(by.id('lastName'));
+  email = element(by.id('email'));
+  saveButton = element(by.css('button[type=submit]'));
+  title = element.all(by.css('h2')).first();
 
-    setFirstName(firstName) {
-        this.firstName.sendKeys(firstName);
-    }
+  async setFirstName(firstName: string): Promise<void> {
+    await this.firstName.sendKeys(firstName);
+  }
 
-    getFirstName() {
-        return this.firstName.getAttribute('value');
-    }
+  async getFirstName(): Promise<string> {
+    return this.firstName.getAttribute('value');
+  }
 
-    clearFirstName() {
-        this.firstName.clear();
-    }
+  async clearFirstName(): Promise<void> {
+    await this.firstName.clear();
+  }
 
-    setLastName(lastName) {
-        this.lastName.sendKeys(lastName);
-    }
+  async setLastName(lastName: string): Promise<void> {
+    await this.lastName.sendKeys(lastName);
+  }
 
-    getLastName() {
-        return this.lastName.getAttribute('value');
-    }
+  async getLastName(): Promise<string> {
+    return this.lastName.getAttribute('value');
+  }
 
-    clearLastName() {
-        this.lastName.clear();
-    }
+  async clearLastName(): Promise<void> {
+    await this.lastName.clear();
+  }
 
-    setEmail(email) {
-        this.email.sendKeys(email);
-    }
+  async setEmail(email: string): Promise<void> {
+    await this.email.sendKeys(email);
+  }
 
-    getEmail() {
-        return this.email.getAttribute('value');
-    }
+  async getEmail(): Promise<string> {
+    return this.email.getAttribute('value');
+  }
 
-    clearEmail() {
-        this.email.clear();
-    }
+  async clearEmail(): Promise<void> {
+    await this.email.clear();
+  }
 
-    getTitle() {
-        return this.title.getAttribute('jhiTranslate');
-    }
+  async getTitle(): Promise<string> {
+    return this.title.getAttribute('jhiTranslate');
+  }
 
-    save() {
-        return this.saveButton.click();
-    }
+  async save(): Promise<void> {
+    await this.saveButton.click();
+  }
 }

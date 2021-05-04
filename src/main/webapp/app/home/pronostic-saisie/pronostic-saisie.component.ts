@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import {PronosticSaisie} from './pronostic-saisie.model';
 import {PronosticSaisieService} from './pronostic-saisie.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'jhi-pronostic-saisie',
@@ -16,7 +15,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
 
   pronostics: PronosticSaisie[];
   currentAccount: any;
-  eventSubscriber: Subscription;
+  eventSubscriber?: Subscription;
   itemsPerPage: number;
   links: any;
   page: any;
@@ -34,7 +33,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       private eventManager: JhiEventManager,
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
-      private principal: Principal
+      // private principal: Principal
 
   ) {
       this.pronostics = [];
@@ -45,9 +44,10 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       };
       this.predicate = 'id';
       this.reverse = true;
+      this.totalItems = 0;
   }
 
-  loadAll() {
+  loadAll(): void {
       this.pronosticSaisieService.query({
           page: this.page,
           size: this.itemsPerPage
@@ -56,12 +56,12 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
           (res: HttpErrorResponse) => this.onError(res.message)
       );
   }
-  valideProno(pronostic) {
+  valideProno(pronostic: any): void {
     pronostic.updated = true;
        this.pronosticSaisieService.update(pronostic).subscribe(
-        (response) => {
+        (response: any) => {
             pronostic.id=response.body.id;
-            
+
             if (response.status === 200) {
                 this.error = null;
                 this.success = 'OK';
@@ -73,23 +73,22 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
             }
         });
 }
-changeValidate(pronostic){
+changeValidate(pronostic: any): void {
     pronostic.updated=false;
-    console.log(pronostic);
 }
 
-  reset() {
+  reset(): void {
       this.page = 0;
       this.pronostics = [];
       this.loadAll();
   }
 
-  loadPage(page) {
+  loadPage(page: any): void {
       this.page = page;
       this.loadAll();
   }
 
-  clear() {
+  clear(): void {
       this.pronostics = [];
       this.links = {
           last: 0
@@ -100,7 +99,7 @@ changeValidate(pronostic){
       this.loadAll();
   }
 
-  search(query) {
+  search(query: any): void {
       if (!query) {
           return this.clear();
       }
@@ -113,27 +112,29 @@ changeValidate(pronostic){
       this.reverse = false;
       this.loadAll();
   }
-  ngOnInit() {
+  ngOnInit(): void {
       this.loadAll();
-      this.principal.identity().then((account) => {
+/*       this.principal.identity().then((account: any) => {
           this.currentAccount = account;
-      });
+      }); */
       this.registerChangeInPronostics();
   }
 
-  ngOnDestroy() {
-      this.eventManager.destroy(this.eventSubscriber);
+  ngOnDestroy(): void {
+    if(this.eventSubscriber){
+      this.eventManager.destroy(this.eventSubscriber)
+    };
   }
 
-  trackId(index: number, item: PronosticSaisie) {
-      return item.id;
+  trackId(index: number, item: PronosticSaisie): any {
+      return item?.id;
   }
-  registerChangeInPronostics() {
-      this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response) => this.reset());
+  registerChangeInPronostics(): void {
+      this.eventSubscriber = this.eventManager.subscribe('pronosticListModification', (response: any) => this.reset());
   }
-  _keyPress(event: any) {
-    const pattern = /[0-9\+\ ]/;
-    let inputChar = String.fromCharCode(event.charCode);
+  _keyPress(event: any): void {
+    const pattern = /[0-9+ ]/;
+    const inputChar = String.fromCharCode(event.charCode);
 
     if (!pattern.test(inputChar)) {
       // invalid character, prevent input
@@ -141,22 +142,21 @@ changeValidate(pronostic){
     }
 }
 
-  private onSuccess(data, headers) {
+  private onSuccess(data: any, headers: any): void {
       this.links = this.parseLinks.parse(headers.get('link'));
       this.totalItems = headers.get('X-Total-Count');
       for (let i = 0; i < data.length; i++) {
-          console.log(data);
          this.pronostics.push(data[i]);
       }
   }
 
-  private onError(error) {
-      this.jhiAlertService.error(error.message, null, null);
+  private onError(error: any): void {
+      this.jhiAlertService.error(error.message, null, undefined);
   }
 
-  private dateIsApres(date){
-      var dateNow = new Date(Date.now());
-      var dateD = new Date(date);
+  dateIsApres(date: any): boolean{
+      const dateNow = new Date(Date.now());
+      const dateD = new Date(date);
       return dateNow>dateD;
   }
 

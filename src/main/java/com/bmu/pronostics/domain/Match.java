@@ -1,15 +1,15 @@
 package com.bmu.pronostics.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
 
@@ -20,8 +20,8 @@ import com.bmu.pronostics.domain.enumeration.PhaseCompetition;
  */
 @Entity
 @Table(name = "match")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "match")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "match")
 public class Match implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class Match implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "jhi_date", nullable = false)
+    @Column(name = "date", nullable = false)
     private Instant date;
 
     @NotNull
@@ -57,18 +57,22 @@ public class Match implements Serializable {
     private String groupe;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "matches", allowSetters = true)
     private Competition competition;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "matches", allowSetters = true)
     private Stade stade;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "matches", allowSetters = true)
     private Equipe equipeDomicile;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "matches", allowSetters = true)
     private Equipe equipeVisiteur;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -219,28 +223,25 @@ public class Match implements Serializable {
     public void setEquipeVisiteur(Equipe equipe) {
         this.equipeVisiteur = equipe;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Match)) {
             return false;
         }
-        Match match = (Match) o;
-        if (match.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), match.getId());
+        return id != null && id.equals(((Match) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Match{" +

@@ -1,54 +1,37 @@
-/* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { PronosticsTestModule } from '../../../test.module';
-import { StadeDetailComponent } from '../../../../../../main/webapp/app/entities/stade/stade-detail.component';
-import { StadeService } from '../../../../../../main/webapp/app/entities/stade/stade.service';
-import { Stade } from '../../../../../../main/webapp/app/entities/stade/stade.model';
+import { StadeDetailComponent } from 'app/entities/stade/stade-detail.component';
+import { Stade } from 'app/shared/model/stade.model';
 
 describe('Component Tests', () => {
+  describe('Stade Management Detail Component', () => {
+    let comp: StadeDetailComponent;
+    let fixture: ComponentFixture<StadeDetailComponent>;
+    const route = ({ data: of({ stade: new Stade(123) }) } as any) as ActivatedRoute;
 
-    describe('Stade Management Detail Component', () => {
-        let comp: StadeDetailComponent;
-        let fixture: ComponentFixture<StadeDetailComponent>;
-        let service: StadeService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [PronosticsTestModule],
-                declarations: [StadeDetailComponent],
-                providers: [
-                    StadeService
-                ]
-            })
-            .overrideTemplate(StadeDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(StadeDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(StadeService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Stade(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.stade).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [PronosticsTestModule],
+        declarations: [StadeDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }],
+      })
+        .overrideTemplate(StadeDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(StadeDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should load stade on init', () => {
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.stade).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

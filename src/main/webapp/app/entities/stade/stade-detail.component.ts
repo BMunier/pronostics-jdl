@@ -1,55 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { Stade } from './stade.model';
-import { StadeService } from './stade.service';
+import { IStade } from 'app/shared/model/stade.model';
 
 @Component({
-    selector: 'jhi-stade-detail',
-    templateUrl: './stade-detail.component.html'
+  selector: 'jhi-stade-detail',
+  templateUrl: './stade-detail.component.html',
 })
-export class StadeDetailComponent implements OnInit, OnDestroy {
+export class StadeDetailComponent implements OnInit {
+  stade: IStade | null = null;
 
-    stade: Stade;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private stadeService: StadeService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ stade }) => (this.stade = stade));
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInStades();
-    }
-
-    load(id) {
-        this.stadeService.find(id)
-            .subscribe((stadeResponse: HttpResponse<Stade>) => {
-                this.stade = stadeResponse.body;
-            });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInStades() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'stadeListModification',
-            (response) => this.load(this.stade.id)
-        );
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

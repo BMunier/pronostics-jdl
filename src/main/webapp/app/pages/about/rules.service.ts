@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Rules } from './rules.model';
-import { createRequestOption } from '../../shared';
+import { Observable } from 'rxjs';
+import { createRequestOption } from 'app/shared/util/request-util';
+import { map } from 'rxjs/operators';
 
 export type RulesResponseType = HttpResponse<Rules>;
 export type RulesArrayResponseType = HttpResponse<Rules[]>;
@@ -20,7 +21,7 @@ export class RulesService {
     search(req?: any): Observable<RulesResponseType> {
         const options = createRequestOption(req);
         return this.http.get<Rules>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: RulesArrayResponseType) => this.convertArrayResponse(res));
+            .pipe(map((res: RulesResponseType) => this.convertResponse(res)));
     }
 
     private convertResponse(res: RulesResponseType): RulesResponseType {
@@ -28,14 +29,14 @@ export class RulesService {
         return res.clone({body});
     }
 
-    private convertArrayResponse(res: RulesArrayResponseType): RulesArrayResponseType {
+    /* private convertArrayResponse(res: RulesArrayResponseType): RulesArrayResponseType {
         const jsonResponse: Rules[] = res.body;
         const body: Rules[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
             body.push(this.convertItemFromServer(jsonResponse[i]));
         }
         return res.clone({body});
-    }
+    } */
 
     /**
      * Convert a returned JSON object to Rules.

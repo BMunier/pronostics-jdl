@@ -1,64 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Pays } from './pays.model';
-import { PaysPopupService } from './pays-popup.service';
+import { IPays } from 'app/shared/model/pays.model';
 import { PaysService } from './pays.service';
 
 @Component({
-    selector: 'jhi-pays-delete-dialog',
-    templateUrl: './pays-delete-dialog.component.html'
+  templateUrl: './pays-delete-dialog.component.html',
 })
 export class PaysDeleteDialogComponent {
+  pays?: IPays;
 
-    pays: Pays;
+  constructor(protected paysService: PaysService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-    constructor(
-        private paysService: PaysService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  cancel(): void {
+    this.activeModal.dismiss();
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.paysService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'paysListModification',
-                content: 'Deleted an pays'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
-}
-
-@Component({
-    selector: 'jhi-pays-delete-popup',
-    template: ''
-})
-export class PaysDeletePopupComponent implements OnInit, OnDestroy {
-
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private paysPopupService: PaysPopupService
-    ) {}
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.paysPopupService
-                .open(PaysDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  confirmDelete(id: number): void {
+    this.paysService.delete(id).subscribe(() => {
+      this.eventManager.broadcast('paysListModification');
+      this.activeModal.close();
+    });
+  }
 }

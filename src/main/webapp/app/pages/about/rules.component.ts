@@ -1,12 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Rules } from './rules.model';
 import { RulesService } from './rules.service';
-import { Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-rules',
@@ -15,7 +10,7 @@ import { Principal } from '../../shared';
 export class RulesComponent implements OnInit, OnDestroy {
 
     currentAccount: any;
-    eventSubscriber: Subscription;
+    // eventSubscriber: Subscription;
     routeData: any;
     links: any;
     totalItems: any;
@@ -31,30 +26,30 @@ export class RulesComponent implements OnInit, OnDestroy {
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal
+        // private principal: Principal
     ) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
-        this.principal.identity().then((account) => {
+/*         this.principal.identity().then((account: any) => {
             this.currentAccount = account;
-        });
+        }); */
 
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
 
     }
 
-    sort() {
+    sort(): any {
         const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
         if (this.predicate !== 'id') {
             result.push('id');
         }
         return result;
     }
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+    private onError(error: any): void {
+        this.jhiAlertService.error(error.message, null, undefined);
     }
 }
