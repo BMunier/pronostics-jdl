@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
@@ -138,7 +138,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       }
     }
   }
-  refresh() {
+  refresh(): void {
 /*       this.matchService.refresh().subscribe(
           (res: HttpResponse<any>) => this.onSuccess(res.body, res.headers),
           (res: HttpErrorResponse) => this.onError('Error')

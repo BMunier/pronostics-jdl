@@ -15,7 +15,7 @@ export class ClassementComponent implements OnInit {
 
   classements: Classement[];
   currentAccount: any;
-  //eventSubscriber: Subscription;
+  // eventSubscriber: Subscription;
   itemsPerPage: number;
   routeData: any;
 
@@ -25,7 +25,7 @@ export class ClassementComponent implements OnInit {
       private eventManager: JhiEventManager,
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
-      //private principal: Principal
+      // private principal: Principal
 
   ) {
       this.classements = [];
@@ -33,7 +33,7 @@ export class ClassementComponent implements OnInit {
 
 
   }
-  loadAll() {
+  loadAll(): void {
     this.classementService.query({
             size: this.itemsPerPage,
       }).subscribe(
@@ -45,15 +45,15 @@ export class ClassementComponent implements OnInit {
         (res: HttpErrorResponse) => this.onError(res.message)
     );
 }
-getColor(idUtilisateur: any){
-    if(idUtilisateur== this.currentAccount.id){
+getColor(idUtilisateur: any): string{
+    if(idUtilisateur=== this.currentAccount.id){
       return "#C6F6A9";
     } else {
       return ""
     }
 
 }
-ngOnInit(){
+ngOnInit(): void{
 /*     this.principal.identity().then((account: any) => {
         console.log(account);
         this.currentAccount = account;
@@ -61,7 +61,7 @@ ngOnInit(){
   this.loadAll();
 }
 
-private onError(error: any) {
+private onError(error: any): void {
     this.jhiAlertService.error(error.message, null, undefined);
 }
 

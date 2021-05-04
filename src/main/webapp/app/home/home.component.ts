@@ -5,8 +5,6 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 
-import{PronosticComponent} from '../entities/pronostic/pronostic.component';
-
 @Component({
   selector: 'jhi-home',
   templateUrl: './home.component.html',

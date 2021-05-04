@@ -30,7 +30,7 @@ export class ClassementService {
     }
 
     private convertArrayResponse(res: HttpResponse<Classement[]>): HttpResponse<Classement[]> {
-        var jsonResponse: Classement[] = [];
+        let jsonResponse: Classement[] = [];
         if(res.body){
           jsonResponse = res.body;
         }

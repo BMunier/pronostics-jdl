@@ -47,7 +47,6 @@ export class PronosticSaisieService {
     }
 
     search(req?: any): Observable<HttpResponse<PronosticSaisie[]>> {
-        console.log("Saisie : Appel search")
         const options = createRequestOption(req);
         return this.http.get<PronosticSaisie[]>(this.resourceUrl, { params: options, observe: 'response' })
             .pipe(map((res: HttpResponse<PronosticSaisie[]>) => this.convertArrayResponse(res)));
@@ -59,7 +58,7 @@ export class PronosticSaisieService {
     }
 
     private convertArrayResponse(res: HttpResponse<PronosticSaisie[]>): HttpResponse<PronosticSaisie[]> {
-        var jsonResponse: PronosticSaisie[] = [];
+        let jsonResponse: PronosticSaisie[] = [];
         if(res.body){
           jsonResponse = res.body;
         }
