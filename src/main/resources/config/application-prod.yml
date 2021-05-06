@@ -64,20 +64,25 @@ spring:
         ssl.trust: smtp-mail.outlook.com
   thymeleaf:
     cache: true
-  data:
-    jest:
-      uri: http://localhost:9200
+  # data:
+  #   jest:
+  #     uri: http://localhost:9200
 
   # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
-    cluster-name:
-     cluster-nodes:
-     properties:
-       path:
-         logs: /tmp/elasticsearch/log
-         data: /tmp/elasticsearch/data
+  # elasticsearch:
+  #   rest:
+  #     uris: http://localhost:9200
+  #   cluster-name:
+  #    cluster-nodes:
+  #    properties:
+  #      path:
+  #        logs: /tmp/elasticsearch/log
+  #        data: /tmp/elasticsearch/data
+  data:
+    elasticsearch:
+      properties:
+        path:
+          home: target/elasticsearch
 
 
 
