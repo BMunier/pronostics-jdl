@@ -39,31 +39,17 @@ spring:
       auto-commit: false
   jpa:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
-    show-sql: false
-    #database: POSTGRESQL
-    #  properties:
-    #      hibernate.id.new_generator_mappings: true
-    #      hibernate.cache.use_second_level_cache: true
-    #      hibernate.cache.use_query_cache: false
-    #      hibernate.generate_statistics: false
-    #      hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
-  data:
-    jest:
-      uri: http://localhost:9200
-    #elasticsearch:
-    #  cluster-name:
-    #  cluster-nodes:
-    #  properties:
-    #    path:
-    #      logs: /tmp/elasticsearch/log
-    #      data: /tmp/elasticsearch/data
-  # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
+    # show-sql: false
+    # database: POSTGRESQL
+    # properties:
+    #       hibernate.id.new_generator_mappings: true
+    #       hibernate.cache.use_second_level_cache: true
+    #       hibernate.cache.use_query_cache: false
+    #       hibernate.generate_statistics: false
+    #       hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
   mail:
     host: smtp-mail.outlook.com
     port: 587
@@ -77,6 +63,22 @@ spring:
         ssl.trust: smtp-mail.outlook.com
   thymeleaf:
     cache: true
+  # data:
+  #   jest:
+  #     uri: http://localhost:9200
+    #elasticsearch:
+    #  cluster-name:
+    #  cluster-nodes:
+    #  properties:
+    #    path:
+    #      logs: /tmp/elasticsearch/log
+    #      data: /tmp/elasticsearch/data
+  # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
+  # elasticsearch:
+  #   rest:
+  #     uris: http://localhost:9200
+
+
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
@@ -125,10 +127,10 @@ jhipster:
   mail: # specific JHipster mail property, for standard properties see MailProperties
     from: pronosticsGbz@outlook.com
     base-url: http://pronostics.globaz.ch # Modify according to your server's URL
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: false
-      report-frequency: 60 # in seconds
+  # metrics:
+  #   logs: # Reports metrics in the logs
+  #     enabled: false
+  #     report-frequency: 60 # in seconds
     #jmx.enabled: true
     #    graphite:
     #        enabled: false
