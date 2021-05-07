@@ -40,17 +40,18 @@ spring:
   jpa:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: false
+    database: POSTGRESQL
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
 
-    # database: POSTGRESQL
-    # properties:
-    #       hibernate.id.new_generator_mappings: true
-    #       hibernate.cache.use_second_level_cache: true
-    #       hibernate.cache.use_query_cache: false
-    #       hibernate.generate_statistics: false
-    #       hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+
   mail:
     host: smtp-mail.outlook.com
     port: 587
@@ -59,9 +60,9 @@ spring:
     protocol: smtp
     tls: true
     properties.mail.smtp:
-        auth: true
-        starttls.enable: true
-        ssl.trust: smtp-mail.outlook.com
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp-mail.outlook.com
   thymeleaf:
     cache: true
   # data:
