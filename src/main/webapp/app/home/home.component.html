@@ -36,6 +36,19 @@
 
 <!-- Affichage des matchs et prono si user loggé -->
 <div class="row" *ngIf="isAuthenticated()">
+    <form name="competitionForm" role="form" [formGroup]="competitionForm">
+        <div class="row" class="col-12">
+            <div class="form-group">
+                <label class="form-control-label">Competition</label>
+                <select class="form-control" id="competition" formControlName="competition">
+                    <option *ngFor="let competition of listCompetition" [ngValue]="competition">
+                        {{ competition.nom }}
+                    </option>
+                </select>
+                <p>Form value: {{ competitionForm.value | json }}</p>
+            </div>
+        </div>
+    </form>
 
     <div class="row">
         <div class="col-8">
