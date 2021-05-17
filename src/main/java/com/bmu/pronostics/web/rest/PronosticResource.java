@@ -250,6 +250,46 @@ public class PronosticResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+     /**
+     * GET /pronostics/{idCompetition} : get all the pronostics for a competition.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
+     *         body
+     */
+    @GetMapping("/pronosticsSaisi/{idCompetition}")
+    @Timed
+    public ResponseEntity<List<Pronostic>> getAllPronosticsSaisieForCompetition(@PageableDefault(size=100)Pageable pageable, Long idCompetition) {
+        log.debug("REST request to get a page of PronosticsSaisi");
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (!user.isPresent()) {
+            throw new NoUserLoggedException();
+        }
+        // On recherche les match pour pouvoir ajouter les pronos non-encore saisis
+        List<Match> matchesExistents = matchRepository.findAll();
+        List<Match> matchesDejaPronostiques = new ArrayList<Match>();
+        List<Pronostic> pronostics = pronosticRepository.findByUtilisateurIsCurrentUser();
+        // On regarde si le prono existe existe déjà pour le match
+        pronostics.forEach(pronostic -> {
+            matchesDejaPronostiques.add(pronostic.getMatch());
+        });
+
+        matchesExistents.removeAll(matchesDejaPronostiques);
+        matchesExistents.forEach(match ->{
+            pronostics.add(creerNouveauPronostic(match,user.get()));
+        }
+        );
+        List<Pronostic> retourProno = sortPronostics(pronostics);
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
+                : (start + pageable.getPageSize());
+
+        Page<Pronostic> page = new PageImpl<Pronostic>(retourProno.subList(start, end), pageable, retourProno.size());
+        //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     private Pronostic creerNouveauPronostic(Match match, User user){
         return new Pronostic().match(match).utilisateur(user);
 
