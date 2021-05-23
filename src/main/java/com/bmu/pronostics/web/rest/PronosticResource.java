@@ -1,14 +1,14 @@
 package com.bmu.pronostics.web.rest;
 
+import com.bmu.pronostics.domain.Competition;
 import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
 import com.bmu.pronostics.domain.User;
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
+import com.bmu.pronostics.repository.CompetitionRepository;
 import com.bmu.pronostics.repository.MatchRepository;
 import com.bmu.pronostics.repository.PronosticRepository;
-import com.bmu.pronostics.repository.UserRepository;
 import com.bmu.pronostics.repository.search.PronosticSearchRepository;
-import com.bmu.pronostics.security.UserNotActivatedException;
 import com.bmu.pronostics.service.UserService;
 import com.bmu.pronostics.web.rest.errors.BadRequestAlertException;
 import com.bmu.pronostics.web.rest.errors.MatchAlreadyPlayedException;
@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -68,13 +66,16 @@ public class PronosticResource {
 
     private final MatchRepository matchRepository;
 
+    private final CompetitionRepository competitionRepository;
+
     public PronosticResource(PronosticRepository pronosticRepository,
             PronosticSearchRepository pronosticSearchRepository, UserService userService,
-            MatchRepository matchRepository) {
+            MatchRepository matchRepository, CompetitionRepository competitionRepository) {
         this.pronosticRepository = pronosticRepository;
         this.pronosticSearchRepository = pronosticSearchRepository;
         this.userService = userService;
         this.matchRepository = matchRepository;
+        this.competitionRepository = competitionRepository;
     }
 
     /**
@@ -240,6 +241,51 @@ public class PronosticResource {
         }
         );
         List<Pronostic> retourProno = sortPronostics(pronostics);
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
+                : (start + pageable.getPageSize());
+
+        Page<Pronostic> page = new PageImpl<Pronostic>(retourProno.subList(start, end), pageable, retourProno.size());
+        //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pronosticsSaisie");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+     /**
+     * GET /pronostics/{idCompetition} : get all the pronostics for a competition.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of pronostics in
+     *         body
+     */
+    @GetMapping("/pronosticsSaisi/{idCompetition}")
+    @Timed
+    public ResponseEntity<List<Pronostic>> getAllPronosticsSaisieForCompetition(@PageableDefault(size=100)Pageable pageable, @PathVariable Long idCompetition) {
+        log.debug("REST request to get a page of PronosticsSaisi whith competition ID");
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (!user.isPresent()) {
+            throw new NoUserLoggedException();
+        }
+        // On recherche la competition
+        Optional<Competition> competition = competitionRepository.findById(idCompetition);
+
+        // On recherche les match pour pouvoir ajouter les pronos non-encore saisis
+        List<Match> matchesOfCompetition = matchRepository.findAllByCompetition(competition.get());
+        List<Match> matchesDejaPronostiques = new ArrayList<Match>();
+
+        // On recherche les pronostics de l'utilisateur pour les matchs retrouvés.
+        List<Pronostic> pronosticsOfUserForComp = pronosticRepository.findByUtilisateurAndMatchIn(user.get(), matchesOfCompetition);
+        // On regarde si le prono existe existe déjà pour le match
+        pronosticsOfUserForComp.forEach(pronostic -> {
+            matchesDejaPronostiques.add(pronostic.getMatch());
+        });
+
+        matchesOfCompetition.removeAll(matchesDejaPronostiques);
+        matchesOfCompetition.forEach(match ->{
+            pronosticsOfUserForComp.add(creerNouveauPronostic(match,user.get()));
+        }
+        );
+        List<Pronostic> retourProno = sortPronostics(pronosticsOfUserForComp);
         int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > retourProno.size() ? retourProno.size()
                 : (start + pageable.getPageSize());

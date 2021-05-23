@@ -14,6 +14,7 @@ export type EntityResponseType = HttpResponse<PronosticSaisie>;
 export class PronosticSaisieService {
 
     private resourceUrl =  SERVER_API_URL + 'api/pronosticsSaisi';
+    private pronosticForComeptitionId =  SERVER_API_URL + 'api/pronosticsSaisi';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/pronosticsSaisi';
 
     constructor(private http: HttpClient) { }
@@ -41,6 +42,12 @@ export class PronosticSaisieService {
         return this.http.get<PronosticSaisie[]>(this.resourceUrl, { params: options, observe: 'response' })
             .pipe(map((res: HttpResponse<PronosticSaisie[]>) => this.convertArrayResponse(res)));
     }
+
+    queryForCompetitionId(comeptitionId: any, req?: any): Observable<HttpResponse<PronosticSaisie[]>> {
+      const options = createRequestOption(req);
+      return this.http.get<PronosticSaisie[]>(this.pronosticForComeptitionId + "/" + comeptitionId, { params: options, observe: 'response' })
+          .pipe(map((res: HttpResponse<PronosticSaisie[]>) => this.convertArrayResponse(res)));
+  }
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});

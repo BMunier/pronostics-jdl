@@ -21,16 +21,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   competitionForm = this.formBuilder.group({
     competition: Competition
   });
+  competitionIdSelected: number;
 
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private formBuilder: FormBuilder,
-    private competitionService: CompetitionService) {}
+    private competitionService: CompetitionService) {
+      this.competitionIdSelected = 1;
+    }
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     this.loadCompetitions();
+
+    this.competitionForm.controls['competition'].valueChanges.subscribe(value => {
+      this.onChangeSelectCompetition(value);
+    });
+
+    this.competitionIdSelected = 1;
   }
 
   isAuthenticated(): boolean {
@@ -50,4 +59,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   loadCompetitions(): void {
     this.competitionService.query().subscribe((res: HttpResponse<ICompetition[]>) => (this.listCompetition = res.body || []));
   }
+
+  onChangeSelectCompetition(value: any): void {
+    this.competitionIdSelected = value.id;
+  }
+
+
 }
