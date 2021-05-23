@@ -217,7 +217,67 @@ public class CompetitionResource {
     			ligneClassementActuelle.setNbPronosFaux(ligneClassementActuelle.getNbPronosFaux()+incPronosFaux);
     			ligneClassementActuelle.setNbPronosJoues(ligneClassementActuelle.getNbPronosJoues()+incPronosJoues);
     		}else {
-    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getId(),utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
+    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getId(), utilisateur.getLogin() , utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
+    			lignesClassementByUserIdMap.put(utilisateur.getId(), ligneClassement);
+    		}
+        }
+
+    	//récupération des lignes de classement et tri
+        List<LigneClassementDTO>  lignesClassement = new ArrayList<LigneClassementDTO>();
+        for(Map.Entry<Long,LigneClassementDTO> entry : lignesClassementByUserIdMap.entrySet()){
+            lignesClassement.add(entry.getValue());
+        }
+        Collections.sort(lignesClassement);
+        Collections.reverse(lignesClassement);
+
+        //On donne une position au classement
+        position= 0;
+        lignesClassement.forEach(ligneClassement->{
+            position++;
+            ligneClassement.setPosition(position);
+
+        });
+    	return lignesClassement;
+    }
+
+    @GetMapping("/competitions/classement/{idCompetition}")
+    @Timed
+    public List<LigneClassementDTO> calculerClassementForIdCompetition(@PathVariable Long idCompetition){
+    	//recherche des pronostics pour les matches terminés de la compétition sélectionnée
+        List<Pronostic> pronostics = pronosticRepository.findForMatchsTerminesAndCompetitionIdOnly(idCompetition);
+
+    	//itération sur tous les pronos et calcul des points
+    	Map<Long, LigneClassementDTO> lignesClassementByUserIdMap = new HashMap<Long, LigneClassementDTO>();
+    	for(Pronostic pronostic : pronostics) {
+    		if(pronostic.getPoints()==null) {
+    			log.warn("les points du prono sont null alors que le match est terminé "+pronostic.getId());
+    			continue;
+    		}
+
+    		User utilisateur =  pronostic.getUtilisateur();
+    		Integer incPronosJustes=0;
+    		Integer incPronosPartiels=0;
+    		Integer incPronosFaux=0;
+    		Integer incPronosJoues=1;
+
+    		if(pronostic.getPoints()==POINT_PRONO_JUSTE) {
+    			incPronosJustes=1;
+    		}else if(pronostic.getPoints()==POINT_PRONO_PARTIEL) {
+    			incPronosPartiels=1;
+    		}else {
+    			incPronosFaux=1;
+    		}
+
+    		//création ou mise à jour de la ligne de classement
+    		if(lignesClassementByUserIdMap.containsKey(utilisateur.getId())) {
+    			LigneClassementDTO ligneClassementActuelle = lignesClassementByUserIdMap.get(utilisateur.getId());
+    			ligneClassementActuelle.setNbPointsTotal(ligneClassementActuelle.getNbPointsTotal()+pronostic.getPoints());
+    			ligneClassementActuelle.setNbPronosJustes(ligneClassementActuelle.getNbPronosJustes()+incPronosJustes);
+    			ligneClassementActuelle.setNbPronosPartiels(ligneClassementActuelle.getNbPronosPartiels()+incPronosPartiels);
+    			ligneClassementActuelle.setNbPronosFaux(ligneClassementActuelle.getNbPronosFaux()+incPronosFaux);
+    			ligneClassementActuelle.setNbPronosJoues(ligneClassementActuelle.getNbPronosJoues()+incPronosJoues);
+    		}else {
+    			LigneClassementDTO ligneClassement = new LigneClassementDTO(utilisateur.getId(),utilisateur.getLogin(), utilisateur.getLastName(), utilisateur.getFirstName(), pronostic.getPoints(),incPronosJustes,incPronosPartiels,incPronosFaux,incPronosJoues);
     			lignesClassementByUserIdMap.put(utilisateur.getId(), ligneClassement);
     		}
         }

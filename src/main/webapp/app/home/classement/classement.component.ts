@@ -1,21 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import {Classement} from './classement.model';
 import {ClassementService} from './classement.service';
-import { Subscription } from 'rxjs';
-
+import { AccountService } from 'app/core/auth/account.service';
 @Component({
   selector: 'jhi-classement',
   templateUrl: './classement.component.html',
   styles: []
 })
-export class ClassementComponent implements OnInit {
-
+export class ClassementComponent implements OnInit, OnChanges {
+  @Input() competitionId: number;
   classements: Classement[];
   currentAccount: any;
-  // eventSubscriber: Subscription;
   itemsPerPage: number;
   routeData: any;
 
@@ -25,16 +23,18 @@ export class ClassementComponent implements OnInit {
       private eventManager: JhiEventManager,
       private parseLinks: JhiParseLinks,
       private activatedRoute: ActivatedRoute,
-      // private principal: Principal
+      private accountService: AccountService
 
   ) {
       this.classements = [];
       this.itemsPerPage = 100;
+      this.competitionId = 1;
 
 
   }
   loadAll(): void {
-    this.classementService.query({
+    this.classementService.query(this.competitionId,
+      {
             size: this.itemsPerPage,
       }).subscribe(
         (res: HttpResponse<Classement[]>) => {
@@ -45,19 +45,22 @@ export class ClassementComponent implements OnInit {
         (res: HttpErrorResponse) => this.onError(res.message)
     );
 }
-getColor(idUtilisateur: any): string{
-    if(idUtilisateur=== this.currentAccount.id){
+getColor(username: any): string{
+    if(username=== this.currentAccount.login){
       return "#C6F6A9";
     } else {
       return ""
     }
 
 }
-ngOnInit(): void{
-/*     this.principal.identity().then((account: any) => {
-        console.log(account);
-        this.currentAccount = account;
-    }); */
+ngOnInit(): void {
+  if(this.accountService.isAuthenticated()){
+    this.accountService.getAuthenticationState().subscribe(account => (this.currentAccount = account));
+  }
+  this.loadAll();
+}
+
+ngOnChanges(): void {
   this.loadAll();
 }
 
