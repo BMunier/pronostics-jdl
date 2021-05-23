@@ -22,11 +22,6 @@
             </div>
 
         <div class="alert alert-warning" *ngSwitchCase="false">
-            <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-            <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
-        </div>
-
-        <div class="alert alert-warning" *ngSwitchCase="false">
             <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
             <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
         </div>
@@ -45,14 +40,13 @@
                         {{ competition.nom }}
                     </option>
                 </select>
-                <p>Form value: {{ competitionForm.value | json }}</p>
             </div>
         </div>
     </form>
 
     <div class="row">
         <div class="col-8">
-            <jhi-pronostic-saisie></jhi-pronostic-saisie>
+            <jhi-pronostic-saisie [competitionId]=competitionIdSelected></jhi-pronostic-saisie>
         </div>
         <div class="col-4">
             <jhi-classement></jhi-classement>

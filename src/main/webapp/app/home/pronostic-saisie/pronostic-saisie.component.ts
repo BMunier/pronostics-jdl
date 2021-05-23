@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
@@ -11,8 +11,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './pronostic-saisie.component.html',
   styles: []
 })
-export class PronosticSaisieComponent implements OnInit, OnDestroy {
-
+export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() competitionId: number;
   pronostics: PronosticSaisie[];
   currentAccount: any;
   eventSubscriber?: Subscription;
@@ -45,20 +45,24 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
       this.predicate = 'id';
       this.reverse = true;
       this.totalItems = 0;
+      this.competitionId = 1;
   }
 
   loadAll(): void {
-      this.pronosticSaisieService.query({
-          page: this.page,
-          size: this.itemsPerPage
-      }).subscribe(
-          (res: HttpResponse<PronosticSaisie[]>) => this.onSuccess(res.body, res.headers),
-          (res: HttpErrorResponse) => this.onError(res.message)
-      );
+    this.pronosticSaisieService.queryForCompetitionId(this.competitionId, {
+        page: this.page,
+        size: this.itemsPerPage
+    }).subscribe(
+        (res: HttpResponse<PronosticSaisie[]>) => {
+          this.onSuccess(res.body, res.headers)
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+    );
   }
+
   valideProno(pronostic: any): void {
     pronostic.updated = true;
-       this.pronosticSaisieService.update(pronostic).subscribe(
+        this.pronosticSaisieService.update(pronostic).subscribe(
         (response: any) => {
             pronostic.id=response.body.id;
 
@@ -66,16 +70,17 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy {
                 this.error = null;
                 this.success = 'OK';
                 pronostic.updated = true;
-               // this.reset();
+                // this.reset();
             } else {
                 this.success = null;
                 this.error = 'ERROR';
             }
         });
-}
-changeValidate(pronostic: any): void {
-    pronostic.updated=false;
-}
+  }
+
+  changeValidate(pronostic: any): void {
+      pronostic.updated=false;
+  }
 
   reset(): void {
       this.page = 0;
@@ -118,6 +123,11 @@ changeValidate(pronostic: any): void {
           this.currentAccount = account;
       }); */
       this.registerChangeInPronostics();
+  }
+
+  ngOnChanges(): void {
+    // We call clear() to clear the table and reload the pronostics for the selected competition
+    this.clear();
   }
 
   ngOnDestroy(): void {

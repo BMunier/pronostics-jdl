@@ -1,6 +1,8 @@
 package com.bmu.pronostics.repository;
 
+import com.bmu.pronostics.domain.Match;
 import com.bmu.pronostics.domain.Pronostic;
+import com.bmu.pronostics.domain.User;
 import com.bmu.pronostics.domain.enumeration.StatutMatch;
 
 import org.springframework.stereotype.Repository;
@@ -22,5 +24,8 @@ public interface PronosticRepository extends JpaRepository<Pronostic, Long> {
 
     @Query("select pronostic from Pronostic pronostic where pronostic.match.statut='TERMINE'")
     List<Pronostic> findForMatchsTerminesOnly();
+
+    List<Pronostic> findByUtilisateurAndMatchIn(User utilisateur, List<Match> lMatchs);
+
 
 }
