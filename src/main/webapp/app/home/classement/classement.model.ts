@@ -1,6 +1,7 @@
 export class Classement  {
     constructor(
         public idUtilisateur?: number,
+        public username?: string,
         public nomUtilisateur?: string,
         public prenomUtilisateur?: string,
         public nbPointsTotal?: number,

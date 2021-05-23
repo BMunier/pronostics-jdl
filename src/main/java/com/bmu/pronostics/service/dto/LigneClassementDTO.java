@@ -2,6 +2,7 @@ package com.bmu.pronostics.service.dto;
 
 public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	private Long idUtilisateur;
+    private String username;
 	private String nomUtilisateur;
 	private String prenomUtilisateur;
 	private Integer nbPointsTotal;
@@ -10,10 +11,11 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	private Integer nbPronosFaux;
 	private Integer nbPronosJoues;
 	private Long position;
-	
-	public LigneClassementDTO(Long idUtilisateur, String nomUtilisateur, String prenomUtilisateur, Integer nbPointsTotal,Integer nbPronosJustes, Integer nbPronosPartiels,Integer nbPronosFaux, Integer nbPronosJoues) {
+
+	public LigneClassementDTO(Long idUtilisateur, String username, String nomUtilisateur, String prenomUtilisateur, Integer nbPointsTotal,Integer nbPronosJustes, Integer nbPronosPartiels,Integer nbPronosFaux, Integer nbPronosJoues) {
 		super();
 		this.idUtilisateur = idUtilisateur;
+        this.username = username;
 		this.nomUtilisateur = nomUtilisateur;
 		this.prenomUtilisateur = prenomUtilisateur;
 		this.nbPointsTotal = nbPointsTotal;
@@ -40,7 +42,7 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	public void setNbPointsTotal(Integer nbPointsTotal) {
 		this.nbPointsTotal = nbPointsTotal;
 	}
-	
+
 	public Integer getNbPronosJustes() {
 		return nbPronosJustes;
 	}
@@ -77,6 +79,19 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 	public void setIdUtilisateur(Long idUtilisateur) {
 		this.idUtilisateur = idUtilisateur;
 	}
+
+    /**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	/**
 	 * @return the position
 	 */
@@ -95,32 +110,32 @@ public class LigneClassementDTO implements Comparable<LigneClassementDTO>{
 		if(resultCompare!=0) {
 			return resultCompare;
 		}
-		
+
 		resultCompare = this.getNbPronosJustes().compareTo(o.getNbPronosJustes());
 		if(resultCompare!=0) {
 			return resultCompare;
 		}
-		
+
 		resultCompare = this.getNbPronosPartiels().compareTo(o.getNbPronosPartiels());
 		if(resultCompare!=0) {
 			return resultCompare;
 		}
-		
+
 		resultCompare = this.getNbPronosJoues().compareTo(o.getNbPronosJoues());
 		if(resultCompare!=0) {
 			return resultCompare;
 		}
-		
+
 		resultCompare = this.getNomUtilisateur().compareTo(o.getNomUtilisateur());
 		if(resultCompare!=0) {
 			return -resultCompare;
 		}
-		
+
 		resultCompare = this.getPrenomUtilisateur().compareTo(o.getPrenomUtilisateur());
 		if(resultCompare!=0) {
 			return -resultCompare;
 		}
-		
+
 		return 0;
 	}
 }

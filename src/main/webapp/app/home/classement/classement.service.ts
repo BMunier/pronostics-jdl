@@ -18,9 +18,9 @@ export class ClassementService {
     constructor(private http: HttpClient) { }
 
 
-    query(req?: any): Observable<HttpResponse<Classement[]>> {
+    query(competitionId: number, req?: any): Observable<HttpResponse<Classement[]>> {
         const options = createRequestOption(req);
-        return this.http.get<Classement[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<Classement[]>(this.resourceUrl + "/" + competitionId, { params: options, observe: 'response' })
             .pipe(map((res: HttpResponse<Classement[]>) => this.convertArrayResponse(res)));
     }
 
