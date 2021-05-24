@@ -175,7 +175,7 @@ public class MatchResource {
 
     @PutMapping("/matches/refresh")
     @Timed
-    public ResponseEntity<Void> refreshMatches() {
+    public ResponseEntity<String> refreshMatches() {
         log.debug("REST request to refresh Matches and Pronostics");
         Match matchTermine;
         Integer scoreDom, scoreVisit, scorePronoDom, scorePronoVisit, scoreDiffMatch;
@@ -215,8 +215,7 @@ public class MatchResource {
             }
         }
 
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "", ""))
-                .build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("pronosticsApp.pronostic.scoreUpdated", "", "")).body("Refresh des matches éxécuté");
     }
 
 }
