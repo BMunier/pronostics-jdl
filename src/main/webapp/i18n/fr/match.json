@@ -6,7 +6,8 @@
         "createLabel": "Créer un nouveau Match",
         "createOrEditLabel": "Créer ou éditer un Match",
         "search": "Recherche pour Match",
-        "notFound": "Aucun Match trouvé"
+        "notFound": "Aucun Match trouvé",
+        "refresh": "Rafraîchier le classement"
       },
       "created": "Un nouveau Match a été créé avec l'identifiant {{ param }}",
       "updated": "Le Match avec l'identifiant {{ param }} a été mis à jour",
