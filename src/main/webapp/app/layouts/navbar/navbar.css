@@ -7,8 +7,8 @@ Navbar
 }
 
 .jh-navbar {
-    background-color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */ 
-    background-image: url("../../../content/images/background.png");
+    background-color: #144c91; /* TODO Ajouter le lien du site sous forme de paramètre modifiable depuis l'interface utilisateur */
+    background-image: url("../../../content/images/body-bg.webp");
     padding: .2em 1em;
 }
 

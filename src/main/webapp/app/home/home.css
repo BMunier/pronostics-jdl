@@ -6,7 +6,7 @@ Main page styles
     display: inline-block;
     width: 347px;
     height: 497px;
-    background: url("../../content/images/FIFA_World_Cup_2018_Logo.png") no-repeat center top;
+    background: url("../../content/images/UEFA_Euro_2020_logo.png") no-repeat center top;
     background-size: contain;
 }
 
@@ -19,7 +19,7 @@ only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
     .hipster {
-        background: url("../../content/images/FIFA_World_Cup_2018_Logo.png") no-repeat center top;
+        background: url("../../content/images/UEFA_Euro_2020_logo.png") no-repeat center top;
         background-size: contain;
     }
 }
