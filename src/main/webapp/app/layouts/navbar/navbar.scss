@@ -10,6 +10,10 @@ Navbar
   color: $navbar-dark-color;
 }
 
+.bg-dark {
+  background-color: #20a6bb !important;
+}
+
 .profile-image {
   height: 1.75em;
   width: 1.75em;
@@ -33,10 +37,10 @@ Navbar
 Logo styles
 ========================================================================== */
 .logo-img {
-  height: 45px;
-  width: 45px;
+  height: 50px;
+  width: 150px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
+  background: url('../../../content/images/logo-navbar-euro-2020.png') no-repeat center center;
   background-size: contain;
 }
