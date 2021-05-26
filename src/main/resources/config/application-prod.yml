@@ -53,16 +53,16 @@ spring:
 
 
   mail:
-    host: smtp-mail.outlook.com
+    host: smtp.mailgun.org
     port: 587
-    username: pronosticsGbz@outlook.com  #Replace this field with your Outlook username.
-    password: prono2020               #Replace this field with your Outlook password.
+    username: postmaster@sandbox2f5312a6414a40128e37e39c5ef42bc9.mailgun.org  #Replace this field with your Outlook username.
+    password: 452d8e5058d1af65ae5f8b740f2b35ec-fa6e84b7-ca42db90               #Replace this field with your Outlook password.
     protocol: smtp
-    tls: true
-    properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: smtp-mail.outlook.com
+    tls: false
+    # properties.mail.smtp:
+    #   auth: true
+    #   starttls.enable: true
+    #   ssl.trust: smtp-mail.outlook.com
   thymeleaf:
     cache: true
   # data:
