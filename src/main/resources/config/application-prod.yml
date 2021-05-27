@@ -53,16 +53,18 @@ spring:
 
 
   mail:
-    host: ${MAILGUN_SMTP_SERVER}
-    port: ${MAILGUN_SMTP_PORT}
-    username: ${MAILGUN_SMTP_LOGIN}  #Replace this field with your Outlook username.
-    password: ${MAILGUN_SMTP_PASSWORD}             #Replace this field with your Outlook password.
+    host: ${GMAIL_SMTP_SERVER}
+    port: ${GMAIL_SMTP_PORT}
+    username: ${GMAIL_SMTP_LOGIN}  #Replace this field with your Outlook username.
+    password: ${GMAIL_SMTP_PASSWORD}             #Replace this field with your Outlook password.
     protocol: smtp
-    tls: false
-    # properties.mail.smtp:
-    #   auth: true
-    #   starttls.enable: true
-    #   ssl.trust: smtp-mail.outlook.com
+    #tls: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   thymeleaf:
     cache: true
   # data:
