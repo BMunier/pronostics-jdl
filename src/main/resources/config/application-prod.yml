@@ -53,10 +53,10 @@ spring:
 
 
   mail:
-    host: ${GMAIL_SMTP_SERVER}
-    port: ${GMAIL_SMTP_PORT}
-    username: ${GMAIL_SMTP_LOGIN}  #Replace this field with your Outlook username.
-    password: ${GMAIL_SMTP_PASSWORD}             #Replace this field with your Outlook password.
+    host: ${POSTMARK_SMTP_SERVER}
+    port: ${POSTMARK_SMTP_PORT}
+    username: ${POSTMARK_SMTP_LOGIN}  #Replace this field with your Outlook username.
+    password: ${POSTMARK_SMTP_PASSWORD}             #Replace this field with your Outlook password.
     protocol: smtp
     #tls: false
     properties:
