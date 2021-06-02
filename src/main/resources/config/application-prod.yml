@@ -134,7 +134,7 @@ jhipster:
       # security key (this key should be unique for your application, and kept secret)
       key: 2165eb0a38331d1dcf9020622e9c8f0883e68959
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    from: pronosticsGbz@outlook.com
+    from: bastien.munier@globaz.ch
     base-url: http://pronostics.globaz.ch # Modify according to your server's URL
   # metrics:
   #   logs: # Reports metrics in the logs
