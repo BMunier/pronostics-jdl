@@ -19,6 +19,8 @@ import { PaysService } from 'app/entities/pays/pays.service';
 export class EquipeUpdateComponent implements OnInit {
   isSaving = false;
   pays: IPays[] = [];
+  page: number;
+  itemsPerPage: number;
 
   editForm = this.fb.group({
     id: [],
@@ -38,13 +40,18 @@ export class EquipeUpdateComponent implements OnInit {
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.page = 0;
+    this.itemsPerPage = 100;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ equipe }) => {
       this.updateForm(equipe);
 
-      this.paysService.query().subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
+      this.paysService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
     });
   }
 

@@ -27,6 +27,8 @@ export class CompetitionUpdateComponent implements OnInit {
   stades: IStade[] = [];
   dateDebutDp: any;
   dateFinDp: any;
+  page: number;
+  itemsPerPage: number;
 
   editForm = this.fb.group({
     id: [],
@@ -46,17 +48,26 @@ export class CompetitionUpdateComponent implements OnInit {
     protected stadeService: StadeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.page = 0;
+    this.itemsPerPage = 100;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ competition }) => {
       this.updateForm(competition);
 
-      this.equipeService.query().subscribe((res: HttpResponse<IEquipe[]>) => (this.equipes = res.body || []));
+      this.equipeService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IEquipe[]>) => (this.equipes = res.body || []));
 
-      this.paysService.query().subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
+      this.paysService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IPays[]>) => (this.pays = res.body || []));
 
-      this.stadeService.query().subscribe((res: HttpResponse<IStade[]>) => (this.stades = res.body || []));
+      this.stadeService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IStade[]>) => (this.stades = res.body || []));
     });
   }
 

@@ -27,6 +27,8 @@ export class MatchUpdateComponent implements OnInit {
   competitions: ICompetition[] = [];
   stades: IStade[] = [];
   equipes: IEquipe[] = [];
+  page: number;
+  itemsPerPage: number;
 
   editForm = this.fb.group({
     id: [],
@@ -50,7 +52,10 @@ export class MatchUpdateComponent implements OnInit {
     protected equipeService: EquipeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.page = 0;
+    this.itemsPerPage = 100
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ match }) => {
@@ -63,9 +68,13 @@ export class MatchUpdateComponent implements OnInit {
 
       this.competitionService.query().subscribe((res: HttpResponse<ICompetition[]>) => (this.competitions = res.body || []));
 
-      this.stadeService.query().subscribe((res: HttpResponse<IStade[]>) => (this.stades = res.body || []));
+      this.stadeService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IStade[]>) => (this.stades = res.body || []));
 
-      this.equipeService.query().subscribe((res: HttpResponse<IEquipe[]>) => (this.equipes = res.body || []));
+      this.equipeService.query({page: this.page,
+        size: this.itemsPerPage
+      }).subscribe((res: HttpResponse<IEquipe[]>) => (this.equipes = res.body || []));
     });
   }
 
