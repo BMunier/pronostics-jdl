@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.onChangeSelectCompetition(value);
     });
 
-    this.competitionIdSelected = 1;
+    this.competitionIdSelected = 15451;
   }
 
   isAuthenticated(): boolean {
