@@ -31,7 +31,8 @@
 
 <!-- Affichage des matchs et prono si user loggé -->
 <div class="row" *ngIf="isAuthenticated()">
-    <form name="competitionForm" role="form" [formGroup]="competitionForm">
+    <!-- Hidding the selector to avoid useless selection during the time of Euro 2020 -->
+    <!-- <form name="competitionForm" role="form" [formGroup]="competitionForm">
         <div class="row" class="col-12">
             <div class="form-group">
                 <label class="form-control-label">Competition</label>
@@ -42,7 +43,7 @@
                 </select>
             </div>
         </div>
-    </form>
+    </form> -->
 
     <div class="row">
         <div class="col-8">
