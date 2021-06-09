@@ -34,11 +34,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
-    this.loadCompetitions();
+    /** this.loadCompetitions();
 
     this.competitionForm.controls['competition'].valueChanges.subscribe(value => {
       this.onChangeSelectCompetition(value);
-    });
+    });*/
 
     this.competitionIdSelected = 15451;
   }
