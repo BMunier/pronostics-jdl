@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private competitionService: CompetitionService) {
       // Hardcoded competition id to avoid useless selection during the time of Euro 2020
-      this.competitionIdSelected = 15451;
+      this.competitionIdSelected = 0;
     }
 
   ngOnInit(): void {
