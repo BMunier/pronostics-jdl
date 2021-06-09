@@ -49,6 +49,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   loadAll(): void {
+    this.pronostics = [];
     this.pronosticSaisieService.queryForCompetitionId(this.competitionId, {
         page: this.page,
         size: this.itemsPerPage
@@ -90,7 +91,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
 
   loadPage(page: any): void {
       this.page = page;
-      // this.loadAll();
+      this.loadAll();
   }
 
   clear(): void {
@@ -153,6 +154,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
 }
 
   private onSuccess(data: any, headers: any): void {
+    this.pronostics = [];
       this.links = this.parseLinks.parse(headers.get('link'));
       this.totalItems = headers.get('X-Total-Count');
       for (let i = 0; i < data.length; i++) {

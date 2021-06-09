@@ -28,11 +28,12 @@ export class ClassementComponent implements OnInit, OnChanges {
   ) {
       this.classements = [];
       this.itemsPerPage = 100;
-      this.competitionId = 1;
+      this.competitionId = 15451;
 
 
   }
   loadAll(): void {
+    this.classements = [];
     this.classementService.query(this.competitionId,
       {
             size: this.itemsPerPage,
