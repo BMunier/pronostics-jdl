@@ -45,7 +45,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
       this.predicate = 'id';
       this.reverse = true;
       this.totalItems = 0;
-      this.competitionId = 1;
+      this.competitionId = 15451;
   }
 
   loadAll(): void {
@@ -90,7 +90,7 @@ export class PronosticSaisieComponent implements OnInit, OnDestroy, OnChanges {
 
   loadPage(page: any): void {
       this.page = page;
-      this.loadAll();
+      // this.loadAll();
   }
 
   clear(): void {
